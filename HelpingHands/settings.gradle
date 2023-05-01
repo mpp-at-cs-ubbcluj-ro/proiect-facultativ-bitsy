@@ -1,0 +1,4 @@
+rootProject.name = 'HelpingHands'
+include 'domain'
+include 'repo'
+
