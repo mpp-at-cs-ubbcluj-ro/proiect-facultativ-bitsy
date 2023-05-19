@@ -1,8 +1,17 @@
 package com.helpinghands.domain;
 
-public class SponsorType {
-    private String name;
+import javax.persistence.*;
 
+@Entity
+@Table(name="SponsorTypes")
+public class SponsorType implements IEntity {
+    @Column(name="name")
+    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    public SponsorType(){}
     public SponsorType(String name) {
         this.name = name;
     }
@@ -13,5 +22,13 @@ public class SponsorType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

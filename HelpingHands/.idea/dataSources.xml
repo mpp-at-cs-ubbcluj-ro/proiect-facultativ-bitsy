@@ -7,6 +7,23 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Stefan\IdeaProjects\HelpingHands\database.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="foreign_keys" value="true" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="c0e65604-35a4-4280-8c9b-fa4fc2a0d8fb">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+C:/Users/Stefan/IdeaProjects/bitsy/proiect-facultativ-bitsy/HelpingHands/repo/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Stefan\IdeaProjects\HelpingHands\database.sqlite</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="foreign_keys" value="true" />
+      </driver-properties>
     </data-source>
   </component>
 </project>

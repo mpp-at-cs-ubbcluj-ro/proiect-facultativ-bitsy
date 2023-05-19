@@ -1,14 +1,42 @@
 package com.helpinghands.domain;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@DiscriminatorValue("2")
 public class Voluntar extends Utilizator {
+    @ManyToMany(targetEntity = Interest.class,
+            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "VoluntarInterests",
+            joinColumns = { @JoinColumn(name = "idVoluntar") },
+            inverseJoinColumns = {@JoinColumn(name = "idInterest")})
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     Set<Interest> interests = new HashSet<>();
     int xpPoints;
+
+    @Column(name="isSponsor")
     boolean sponsor;
+    @Column(name="isActive")
     boolean activeSponsor;
+
+    @ManyToMany(targetEntity = SponsorType.class,
+            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "SponsorDataSponsorTypes",
+            joinColumns = { @JoinColumn(name = "idVoluntar") },
+            inverseJoinColumns = { @JoinColumn(name = "idSponsorType") })
     Set<SponsorType> sponsorTypes = new HashSet<>();
+
+    @ManyToMany(targetEntity = Eveniment.class,
+            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "SponsorDataSponsoredEvents",
+            joinColumns = { @JoinColumn(name = "idVoluntar") },
+            inverseJoinColumns = { @JoinColumn(name = "idEvent") })
     Set<Eveniment> sponsoredEvents = new HashSet<>();
 
     public Voluntar() { }
@@ -73,7 +101,9 @@ public class Voluntar extends Utilizator {
     @Override
     public String toString() {
         return "Voluntar{" +
-                "interests=" + interests +
+                "username=" + getUsername() +
+                ", nume=" + getNume() +
+                ", interests=" + interests +
                 ", xpPoints=" + xpPoints +
                 ", sponsor=" + sponsor +
                 ", activeSponsor=" + activeSponsor +
