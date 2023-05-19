@@ -2,6 +2,7 @@ package com.helpinghands.service;
 
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.*;
+import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.service.data.UserInfo;
 
 import java.util.Objects;
@@ -128,5 +129,18 @@ public class AppService implements IService {
                 .map(Participant::getVoluntar).toList();
     }
 
+    @Override
+    public UserSession getUserSession(String token) throws ServiceException {
+        var session = userSessionRepo.findByToken(token);
+        if(session==null){
+            throw new ServiceException("Invalid user token");
+        }
+        return session;
+    }
+
+    @Override
+    public Eveniment[] getOrderedEveniments(EventOrderOption orderOption, int page, int itemsPerPage) {
+        return evenimentRepo.getOrderedPaged(orderOption, page,itemsPerPage);
+    }
 
 }

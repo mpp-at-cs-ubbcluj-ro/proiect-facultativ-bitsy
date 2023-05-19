@@ -9,8 +9,7 @@ public class UserSession implements IEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String token;
-    @ManyToOne(targetEntity = Voluntar.class,
-            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Utilizator.class, fetch = FetchType.EAGER)
     @JoinColumn(name="idUser")
     private Utilizator utilizator;
     private String type;
