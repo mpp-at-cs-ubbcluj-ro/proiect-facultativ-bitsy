@@ -8,10 +8,11 @@ public class SQLiteDialectIdentityColumnSupport extends IdentityColumnSupportImp
 		return true;
 	}
 
-	@Override
+  /*
 	public boolean supportsInsertSelectIdentity() {
-		return true; // https://sqlite.org/lang_returning.html
-	}
+    return true; // As specified in NHibernate dialect
+  }
+  */
 
 	@Override
 	public boolean hasDataTypeInIdentityColumn() {
@@ -20,10 +21,14 @@ public class SQLiteDialectIdentityColumnSupport extends IdentityColumnSupportImp
 		return false;
 	}
 
-	@Override
+  /*
 	public String appendIdentitySelectToInsert(String insertString) {
-		return insertString + " RETURNING rowid";
-	}
+    return new StringBuffer(insertString.length()+30). // As specified in NHibernate dialect
+      append(insertString).
+      append("; ").append(getIdentitySelectString()).
+      toString();
+  }
+  */
 
 	@Override
 	public String getIdentitySelectString(String table, String column, int type) {

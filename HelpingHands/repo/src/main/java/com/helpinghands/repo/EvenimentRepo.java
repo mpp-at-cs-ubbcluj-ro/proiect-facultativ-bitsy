@@ -27,7 +27,14 @@ public class EvenimentRepo extends AbstractRepo<Eveniment> implements IEveniment
             result.set(session.createQuery(q, Eveniment.class)
                     .setFirstResult(page*itemsPerPage)
                     .setMaxResults(itemsPerPage)
-                    .stream().toArray(Eveniment[]::new));
+                    .stream()
+                    .filter(ev-> {
+                        // to force foreign references to load
+                        var x=ev.getInterests().size();
+                        return true;
+                    })
+                    .toArray(Eveniment[]::new));
+            tx.commit();
         });
         return result.get();
     }

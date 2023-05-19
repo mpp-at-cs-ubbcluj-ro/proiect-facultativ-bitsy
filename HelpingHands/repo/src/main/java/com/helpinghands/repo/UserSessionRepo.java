@@ -3,11 +3,14 @@ package com.helpinghands.repo;
 import com.helpinghands.domain.Admin;
 import com.helpinghands.domain.UserSession;
 import com.helpinghands.domain.Utilizator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.sqlite.hibernate.dialect.SQLiteMetadataBuilderInitializer;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 public class UserSessionRepo extends AbstractRepo<UserSession> implements IUserSessionRepo {
-
+    private final static Logger logger = LogManager.getLogger(UserSessionRepo.class);
     public UserSessionRepo() {
         super(UserSession.class);
     }
@@ -33,16 +36,25 @@ public class UserSessionRepo extends AbstractRepo<UserSession> implements IUserS
 
     @Override
     public String createToken(Utilizator user) {
+        logger.trace("");
+        logger.info("Creating token for {}", user);
         var token = generateToken(user);
         var type = user instanceof Admin ? "Admin" : "Voluntar";
         var session = new UserSession(token, user, type);
-        if(add(session)==null)
+        if(add(session)==null) {
+            logger.info("Session add fail");
+            logger.traceExit();
             return null;
+        }
+        logger.info("Token created successfully");
+        logger.traceExit();
         return token;
     }
 
     @Override
     public UserSession findByToken(String token){
+        logger.trace("");
+        logger.info("Finding by token {}", token);
         AtomicReference<UserSession> result=new AtomicReference<>();
         Session.doTransaction((session, tx)->{
             result.set(session
@@ -52,15 +64,26 @@ public class UserSessionRepo extends AbstractRepo<UserSession> implements IUserS
                     .uniqueResult());
             tx.commit();
         });
+        logger.info("Ok");
+        logger.traceExit();
         return result.get();
     }
 
     @Override
     public void close(String token) {
+        logger.trace("");
+        logger.info("Closing {}", token);
         var session = findByToken(token);
-        if(session==null)
+        if(session==null) {
+            logger.info("Close fail");
+            logger.traceExit();
             return;
+        }
+
+        logger.info("Ok.. removing session");
         remove(session);
+        logger.info("Done.");
+        logger.traceExit();
     }
 
     @Override

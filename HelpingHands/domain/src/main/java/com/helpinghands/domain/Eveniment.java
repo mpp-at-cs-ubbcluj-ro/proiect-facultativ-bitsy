@@ -29,7 +29,7 @@ public class Eveniment implements IEntity {
     private String location;
 
     @ManyToMany(targetEntity = Interest.class,
-            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+            cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "EventInterests",
             joinColumns = { @JoinColumn(name = "idEvent") },
             inverseJoinColumns = { @JoinColumn(name = "idInterest") })
