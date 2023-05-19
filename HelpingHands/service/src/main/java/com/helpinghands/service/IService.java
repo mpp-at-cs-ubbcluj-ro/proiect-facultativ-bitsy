@@ -1,6 +1,7 @@
 package com.helpinghands.service;
 
 import com.helpinghands.domain.*;
+import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.service.data.UserInfo;
 
 public interface IService {
@@ -16,6 +17,9 @@ public interface IService {
     Participant addNormalParticipant(Voluntar voluntar, Eveniment event) throws ServiceException;
     Participant addOrganizer(Voluntar voluntar, Eveniment event) throws ServiceException;
 
+    UserSession getUserSession(String token) throws ServiceException;
+
+    Eveniment[] getOrderedEveniments(EventOrderOption orderOption, int page, int itemsPerPage);
     Iterable<Voluntar> getParticipants(Eveniment event);
     Iterable<Voluntar> getOrganizers(Eveniment event);
     Iterable<Voluntar> getVolunteers(Eveniment event);

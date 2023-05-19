@@ -41,7 +41,8 @@ public class UserSessionRepo extends AbstractRepo<UserSession> implements IUserS
         return token;
     }
 
-    private UserSession findByToken(String token){
+    @Override
+    public UserSession findByToken(String token){
         AtomicReference<UserSession> result=new AtomicReference<>();
         Session.doTransaction((session, tx)->{
             result.set(session
