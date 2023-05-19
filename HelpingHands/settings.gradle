@@ -2,4 +2,6 @@ rootProject.name = 'HelpingHands'
 include 'domain'
 include 'repo'
 include 'service'
+include 'rest_services'
+include 'server'
 
