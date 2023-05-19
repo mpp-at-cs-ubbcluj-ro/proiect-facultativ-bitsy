@@ -83,6 +83,6 @@ public class HelpingHandsRestController {
                 .stream(service.getOrderedEveniments(_filter, _page, _perPage))
                 .map(EvenimentDTO::fromEveniment)
                 .toArray(EvenimentDTO[]::new);
-        
+
     }
 }
