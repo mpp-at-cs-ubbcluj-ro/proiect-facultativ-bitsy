@@ -1,5 +1,6 @@
 package com.helpinghands.repo;
 
+import com.helpinghands.domain.IEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 

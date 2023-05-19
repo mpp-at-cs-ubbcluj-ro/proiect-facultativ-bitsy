@@ -17,12 +17,13 @@ public class StartRestServices {
     }
 
 
-    static InterestRepo interestRepo = new InterestRepo();
-    static VoluntarRepo voluntarRepo = new VoluntarRepo();
-    static EvenimentRepo eventRepo = new EvenimentRepo();
+    static IInterestRepo interestRepo = new InterestRepo();
+    static IVoluntarRepo voluntarRepo = new VoluntarRepo();
+    static IEvenimentRepo eventRepo = new EvenimentRepo();
     static IParticipantRepo partRepo = new ParticipantRepo();
+    static IUserSessionRepo userSessionRepo = new UserSessionRepo();
     @Bean
     static IService getService() {
-        return new AppService(null, null, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo);
+        return new AppService(null, null, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo, userSessionRepo);
     }
 }

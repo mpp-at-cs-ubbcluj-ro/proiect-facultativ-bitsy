@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name="Participants")
 public class Participant implements IEntity {
     @ManyToOne(targetEntity = Voluntar.class,
-            cascade = { CascadeType.ALL })
+            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinColumn(name="idVoluntar")
     private Voluntar voluntar;
 

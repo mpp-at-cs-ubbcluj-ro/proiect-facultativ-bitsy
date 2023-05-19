@@ -2,6 +2,7 @@ package com.helpinghands.service;
 
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.*;
+import com.helpinghands.service.data.UserInfo;
 
 import java.util.Objects;
 
@@ -16,8 +17,9 @@ public class AppService implements IService {
     private final IParticipantRepo participantRepo;
     private final IPostRepo postRepo;
     private final IVoluntarRepo voluntarRepo;
+    private final IUserSessionRepo userSessionRepo;
 
-    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo) {
+    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
         this.chatRoomRepo = chatRoomRepo;
@@ -28,18 +30,29 @@ public class AppService implements IService {
         this.participantRepo = participantRepo;
         this.postRepo = postRepo;
         this.voluntarRepo = voluntarRepo;
+        this.userSessionRepo = userSessionRepo;
     }
 
     @Override
-    public Utilizator login(String username, String password) throws ServiceException {
+    public UserInfo login(String username, String password) throws ServiceException {
         Utilizator u =voluntarRepo.findByCredentials(username, password);
-        if(u!=null)
-            return u;
+        if(u!=null) {
+            var token = userSessionRepo.createToken(u);
+            return new UserInfo("Voluntar",u, token);
+        }
         u =adminRepo.findByCredentials(username, password);
-        if(u!=null)
-            return u;
+        if(u!=null) {
+            var token = userSessionRepo.createToken(u);
+            return new UserInfo("Admin",u, token);
+        }
         throw new ServiceException("Invalid username or password");
     }
+
+    @Override
+    public void logout(String token) {
+        userSessionRepo.close(token);
+    }
+
 
     @Override
     public Iterable<Interest> getInterests() {
