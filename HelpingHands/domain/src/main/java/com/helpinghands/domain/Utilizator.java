@@ -1,11 +1,22 @@
 package com.helpinghands.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name="Users")
+@DiscriminatorValue("0")
+@DiscriminatorColumn(name="userType")
 public class Utilizator implements IEntity {
     private String username;
     private String password;
     private String email;
     private String nume;
     private String prenume;
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
 
     public Utilizator(){}
 
@@ -56,8 +67,6 @@ public class Utilizator implements IEntity {
     public void setPrenume(String prenume) {
         this.prenume = prenume;
     }
-
-    private Integer id;
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id=id;}
 }

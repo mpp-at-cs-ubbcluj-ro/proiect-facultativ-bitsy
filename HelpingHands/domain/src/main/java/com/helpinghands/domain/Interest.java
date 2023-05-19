@@ -1,11 +1,21 @@
 package com.helpinghands.domain;
 
-public class Interest {
+import javax.persistence.*;
+
+@Entity
+@Table(name="Interests")
+public class Interest implements IEntity {
     public Interest(){}
     public Interest(String name){
         this.name=name;
     }
+
+    @Column(name="name")
     private String name;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     public String getName() {
         return name;
@@ -20,5 +30,15 @@ public class Interest {
         return "Interest{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id=id;
     }
 }

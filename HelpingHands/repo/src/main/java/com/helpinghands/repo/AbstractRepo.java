@@ -2,29 +2,33 @@ package com.helpinghands.repo;
 
 import com.helpinghands.domain.IEntity;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AbstractRepo<E extends IEntity> implements IRepo<E> {
-    private final Class<E> entityType;
+    protected final Class<E> entityType;
 
     public AbstractRepo(Class<E> entityType){
         this.entityType = entityType;
     }
 
     @Override
-    public void add(E e) {
+    public E add(E e) {
         Session.doTransaction((session, tx)->{
-            session.save(e);
+            int id = (int)session.save(e);
             tx.commit();
+            e.setId(id);
         });
+        return e;
     }
 
     @Override
-    public void update(E e) {
+    public E update(E e) {
         Session.doTransaction((session, tx)->{
             session.update(e);
             tx.commit();
         });
+        return e;
     }
 
     @Override
@@ -37,7 +41,14 @@ public class AbstractRepo<E extends IEntity> implements IRepo<E> {
 
     @Override
     public Iterable<E> getAll() {
-        return null;
+        AtomicReference<List<E>> result = new AtomicReference<>();
+        Session.doTransaction((session, tx)->{
+            var cb = session.getCriteriaBuilder();
+            var cq = cb.createQuery(entityType);
+            var rt = cq.from(entityType);
+            result.set(session.createQuery(cq.select(rt)).getResultList());
+        });
+        return result.get();
     }
 
     @Override
