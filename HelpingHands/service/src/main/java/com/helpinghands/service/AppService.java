@@ -130,6 +130,12 @@ public class AppService implements IService {
     }
 
     @Override
+    public Eveniment updateEveniment(Eveniment eveniment) {
+        evenimentRepo.update(eveniment);
+        return eveniment;
+    }
+
+    @Override
     public UserSession getUserSession(String token) throws ServiceException {
         var session = userSessionRepo.findByToken(token);
         if(session==null){

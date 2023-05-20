@@ -23,4 +23,6 @@ public interface IService {
     Iterable<Voluntar> getParticipants(Eveniment event);
     Iterable<Voluntar> getOrganizers(Eveniment event);
     Iterable<Voluntar> getVolunteers(Eveniment event);
+
+    Eveniment updateEveniment(Eveniment eveniment);
 }
