@@ -136,6 +136,19 @@ public class AppService implements IService {
     }
 
     @Override
+    public Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment) {
+        Boolean isOrganizer = false;
+        for(Voluntar v: getOrganizers(eveniment))
+            if (v.getId().equals(voluntar.getId())) {
+                isOrganizer = true;
+                break;
+            }
+        Participant participant = new Participant(voluntar, isOrganizer);
+        participantRepo.remove(participant);
+        return eveniment;
+    }
+
+    @Override
     public UserSession getUserSession(String token) throws ServiceException {
         var session = userSessionRepo.findByToken(token);
         if(session==null){

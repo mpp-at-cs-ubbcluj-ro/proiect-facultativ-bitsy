@@ -25,4 +25,6 @@ public interface IService {
     Iterable<Voluntar> getVolunteers(Eveniment event);
 
     Eveniment updateEveniment(Eveniment eveniment);
+
+    Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment);
 }
