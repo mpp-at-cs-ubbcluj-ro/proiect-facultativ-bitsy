@@ -85,4 +85,19 @@ public class HelpingHandsRestController {
                 .toArray(EvenimentDTO[]::new);
 
     }
+
+
+
+    @RequestMapping(value = "/evenimente/{id}", method = RequestMethod.PUT)
+    public Eveniment update(@RequestBody EventParams eventParams) throws ServiceException, HHServerException {
+        var ev = eventParams.getEveniment();
+        var token = eventParams.getToken();
+        var session = service.getUserSession(token);
+
+//        if(!Objects.equals(session.getType(), "Organizer")){
+//            throw new HHServerException("Doar organizatorii pot modifica evenimente");
+//        }
+        return service.updateEveniment(eventParams.getEveniment());
+    }
+
 }
