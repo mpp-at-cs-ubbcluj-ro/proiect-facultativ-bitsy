@@ -2,6 +2,7 @@ package com.helpinghands.rest_services;
 
 import com.helpinghands.domain.Eveniment;
 import com.helpinghands.domain.Interest;
+import com.helpinghands.domain.Voluntar;
 import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.rest_services.data.Credentials;
 import com.helpinghands.rest_services.data.EventParams;
@@ -53,25 +54,38 @@ public class HelpingHandsRestController {
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String serviceException(ServiceException e) {
+        System.out.println("Service exc");
+        e.printStackTrace();
+        System.out.println(e.getMessage());
         return e.getMessage();
     }
 
     @ExceptionHandler(HHServerException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String serverException(ServerException e) {
+    public String serverException(HHServerException e) {
+        System.out.println("HHServer exc");
+        e.printStackTrace();
         return e.getMessage();
     }
 
     @RequestMapping(value="/evenimente", method = RequestMethod.POST)
-    public Eveniment addEveniment(@RequestBody EventParams eventParams) throws ServiceException, HHServerException {
-        var ev = eventParams.getEveniment();
+    public EvenimentDTO addEveniment(@RequestBody EventParams eventParams) throws ServiceException, HHServerException {
         var token = eventParams.getToken();
         var session = service.getUserSession(token);
-
         if(!Objects.equals(session.getType(), "Voluntar")){
             throw new HHServerException("Doar voluntarii pot adauga evenimente");
         }
-        return service.addEvent(ev);
+
+        var evdto = eventParams.getEveniment();
+        var voluntar = (Voluntar)session.getUtilizator();
+        var ev=new Eveniment(evdto.getName(), evdto.getDescription(), evdto.getStartDate(),
+                evdto.getEndDate(), evdto.getLocation(), voluntar,
+                evdto.getStatus());
+        for(var interestName : evdto.getInterests()){
+            var interest = service.getInterestByName(interestName);
+            ev.getInterests().add(interest);
+        }
+        return EvenimentDTO.fromEveniment(service.addEvent(ev));
     }
 
     @RequestMapping(value="/evenimente", method = RequestMethod.GET)
@@ -87,17 +101,33 @@ public class HelpingHandsRestController {
     }
 
 
-
     @RequestMapping(value = "/evenimente/{id}", method = RequestMethod.PUT)
-    public Eveniment update(@RequestBody EventParams eventParams) throws ServiceException, HHServerException {
-        var ev = eventParams.getEveniment();
+    public EvenimentDTO update(@PathVariable Integer id, @RequestBody EventParams eventParams) throws ServiceException, HHServerException {
         var token = eventParams.getToken();
         var session = service.getUserSession(token);
+        if(!Objects.equals(session.getType(), "Voluntar")){
+            throw new HHServerException("Doar voluntarii pot modifica evenimente");
+        }
+        var evdto = eventParams.getEveniment();
+        var evt = service.getEvenimentById(id);
 
-//        if(!Objects.equals(session.getType(), "Organizer")){
-//            throw new HHServerException("Doar organizatorii pot modifica evenimente");
-//        }
-        return service.updateEveniment(eventParams.getEveniment());
+        var voluntar = (Voluntar)session.getUtilizator();
+        if(StreamSupport.stream(service.getOrganizers(evt).spliterator(),false)
+                .noneMatch(o-> Objects.equals(o.getId(), voluntar.getId()))){
+            throw new HHServerException("Permission denied. User is not organizer for target event");
+        }
+
+        if(evdto.getName()!=null)
+            evt.setName(evdto.getName());
+        if(evdto.getDescription()!=null)
+            evt.setDescription(evdto.getDescription());
+        if(evdto.getStartDate()!=null)
+            evt.setStartDate(evdto.getStartDate());
+        if(evdto.getEndDate()!=null)
+            evt.setEndDate(evdto.getEndDate());
+        evt.setStatus(evdto.getStatus());
+
+        return EvenimentDTO.fromEveniment(service.updateEveniment(evt));
     }
 
 }

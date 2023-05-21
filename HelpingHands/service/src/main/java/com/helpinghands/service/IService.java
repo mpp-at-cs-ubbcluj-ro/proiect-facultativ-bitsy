@@ -11,6 +11,10 @@ public interface IService {
 
     Interest getInterestByName(String name) throws ServiceException;
 
+    Voluntar getVoluntarById(Integer id) throws ServiceException;
+
+    Eveniment getEvenimentById(Integer id) throws ServiceException;
+
     void addVoluntarInterest(Voluntar voluntar, Interest interest);
     void removeVoluntarInterest(Voluntar voluntar, Interest interest);
     Eveniment addEvent(Eveniment e) throws ServiceException;
