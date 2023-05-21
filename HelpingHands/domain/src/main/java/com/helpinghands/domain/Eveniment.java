@@ -36,14 +36,14 @@ public class Eveniment implements IEntity {
     Set<Interest> interests = new HashSet<>();
 
     @ManyToMany(targetEntity = Participant.class,
-            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "ParticipantsEvents",
             joinColumns = { @JoinColumn(name = "idEvent") },
             inverseJoinColumns = { @JoinColumn(name = "idParticipant") })
     Set<Participant> participants = new HashSet<Participant>();
 
     @ManyToOne(targetEntity = Voluntar.class,
-            cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinColumn(name="idVoluntar")
     Voluntar initiator;
 

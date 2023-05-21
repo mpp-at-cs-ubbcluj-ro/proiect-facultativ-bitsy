@@ -63,6 +63,17 @@ public class AppService implements IService {
     }
 
     @Override
+    public Eveniment getEvenimentById(Integer id) throws ServiceException {
+        var evt = evenimentRepo.getById(id);
+
+        if(evt==null){
+            throw new ServiceException("Invalid Eveniment Id");
+        }
+
+        return evt;
+    }
+
+    @Override
     public Iterable<Interest> getInterests() {
         return interestRepo.getAll();
     }
@@ -91,6 +102,9 @@ public class AppService implements IService {
 
     @Override
     public Eveniment addEvent(Eveniment e) throws ServiceException {
+        var initiator = e.getInitiator();
+        var organizer = participantRepo.add(new Participant(initiator, true));
+        e.getParticipants().add(organizer);
         var ev = evenimentRepo.add(e);
         if(ev==null)
             throw new ServiceException("Could not add event");

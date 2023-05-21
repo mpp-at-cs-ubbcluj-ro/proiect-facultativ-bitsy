@@ -101,18 +101,33 @@ public class HelpingHandsRestController {
     }
 
 
-
     @RequestMapping(value = "/evenimente/{id}", method = RequestMethod.PUT)
-    public Eveniment update(@RequestBody EventParams eventParams) throws ServiceException, HHServerException {
-        var ev = eventParams.getEveniment();
+    public EvenimentDTO update(@PathVariable Integer id, @RequestBody EventParams eventParams) throws ServiceException, HHServerException {
         var token = eventParams.getToken();
         var session = service.getUserSession(token);
+        if(!Objects.equals(session.getType(), "Voluntar")){
+            throw new HHServerException("Doar voluntarii pot modifica evenimente");
+        }
+        var evdto = eventParams.getEveniment();
+        var evt = service.getEvenimentById(id);
 
-//        if(!Objects.equals(session.getType(), "Organizer")){
-//            throw new HHServerException("Doar organizatorii pot modifica evenimente");
-//        }
-        return null;
-        //return service.updateEveniment(eventParams.getEveniment());
+        var voluntar = (Voluntar)session.getUtilizator();
+        if(StreamSupport.stream(service.getOrganizers(evt).spliterator(),false)
+                .noneMatch(o-> Objects.equals(o.getId(), voluntar.getId()))){
+            throw new HHServerException("Permission denied. User is not organizer for target event");
+        }
+
+        if(evdto.getName()!=null)
+            evt.setName(evdto.getName());
+        if(evdto.getDescription()!=null)
+            evt.setDescription(evdto.getDescription());
+        if(evdto.getStartDate()!=null)
+            evt.setStartDate(evdto.getStartDate());
+        if(evdto.getEndDate()!=null)
+            evt.setEndDate(evdto.getEndDate());
+        evt.setStatus(evdto.getStatus());
+
+        return EvenimentDTO.fromEveniment(service.updateEveniment(evt));
     }
 
 }
