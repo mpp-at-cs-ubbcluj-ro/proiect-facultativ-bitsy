@@ -54,6 +54,13 @@ public class AppService implements IService {
         userSessionRepo.close(token);
     }
 
+    @Override
+    public Voluntar getVoluntarById(Integer id) throws ServiceException {
+        var vol=voluntarRepo.getById(id);
+        if(vol==null)
+            throw new ServiceException("Invalid Voluntar Id");
+        return vol;
+    }
 
     @Override
     public Iterable<Interest> getInterests() {
