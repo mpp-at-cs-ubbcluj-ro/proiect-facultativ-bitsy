@@ -183,4 +183,9 @@ public class AppService implements IService {
         return evenimentRepo.getOrderedPaged(orderOption, page,itemsPerPage);
     }
 
+    @Override
+    public Eveniment[] getEvenimentByOrganizerId(Integer initiatorId){
+        return evenimentRepo.getByOrganizer(initiatorId);
+    }
+
 }
