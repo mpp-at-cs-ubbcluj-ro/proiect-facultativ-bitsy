@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.rmi.ServerException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -89,15 +88,20 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/evenimente", method = RequestMethod.GET)
-    public EvenimentDTO[] getEvenimente(@RequestParam Optional<String> filter, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> perPage) throws ServiceException, HHServerException {
-        var _filter = EventOrderOption.valueOf(filter.orElse("NONE").toUpperCase());
-        var _page = page.orElse(0);
-        var _perPage = perPage.orElse(10);
+    public EvenimentDTO[] getEvenimente(@RequestParam Optional<Integer> volId,  @RequestParam Optional<String> filter, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> perPage) throws ServiceException, HHServerException {
+        if(volId.isEmpty()) {
+            var _filter = EventOrderOption.valueOf(filter.orElse("NONE").toUpperCase());
+            var _page = page.orElse(0);
+            var _perPage = perPage.orElse(10);
+            return Arrays
+                    .stream(service.getOrderedEveniments(_filter, _page, _perPage))
+                    .map(EvenimentDTO::fromEveniment)
+                    .toArray(EvenimentDTO[]::new);
+        }
         return Arrays
-                .stream(service.getOrderedEveniments(_filter, _page, _perPage))
+                .stream(service.getEvenimentByOrganizerId(volId.get()))
                 .map(EvenimentDTO::fromEveniment)
                 .toArray(EvenimentDTO[]::new);
-
     }
 
 
