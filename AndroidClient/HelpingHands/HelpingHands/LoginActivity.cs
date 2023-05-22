@@ -2,20 +2,16 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
-using Google.Android.Material.BottomNavigation;
+using HelpingHands.API;
 using HelpingHands.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using static Android.Service.Voice.VoiceInteractionSession;
 
 namespace HelpingHands
 {
-    [Activity(Label = "Login", Theme = "@style/AppTheme", MainLauncher = true)]    
+    [Activity(Label = "HelpingHands", Theme = "@style/AppTheme", MainLauncher = true)]    
     public class LoginActivity : Activity
     {
         EditText PasswordBox;
@@ -51,6 +47,7 @@ namespace HelpingHands
             {
                 var userInfo = await API.Client.Login(username, password);
                 await MessageBox.Alert(this, $"User = {userInfo.Type}:{userInfo.User.Nume} {userInfo.User.Prenume}");
+                AppSession.UserData = userInfo;
 
                 if (userInfo.Type == "Voluntar")
                 {

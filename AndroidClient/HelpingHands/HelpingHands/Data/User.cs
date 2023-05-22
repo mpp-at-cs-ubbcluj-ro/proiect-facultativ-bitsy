@@ -24,7 +24,7 @@ namespace HelpingHands.Data
         [JsonProperty("prenume")]
         public string Prenume { get; set; }
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
         [JsonProperty("interests")]
         public ISet<Interest> Interests { get; set; }
         [JsonProperty("xpPoints")]

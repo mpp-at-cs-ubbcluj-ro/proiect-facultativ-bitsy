@@ -75,9 +75,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\EvenimentAdapter.cs" />
+    <Compile Include="AddEvenimentActivity.cs" />
     <Compile Include="API\Client.cs" />
     <Compile Include="API\ClientBase.cs" />
     <Compile Include="API\LoggingHandler.cs" />
+    <Compile Include="API\AppSession.cs" />
     <Compile Include="Data\Eveniment.cs" />
     <Compile Include="Data\Interest.cs" />
     <Compile Include="Data\LoginInfo.cs" />
@@ -160,6 +162,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\startDateGradient.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_add_eveniment.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

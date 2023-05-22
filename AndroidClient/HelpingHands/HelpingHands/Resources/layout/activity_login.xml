@@ -72,7 +72,8 @@
             android:layout_gravity="end"
             android:layout_height="wrap_content"
             android:layout_marginRight="70dp"
-            app:backgroundTint="#801E50"            
+            android:backgroundTint="#B30064" 
+            android:textColor="#ffffff"
             />
 
 

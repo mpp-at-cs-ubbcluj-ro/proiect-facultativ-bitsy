@@ -24,11 +24,11 @@ namespace HelpingHands.API
         private HttpClient HttpClient = new HttpClient(new LoggingHandler(new HttpClientHandler()));
 
         public async Task<T> Get<T>(string uri)
-        {
+        {           
             HttpResponseMessage response = await HttpClient.GetAsync(URL_Base + uri);
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadAsAsync<T>();
-            return default(T);
+            return default(T);                        
         }
 
         public async Task<T> Post<T, U>(string uri, U obj)

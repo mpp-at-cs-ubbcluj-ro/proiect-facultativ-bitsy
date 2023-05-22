@@ -22,5 +22,11 @@ namespace HelpingHands.API
 
         public static async Task<Eveniment[]> GetEvenimente()
             => await ClientBase.Get<Eveniment[]>("/evenimente");
+
+        public static async Task<Eveniment[]> GetEvenimentePaged(int page, int perPage = 3)
+            => await ClientBase.Get<Eveniment[]>($"/evenimente?page={page}&perPage={perPage}");
+
+        public static async Task<Eveniment[]> GetEvenimenteByOrganizerId(int orgId)
+            => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={orgId}");
     }
 }
