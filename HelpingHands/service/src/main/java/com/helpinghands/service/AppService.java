@@ -241,35 +241,35 @@ public class AppService implements IService {
     }
 
     @Override
-    public Iterable<Voluntar> getParticipants(Eveniment event) {
+    public Participant[] getParticipants(Eveniment event) {
         logger.trace("");
-        logger.info("getParticipants {}");
-        Iterable<Voluntar> voluntars = event.getParticipants().stream().map(Participant::getVoluntar).toList();
-        logger.info("Ok{}", ((Collection<?>) voluntars).size());
+        logger.info("getParticipants {}", event);
+        var voluntars = event.getParticipants().stream().toArray(Participant[]::new);
+        logger.info("Ok{}", voluntars.length);
         logger.traceExit();
         return voluntars;
     }
 
     @Override
-    public Iterable<Voluntar> getOrganizers(Eveniment event) {
+    public Participant[] getOrganizers(Eveniment event) {
         logger.traceEntry();
         logger.info("getOrganizers{} ", " from " + event.getId());
-        Iterable<Voluntar> organizers = event.getParticipants().stream()
+        var organizers = event.getParticipants().stream()
                 .filter(Participant::isOrganizer)
-                .map(Participant::getVoluntar).toList();
-        logger.info("Ok{} ", ((Collection<?>) organizers).size());
+                .toArray(Participant[]::new);
+        logger.info("Ok{} ", organizers.length);
         logger.traceExit();
         return organizers;
     }
 
     @Override
-    public Iterable<Voluntar> getVolunteers(Eveniment event) {
+    public Participant[] getVolunteers(Eveniment event) {
         logger.traceEntry("");
         logger.info("getVolunteers{} ", "from " + event.getId());
-        Iterable<Voluntar> volunteers = event.getParticipants().stream()
+        var volunteers = event.getParticipants().stream()
                 .filter(p->!p.isOrganizer())
-                .map(Participant::getVoluntar).toList();
-        logger.info("Ok{} ",  ((Collection<?>) volunteers).size());
+                .toArray(Participant[]::new);
+        logger.info("Ok{} ",  volunteers.length);
         logger.traceExit();
         return volunteers;
     }
