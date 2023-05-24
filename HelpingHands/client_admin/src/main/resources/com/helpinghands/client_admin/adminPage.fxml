@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="644.0" prefWidth="1103.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView layoutX="47.0" layoutY="237.0" prefHeight="290.0" prefWidth="1011.0">
+        <columns>
+          <TableColumn prefWidth="200.0" text="Nume firma" />
+          <TableColumn prefWidth="123.20001220703125" text="CIF" />
+            <TableColumn prefWidth="163.20001220703125" text="Telefon" />
+            <TableColumn prefWidth="200.800048828125" text="Adresa" />
+            <TableColumn prefWidth="147.99993896484375" text="Sponsorizare" />
+            <TableColumn prefWidth="168.80010986328125" text="Voluntar" />
+        </columns>
+      </TableView>
+      <ImageView fitHeight="231.0" fitWidth="234.0" layoutX="869.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="474.0" layoutY="80.0" text="Administration" textFill="#b60065">
+         <font>
+            <Font name="System Bold Italic" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="197.0" text="Sponsorship applications" textFill="#b60065">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="48.0" layoutY="55.0" mnemonicParsing="false" text="Logout" textFill="#b60065">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="48.0" layoutY="560.0" mnemonicParsing="false" text="Accept application" textFill="#b60065">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="290.0" layoutY="560.0" mnemonicParsing="false" text="Decline application" textFill="#b60065">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="36.0" fitWidth="42.0" layoutX="207.0" layoutY="558.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../smiley.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="43.0" layoutX="456.0" layoutY="557.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../sad.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

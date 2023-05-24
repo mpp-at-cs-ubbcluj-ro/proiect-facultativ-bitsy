@@ -318,9 +318,4 @@ public class AppService implements IService {
         return eveniments;
     }
 
-    @Override
-    public Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment) {
-        return null;
-    }
-
 }

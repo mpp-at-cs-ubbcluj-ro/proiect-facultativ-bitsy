@@ -39,7 +39,4 @@ public interface IService {
     Eveniment updateEveniment(Eveniment eveniment);
 
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
-
-
-    Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment);
 }
