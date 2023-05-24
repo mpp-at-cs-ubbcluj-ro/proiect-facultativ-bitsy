@@ -213,9 +213,9 @@ public class AppService implements IService {
     }
 
     @Override
-    public Participant addParticipant(Voluntar voluntar, Eveniment event) throws ServiceException {
+    public Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException {
         logger.trace("");
-        logger.info("addNormalParticipant {}", voluntar + "to" + event.getId());
+        logger.info("addVolunteer {}", voluntar + "to" + event.getId());
         logger.traceExit();
         return addParticipant(voluntar, event, false);
     }
@@ -274,8 +274,12 @@ public class AppService implements IService {
 
     @Override
     public Eveniment deleteParticipantFromEveniment(Participant participant, Eveniment eveniment) {
+        logger.traceEntry("");
+        logger.info("removeParticipant{}", "from " + eveniment.getId()+" total:"+ ((Collection<?>)eveniment.getParticipants()).size());
         eveniment.getParticipants().removeIf(p-> Objects.equals(p.getId(), participant.getId()));
         evenimentRepo.update(eveniment);
+        logger.info("Participant sters{} ramasi :", ((Collection<?>)eveniment.getParticipants()).size());
+        logger.traceExit();
         return eveniment;
     }
 

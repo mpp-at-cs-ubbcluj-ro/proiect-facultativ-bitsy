@@ -2,6 +2,7 @@ package com.helpinghands.rest_services.dto;
 
 import com.helpinghands.domain.Eveniment;
 import com.helpinghands.domain.Interest;
+import com.helpinghands.domain.Participant;
 
 import java.time.LocalDateTime;
 
@@ -13,8 +14,17 @@ public class EvenimentDTO {
     private LocalDateTime endDate;
     private String location;
     private String[] interests;
+    private Participant[] participants;
     private Integer initiatorId;
     private String status;
+
+    public Participant[] getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Participant[] participants) {
+        this.participants = participants;
+    }
 
     public Integer getId() {
         return id;
@@ -99,6 +109,7 @@ public class EvenimentDTO {
         dto.setInitiatorId(ev.getInitiator().getId());
         dto.setStartDate(ev.getStartDate());
         dto.setEndDate(ev.getEndDate());
+        dto.setParticipants(ev.getParticipants().toArray(Participant[]::new));
         return dto;
     }
 }

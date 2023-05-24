@@ -22,7 +22,8 @@ public interface IService {
     void addVoluntarInterest(Voluntar voluntar, Interest interest);
     void removeVoluntarInterest(Voluntar voluntar, Interest interest);
     Eveniment addEvent(Eveniment e) throws ServiceException;
-    Participant addParticipant(Voluntar voluntar, Eveniment event) throws ServiceException;
+
+    Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException;
 
     Participant addOrganizer(Voluntar voluntar, Eveniment event) throws ServiceException;
 
