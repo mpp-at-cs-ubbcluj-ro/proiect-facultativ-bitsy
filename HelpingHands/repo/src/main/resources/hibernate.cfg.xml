@@ -6,7 +6,7 @@
     <session-factory>
         <property name="dialect">org.sqlite.hibernate.dialect.SQLiteDialect</property>
         <property name="connection.driver_class">org.sqlite.JDBC</property>
-        <property name="connection.url">jdbc:sqlite:C:\Users\Stefan\IdeaProjects\HelpingHands\database.sqlite</property>
+        <property name="connection.url">jdbc:sqlite:C:\db\database.sqlite</property>
         <!--property name="hibernate.hbm2ddl.auto">update</property-->
         <property name="hibernate.current_session_context_class">thread</property>
         <!-- Echo all executed SQL to stdout -->
