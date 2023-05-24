@@ -8,7 +8,7 @@ public interface IService {
     UserInfo login(String username, String password) throws ServiceException;
     void logout(String token);
 
-    Utilizator createAccount(String username, String password, String email, String nume, String prenume);
+    Utilizator createAccount(String username, String password, String email, String nume, String prenume) throws ServiceException;
     Iterable<Interest> getInterests();
 
     Interest getInterestByName(String name) throws ServiceException;
