@@ -74,6 +74,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\ParticipantAdapter.cs" />
     <Compile Include="Adapters\EvenimentAdapter.cs" />
     <Compile Include="AddEvenimentActivity.cs" />
     <Compile Include="API\Client.cs" />
@@ -83,13 +84,17 @@
     <Compile Include="Data\Eveniment.cs" />
     <Compile Include="Data\Interest.cs" />
     <Compile Include="Data\LoginInfo.cs" />
+    <Compile Include="Data\Participant.cs" />
+    <Compile Include="Data\RequestDataAddVoluntar.cs" />
     <Compile Include="Data\User.cs" />
     <Compile Include="Data\UserSession.cs" />
+    <Compile Include="Data\Voluntar.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainVoluntarActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\MessageBox.cs" />
+    <Compile Include="ViewEvenimentVoluntarActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -168,6 +173,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_add_eveniment.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_view_eveniment_voluntar.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\participant_row.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

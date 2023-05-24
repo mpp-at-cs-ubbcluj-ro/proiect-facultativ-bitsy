@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/VolEvenimentName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"  
+            android:textSize="25dp"
+            android:text="ABCDE" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/VolEvenimentDate"
+            />
+        <TextView
+            android:id="@+id/VolEvenimentDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"  
+            android:textSize="15dp"
+            android:text="ABCDE" />        
+        <Button android:id="@+id/VolButtonAddParticipant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ma inscriu"
+            android:backgroundTint="#B30064" 
+            android:textColor="#ffffff"
+            />       
+
+         <ListView                    
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ParticipantListView"
+            android:fadeScrollbars="true"
+            android:scrollbars="vertical"
+            android:verticalScrollbarPosition="right" 
+            />
+        
+    </GridLayout>
+</RelativeLayout>

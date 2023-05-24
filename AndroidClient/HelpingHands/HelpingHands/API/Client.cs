@@ -18,7 +18,8 @@ namespace HelpingHands.API
         private static ClientBase ClientBase = new ClientBase();
 
         public static async Task<UserSession> Login(string username, string password)
-            => await ClientBase.Post<UserSession, LoginInfo>("/login", new LoginInfo(username, password));
+            => await ClientBase.Post<UserSession>("/login", new LoginInfo(username, password));
+        
 
         public static async Task<Eveniment[]> GetEvenimente()
             => await ClientBase.Get<Eveniment[]>("/evenimente");
@@ -28,5 +29,20 @@ namespace HelpingHands.API
 
         public static async Task<Eveniment[]> GetEvenimenteByOrganizerId(int orgId)
             => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={orgId}");
+
+        public static async Task<Participant> AddVoluntarToEveniment(int eventId, int volId, string role)
+            => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants", new RequestDataAddVoluntar(volId, role));
+
+        public static async Task<Participant[]> GetParticipants(int eventId)
+        {
+            var p = await ClientBase.Get<Participant[]>($"/evenimente/{eventId}/participants");
+
+            for (int i = 0; i < p.Length; i++)
+                Console.WriteLine(p);
+
+            return p;
+        }
+
+
     }
 }

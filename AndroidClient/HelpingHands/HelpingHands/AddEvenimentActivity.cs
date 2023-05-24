@@ -16,9 +16,12 @@ namespace HelpingHands
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
     public class AddEvenimentActivity : Activity, IOnDateSetListener
     {
+        EditText NumeBox;
+        EditText DescriereBox;
         EditText StartDateBox;
         EditText EndDateBox;
         EditText TargetDateBox;
+        Button AddEventButton;
 
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
@@ -31,8 +34,13 @@ namespace HelpingHands
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_add_eveniment);
 
+            NumeBox = FindViewById<EditText>(Resource.Id.NumeBox);
+            DescriereBox = FindViewById<EditText>(Resource.Id.DescriereBox);
+
             StartDateBox = FindViewById<EditText>(Resource.Id.StartDateBox);
             EndDateBox = FindViewById<EditText>(Resource.Id.EndDateBox);
+            AddEventButton = FindViewById<Button>(Resource.Id.AddEventButton);
+
 
             StartDateBox.Click += DateBox_Click;
             EndDateBox.Click += DateBox_Click;

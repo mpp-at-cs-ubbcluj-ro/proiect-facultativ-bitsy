@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Java.IO;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Linq;
 using System.Text;
 
 namespace HelpingHands.Data
-{
+{    
     internal class Eveniment
     {
         [JsonProperty("id")]
@@ -33,5 +34,11 @@ namespace HelpingHands.Data
         public int InitiatorId { get; set; }
         [JsonProperty("status")]
         public string Status { get; set; }
+        public override string ToString()
+        {
+            return $"Id={Id}, Name={Name}, Desc={Description}, Start={StartDate}, End={EndDate}, Loc={Location}, " +
+                $"Interests={string.Join("; ", Interests)}, InitiatorId={InitiatorId}, Status={Status}";
+        }
+
     }
 }

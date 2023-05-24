@@ -42,6 +42,11 @@
         android:text="Data sfarsit"/>        
         <EditText android:layout_width="300dp" android:layout_height="wrap_content" 
             android:id="@+id/EndDateBox" />
+        <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:id="@+id/AddEventButton"
+             android:text="Creeaza"/>
         
 
     </GridLayout>

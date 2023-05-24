@@ -28,10 +28,10 @@ namespace HelpingHands.API
             HttpResponseMessage response = await HttpClient.GetAsync(URL_Base + uri);
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadAsAsync<T>();
-            return default(T);                        
+            return default(T);                       
         }
 
-        public async Task<T> Post<T, U>(string uri, U obj)
+        public async Task<T> Post<T>(string uri, object obj)
         {
             HttpResponseMessage response = await HttpClient.PostAsJsonAsync(URL_Base + uri, obj);
             if (response.IsSuccessStatusCode) 
@@ -39,7 +39,7 @@ namespace HelpingHands.API
             return default(T);
         }
 
-        public async Task<T> Put<T, U>(string uri, U obj)
+        public async Task<T> Put<T>(string uri, object obj)
         {
             HttpResponseMessage response = await HttpClient.PutAsJsonAsync(URL_Base + uri, obj);
             if (response.IsSuccessStatusCode)

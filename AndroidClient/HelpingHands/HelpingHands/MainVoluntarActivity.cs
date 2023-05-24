@@ -11,6 +11,7 @@ using HelpingHands.Adapters;
 using HelpingHands.API;
 using HelpingHands.Data;
 using HelpingHands.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,9 @@ namespace HelpingHands
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
 
+            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
+            EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
+
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
 
@@ -59,6 +63,30 @@ namespace HelpingHands
             DashboardView.Visibility = ViewStates.Gone;
             Task.Run(LoadHome);
             Task.Run(LoadDashboard);
+        }
+
+        private void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            Console.WriteLine($"Clicked index {e.Position}");
+            var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[e.Position];
+            Console.WriteLine($"{ev}");
+
+            Intent intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
+            intent.PutExtra("eveniment", JsonConvert.SerializeObject(ev));
+            StartActivity(intent);
+
+        }
+
+        private void EvenimenteListView_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            Console.WriteLine("Selected index ");
+            Intent intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));            
+
+            var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[EvenimenteListView.SelectedItemPosition];
+
+            Console.WriteLine(ev);
+            intent.PutExtra("eveniment", JsonConvert.SerializeObject(ev));
+            StartActivity(intent);
         }
 
         void CreateEvButton_Click(object sender, EventArgs e)
