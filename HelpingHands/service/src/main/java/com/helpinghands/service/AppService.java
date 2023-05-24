@@ -38,7 +38,6 @@ public class AppService implements IService {
         this.postRepo = postRepo;
         this.voluntarRepo = voluntarRepo;
         this.userSessionRepo = userSessionRepo;
-
     }
 
     @Override
@@ -76,12 +75,18 @@ public class AppService implements IService {
 
     @Override
     public Utilizator createAccount(String username, String password, String email, String nume, String prenume) throws ServiceException {
-
+        logger.traceEntry("");
+        logger.info("Create Account{}", username + " " + password + " " + email + " " + nume + " " + prenume);
         Voluntar voluntar = new Voluntar(username, password, email, nume, prenume,0,false,new HashSet<>());
         if(Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(email, "") || Objects.equals(nume, "") || Objects.equals(prenume, ""))
+        {
+            logger.info("Error{} ","Invalid inputs");
+            logger.traceExit();
             throw new ServiceException("Invalid inputs for utilizator");
-
+        }
         voluntarRepo.add(voluntar);
+        logger.info("Ok{} ", voluntar);
+        logger.traceExit();
         return voluntar;
     }
 
@@ -102,9 +107,17 @@ public class AppService implements IService {
 
     @Override
     public Participant getParticipantById(Integer id) throws ServiceException {
+        logger.traceEntry("");
+        logger.info("getParticipantById{} ", id);
         var part = participantRepo.getById(id);
         if(part==null)
+        {
+            logger.info("Error{} ","Invalid id");
+            logger.traceExit();
             throw new ServiceException("Invalid Participant Id");
+        }
+        logger.info("Ok{} ","Participant found " + part);
+        logger.traceExit();
         return part;
     }
 
