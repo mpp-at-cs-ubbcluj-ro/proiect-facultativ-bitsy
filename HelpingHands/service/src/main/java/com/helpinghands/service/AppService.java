@@ -24,7 +24,7 @@ public class AppService implements IService {
     private final IPostRepo postRepo;
     private final IVoluntarRepo voluntarRepo;
     private final IUserSessionRepo userSessionRepo;
-    
+
     public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
@@ -329,5 +329,4 @@ public class AppService implements IService {
         logger.traceExit();
         return eveniments;
     }
-
 }
