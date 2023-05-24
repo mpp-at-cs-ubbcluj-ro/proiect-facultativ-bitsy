@@ -26,6 +26,6 @@ public class StartRestServices {
     static ICerereSponsorRepo cerereSponsorRepo = new CerereSponsorRepo();
     @Bean
     static IService getService() {
-        return new AppService(adminRepo, cerereSponsorRepo, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo, userSessionRepo, utilizatorRepo);
+        return new AppService(adminRepo, cerereSponsorRepo, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo, userSessionRepo);
     }
 }
