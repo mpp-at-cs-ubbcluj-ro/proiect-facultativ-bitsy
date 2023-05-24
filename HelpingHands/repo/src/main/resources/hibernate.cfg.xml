@@ -6,12 +6,14 @@
     <session-factory>
         <property name="dialect">org.sqlite.hibernate.dialect.SQLiteDialect</property>
         <property name="connection.driver_class">org.sqlite.JDBC</property>
+
         <property name="connection.url">jdbc:sqlite:C:/db/database.sqlite</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="spring.jpa.hibernate.ddl-auto">update</property>
         <property name="maximumPoolSize">5</property>
         <property name="c3p0.timeout">20000</property>
         <property name="hibernate.c3p0.timeout">20000</property>
+
         <property name="hibernate.current_session_context_class">thread</property>
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
