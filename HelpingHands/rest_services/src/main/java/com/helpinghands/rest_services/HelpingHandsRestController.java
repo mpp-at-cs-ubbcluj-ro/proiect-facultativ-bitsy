@@ -1,9 +1,6 @@
 package com.helpinghands.rest_services;
 
-import com.helpinghands.domain.Eveniment;
-import com.helpinghands.domain.Interest;
-import com.helpinghands.domain.Participant;
-import com.helpinghands.domain.Voluntar;
+import com.helpinghands.domain.*;
 import com.helpinghands.repo.EvenimentRepo;
 import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.rest_services.data.Credentials;
@@ -45,6 +42,19 @@ public class HelpingHandsRestController {
     public UserInfo login(@RequestBody Credentials credentials) throws ServiceException {
         return service.login(credentials.getUsername(), credentials.getPassword());
     }
+
+    @RequestMapping(value="/register",method = RequestMethod.POST)
+    public ResponseEntity<?> UtilizatorRegister (@RequestParam String username,@RequestParam String password,@RequestParam String email,@RequestParam String nume,@RequestParam String prenume){
+        try{
+            Utilizator utilizator  =service.createAccount(username,password,email,nume,prenume);
+            return new ResponseEntity<Utilizator>(utilizator,HttpStatus.OK);
+        } catch (ServiceException e) {
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
+    }
+
+
 
     @RequestMapping(value="/logout",method = RequestMethod.GET)
     public ResponseEntity<?> logout(@RequestParam String token){

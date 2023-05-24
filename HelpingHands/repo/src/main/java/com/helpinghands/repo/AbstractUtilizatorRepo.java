@@ -22,4 +22,5 @@ public class AbstractUtilizatorRepo<U extends Utilizator> extends AbstractRepo<U
         });
         return result.get();
     }
+
 }
