@@ -1,7 +1,7 @@
 package com.helpinghands.domain;
 
 import javax.persistence.*;
-
+//tipul de sponsorizare
 @Entity
 @Table(name="SponsorTypes")
 public class SponsorType implements IEntity {
