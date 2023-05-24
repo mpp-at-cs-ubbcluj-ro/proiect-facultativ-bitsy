@@ -4,4 +4,4 @@ include 'repo'
 include 'service'
 include 'rest_services'
 include 'server'
-
+include 'client_admin'
