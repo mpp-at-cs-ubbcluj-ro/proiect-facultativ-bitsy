@@ -15,13 +15,18 @@ public interface IService {
 
     Voluntar getVoluntarById(Integer id) throws ServiceException;
 
+    Participant getParticipantById(Integer id) throws ServiceException;
+
     Eveniment getEvenimentById(Integer id) throws ServiceException;
 
     void addVoluntarInterest(Voluntar voluntar, Interest interest);
     void removeVoluntarInterest(Voluntar voluntar, Interest interest);
     Eveniment addEvent(Eveniment e) throws ServiceException;
-    Participant addNormalParticipant(Voluntar voluntar, Eveniment event) throws ServiceException;
+    Participant addParticipant(Voluntar voluntar, Eveniment event) throws ServiceException;
+
     Participant addOrganizer(Voluntar voluntar, Eveniment event) throws ServiceException;
+
+    Eveniment deleteParticipantFromEveniment(Participant participant, Eveniment eveniment);
 
     UserSession getUserSession(String token) throws ServiceException;
 
@@ -34,7 +39,6 @@ public interface IService {
 
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
 
+
     Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment);
-
-
 }
