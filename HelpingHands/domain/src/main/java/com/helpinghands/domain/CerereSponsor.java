@@ -6,12 +6,17 @@ public class CerereSponsor implements IEntity {
     private String telefon;
     private String adresaSediului;
     private String numeFirma;
-    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma) {
+
+    private SponsorType sponsorType;
+
+    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType, Integer id) {
         this.volunteer = volunteer;
         this.cifFirma = cifFirma;
         this.telefon = telefon;
         this.adresaSediului = adresaSediului;
         this.numeFirma = numeFirma;
+        this.sponsorType = sponsorType;
+        this.id = id;
     }
 
     public Voluntar getVolunteer() {
@@ -52,6 +57,14 @@ public class CerereSponsor implements IEntity {
 
     public void setNumeFirma(String numeFirma) {
         this.numeFirma = numeFirma;
+    }
+
+    public SponsorType getSponsorType() {
+        return sponsorType;
+    }
+
+    public void setSponsorType(SponsorType sponsorType) {
+        this.sponsorType = sponsorType;
     }
 
     private Integer id;
