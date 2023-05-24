@@ -6,7 +6,6 @@ public class CerereSponsor implements IEntity {
     private String telefon;
     private String adresaSediului;
     private String numeFirma;
-
     private SponsorType sponsorType;
 
     public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType, Integer id) {

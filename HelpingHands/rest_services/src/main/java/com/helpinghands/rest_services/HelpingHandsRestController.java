@@ -1,8 +1,8 @@
 package com.helpinghands.rest_services;
 
 import com.helpinghands.domain.*;
-import com.helpinghands.repo.EvenimentRepo;
 import com.helpinghands.repo.data.EventOrderOption;
+import com.helpinghands.rest_services.data.AddVoluntarRequestData;
 import com.helpinghands.rest_services.data.Credentials;
 import com.helpinghands.rest_services.data.EventParams;
 import com.helpinghands.rest_services.dto.EvenimentDTO;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -33,7 +34,7 @@ public class HelpingHandsRestController {
     @RequestMapping(value="/interests",method= RequestMethod.GET)
     public Interest[] getInterestByName(@RequestParam Optional<String> name) throws ServiceException {
         if(name.isPresent())
-            return Arrays.asList(service.getInterestByName(name.get())).toArray(Interest[]::new);
+            return Collections.singletonList(service.getInterestByName(name.get())).toArray(Interest[]::new);
         return StreamSupport.stream(service.getInterests().spliterator(),false)
                 .toArray(Interest[]::new);
     }
@@ -123,28 +124,31 @@ public class HelpingHandsRestController {
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
             Eveniment eveniment_final = service.deleteParticipantFromEveniment(voluntar,eveniment);
             return new ResponseEntity<Eveniment>(eveniment_final,HttpStatus.OK);
-        } catch (ServiceException e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }catch (Exception e){
-        return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
+            System.out.println(e.getMessage());
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @RequestMapping(value = "/eveniment/{id_eveniment}/add/{id_voluntar}/{rol}", method = RequestMethod.PUT)
-    public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_voluntar,@PathVariable String rol){
+    @RequestMapping(value = "/evenimente/{id_eveniment}/participants", method = RequestMethod.PUT)
+    public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @RequestBody AddVoluntarRequestData reqData){
+        // JSON Body :  {"idVoluntar":"42", "role":"organizer"}
         try{
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
-            Voluntar voluntar = service.getVoluntarById(id_voluntar);
+            Voluntar voluntar = service.getVoluntarById(reqData.getIdVoluntar());
             Participant participant;
-            if(Objects.equals(rol, "organizer")){
+            System.out.println(reqData.getRole());
+            if(Objects.equals(reqData.getRole(), "organizer")){
                 participant = service.addOrganizer(voluntar, eveniment);
             }
-            else{
+            else if(Objects.equals(reqData.getRole(), "volunteer")){
                 participant = service.addVolunteer(voluntar, eveniment);
             }
+            else
+                return new ResponseEntity<>("Invalid role", HttpStatus.BAD_REQUEST);
             return new ResponseEntity<Participant>(participant,HttpStatus.OK);
-        } catch (ServiceException e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
     }
 
