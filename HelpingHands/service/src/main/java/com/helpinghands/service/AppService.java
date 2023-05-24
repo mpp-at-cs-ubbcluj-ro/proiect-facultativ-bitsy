@@ -78,7 +78,7 @@ public class AppService implements IService {
     public Utilizator createAccount(String username, String password, String email, String nume, String prenume) {
         Utilizator utilizator= new Utilizator(username,password,email,nume,prenume);
         utilizatorRepo.add(utilizator);
-
+        return null;
     }
 
     @Override
