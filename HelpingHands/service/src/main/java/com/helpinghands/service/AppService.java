@@ -54,6 +54,24 @@ public class AppService implements IService {
         userSessionRepo.close(token);
     }
 
+    @Override
+    public Voluntar getVoluntarById(Integer id) throws ServiceException {
+        var vol=voluntarRepo.getById(id);
+        if(vol==null)
+            throw new ServiceException("Invalid Voluntar Id");
+        return vol;
+    }
+
+    @Override
+    public Eveniment getEvenimentById(Integer id) throws ServiceException {
+        var evt = evenimentRepo.getById(id);
+
+        if(evt==null){
+            throw new ServiceException("Invalid Eveniment Id");
+        }
+
+        return evt;
+    }
 
     @Override
     public Iterable<Interest> getInterests() {
@@ -84,6 +102,9 @@ public class AppService implements IService {
 
     @Override
     public Eveniment addEvent(Eveniment e) throws ServiceException {
+        var initiator = e.getInitiator();
+        var organizer = participantRepo.add(new Participant(initiator, true));
+        e.getParticipants().add(organizer);
         var ev = evenimentRepo.add(e);
         if(ev==null)
             throw new ServiceException("Could not add event");
@@ -160,6 +181,11 @@ public class AppService implements IService {
     @Override
     public Eveniment[] getOrderedEveniments(EventOrderOption orderOption, int page, int itemsPerPage) {
         return evenimentRepo.getOrderedPaged(orderOption, page,itemsPerPage);
+    }
+
+    @Override
+    public Eveniment[] getEvenimentByOrganizerId(Integer initiatorId){
+        return evenimentRepo.getByOrganizer(initiatorId);
     }
 
 }

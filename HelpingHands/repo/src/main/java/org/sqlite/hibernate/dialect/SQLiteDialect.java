@@ -1,5 +1,3 @@
-// https://github.com/gwenn/sqlite-dialect
-
 /*
  * The author disclaims copyright to this source code.  In place of
  * a legal notice, here is a blessing:
@@ -13,12 +11,9 @@ package org.sqlite.hibernate.dialect;
 
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Iterator;
 
 import org.hibernate.JDBCException;
 import org.hibernate.ScrollMode;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.AbstractAnsiTrimEmulationFunction;
 import org.hibernate.dialect.function.NoArgSQLFunction;
@@ -27,6 +22,7 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.dialect.identity.IdentityColumnSupport;
+import org.sqlite.hibernate.dialect.identity.SQLiteDialectIdentityColumnSupport;
 import org.hibernate.dialect.pagination.AbstractLimitHandler;
 import org.hibernate.dialect.pagination.LimitHandler;
 import org.hibernate.dialect.pagination.LimitHelper;
@@ -39,16 +35,9 @@ import org.hibernate.exception.LockAcquisitionException;
 import org.hibernate.exception.spi.SQLExceptionConversionDelegate;
 import org.hibernate.exception.spi.TemplatedViolatedConstraintNameExtracter;
 import org.hibernate.exception.spi.ViolatedConstraintNameExtracter;
-import org.hibernate.hql.spi.id.IdTableSupportStandardImpl;
-import org.hibernate.hql.spi.id.MultiTableBulkIdStrategy;
-import org.hibernate.hql.spi.id.local.AfterUseAction;
-import org.hibernate.hql.spi.id.local.LocalTemporaryTableBulkIdStrategy;
 import org.hibernate.internal.util.JdbcExceptionHelper;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Table;
-import org.hibernate.mapping.UniqueKey;
 import org.hibernate.type.StandardBasicTypes;
-import org.sqlite.hibernate.dialect.identity.SQLiteDialectIdentityColumnSupport;
 
 /**
  * An SQL dialect for SQLite 3.
@@ -75,37 +64,30 @@ public class SQLiteDialect extends Dialect {
 		registerFunction( "round", new StandardSQLFunction( "round" ) );
 		registerFunction( "substr", new StandardSQLFunction( "substr", StandardBasicTypes.STRING ) );
 		registerFunction( "trim", new AbstractAnsiTrimEmulationFunction() {
-			@Override
 			protected SQLFunction resolveBothSpaceTrimFunction() {
 				return new SQLFunctionTemplate( StandardBasicTypes.STRING, "trim(?1)" );
 			}
 
-			@Override
 			protected SQLFunction resolveBothSpaceTrimFromFunction() {
 				return new SQLFunctionTemplate( StandardBasicTypes.STRING, "trim(?2)" );
 			}
 
-			@Override
 			protected SQLFunction resolveLeadingSpaceTrimFunction() {
 				return new SQLFunctionTemplate( StandardBasicTypes.STRING, "ltrim(?1)" );
 			}
 
-			@Override
 			protected SQLFunction resolveTrailingSpaceTrimFunction() {
 				return new SQLFunctionTemplate( StandardBasicTypes.STRING, "rtrim(?1)" );
 			}
 
-			@Override
 			protected SQLFunction resolveBothTrimFunction() {
 				return new SQLFunctionTemplate( StandardBasicTypes.STRING, "trim(?1, ?2)" );
 			}
 
-			@Override
 			protected SQLFunction resolveLeadingTrimFunction() {
 				return new SQLFunctionTemplate( StandardBasicTypes.STRING, "ltrim(?1, ?2)" );
 			}
 
-			@Override
 			protected SQLFunction resolveTrailingTrimFunction() {
 				return new SQLFunctionTemplate( StandardBasicTypes.STRING, "rtrim(?1, ?2)" );
 			}
@@ -115,11 +97,11 @@ public class SQLiteDialect extends Dialect {
 
 	// database type mapping support ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	/*@Override
+	@Override
 	public String getCastTypeName(int code) {
-		// http://sqlite.org/lang_expr.html#castexpr
+		// FIXME
 		return super.getCastTypeName( code );
-	}*/
+	}
 
 	// IDENTITY support ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -170,6 +152,13 @@ public class SQLiteDialect extends Dialect {
 		return false;
 	}
 
+  /*
+	@Override
+  public boolean dropTemporaryTableAfterUse() {
+    return true; // temporary tables are only dropped when the connection is closed. If the connection is pooled...
+  }
+  */
+
 	// current timestamp support ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	@Override
@@ -177,7 +166,6 @@ public class SQLiteDialect extends Dialect {
 		return true;
 	}
 
-	@Override
 	public boolean isCurrentTimestampSelectStringCallable() {
 		return false;
 	}
@@ -185,18 +173,6 @@ public class SQLiteDialect extends Dialect {
 	@Override
 	public String getCurrentTimestampSelectString() {
 		return "select current_timestamp";
-	}
-
-	// Bulk ID Strategy support ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	public MultiTableBulkIdStrategy getDefaultMultiTableBulkIdStrategy() {
-		// SQLite supports temporary tables, and the default "PersistentTableBulkIdStrategy"
-		// used in the Dialect base class doesn't work anymore with Hibernate 5.4.21 and newer.
-		return new LocalTemporaryTableBulkIdStrategy(new IdTableSupportStandardImpl() {
-			public String getCreateIdTableCommand() {
-				return "create temporary table";
-			}
-		}, AfterUseAction.CLEAN, null);
 	}
 
 	// SQLException support ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -219,7 +195,7 @@ public class SQLiteDialect extends Dialect {
 		return new SQLExceptionConversionDelegate() {
 			@Override
 			public JDBCException convert(SQLException sqlException, String message, String sql) {
-				final int errorCode = JdbcExceptionHelper.extractErrorCode( sqlException ) & 0xFF;
+				final int errorCode = JdbcExceptionHelper.extractErrorCode( sqlException );
 				if (errorCode == SQLITE_TOOBIG || errorCode == SQLITE_MISMATCH) {
 					return new DataException( message, sqlException, sql );
 				}
@@ -236,7 +212,6 @@ public class SQLiteDialect extends Dialect {
 		};
 	}
 
-	@Override
 	public ViolatedConstraintNameExtracter getViolatedConstraintNameExtracter() {
 		return EXTRACTER;
 	}
@@ -244,7 +219,7 @@ public class SQLiteDialect extends Dialect {
 	private static final ViolatedConstraintNameExtracter EXTRACTER = new TemplatedViolatedConstraintNameExtracter() {
 		@Override
 		protected String doExtractConstraintName(SQLException sqle) throws NumberFormatException {
-			final int errorCode = JdbcExceptionHelper.extractErrorCode( sqle ) & 0xFF;
+			final int errorCode = JdbcExceptionHelper.extractErrorCode( sqle );
 			if (errorCode == SQLITE_CONSTRAINT) {
 				return extractUsingTemplate( "constraint ", " failed", sqle.getMessage() );
 			}
@@ -294,8 +269,8 @@ public class SQLiteDialect extends Dialect {
 
 	@Override
 	public String getAddForeignKeyConstraintString(String constraintName,
-			String[] foreignKey, String referencedTable, String[] primaryKey,
-			boolean referencesPrimaryKey) {
+												   String[] foreignKey, String referencedTable, String[] primaryKey,
+												   boolean referencesPrimaryKey) {
 		throw new UnsupportedOperationException( "No add foreign key syntax supported by SQLiteDialect" );
 	}
 
@@ -326,7 +301,6 @@ public class SQLiteDialect extends Dialect {
 		return true;
 	}
 
-	@Override
 	public boolean doesRepeatableReadCauseReadersToBlockWriters() {
 		return true;
 	}
@@ -336,7 +310,6 @@ public class SQLiteDialect extends Dialect {
 		return false;
 	}
 
-	@Override
 	public int getInExpressionCountLimit() {
 		// Compile/runtime time option: http://sqlite.org/limits.html#max_variable_number
 		return 1000;
@@ -347,59 +320,12 @@ public class SQLiteDialect extends Dialect {
 		return uniqueDelegate;
 	}
 	private static class SQLiteUniqueDelegate extends DefaultUniqueDelegate {
-		private SQLiteUniqueDelegate(Dialect dialect) {
+		public SQLiteUniqueDelegate(Dialect dialect) {
 			super( dialect );
 		}
-
-		/**
-		 * SQLite use table creation sql to define unique constraints.
-		 */
 		@Override
 		public String getColumnDefinitionUniquenessFragment(Column column) {
-			return "";
-		}
-
-		@Override
-		public String getColumnDefinitionUniquenessFragment(Column column, SqlStringGenerationContext context) {
-			return getColumnDefinitionUniquenessFragment(column);
-		}
-
-		/**
-		 * SQLite uses table creation sql to define unique constraints, and do not support alter table sql to add
-		 * constraints.
-		 * Such as "create table person( first_name varchar(255),last_name varchar(255),unique(first_name, last_name) )".
-		 */
-		@Override
-		public String getTableCreationUniqueConstraintsFragment(Table table) {
-			// get all uniqueKeys
-			StringBuilder builder = new StringBuilder();
-			Iterator<UniqueKey> iter = table.getUniqueKeyIterator();
-			while(iter.hasNext()) {
-				UniqueKey key = iter.next();
-				builder.append(", ").append(uniqueConstraintSql(key));
-			}
-			return builder.toString();
-		}
-
-		@Override
-		public String getTableCreationUniqueConstraintsFragment(Table table, SqlStringGenerationContext context) {
-			return getTableCreationUniqueConstraintsFragment(table);
-		}
-
-		/**
-		 * SQLite do not support 'alter table' to add constraints.
-		 */
-		@Override
-		public String getAlterTableToAddUniqueKeyCommand(UniqueKey uniqueKey, Metadata metadata) {
-			return "";
-		}
-
-		/**
-		 * SQLite do not support 'drop constraint'.
-		 */
-		@Override
-		public String getAlterTableToDropUniqueKeyCommand(UniqueKey uniqueKey, Metadata metadata) {
-			return "";
+			return " unique";
 		}
 	}
 

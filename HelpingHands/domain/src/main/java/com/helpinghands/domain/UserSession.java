@@ -14,6 +14,16 @@ public class UserSession implements IEntity {
     private Utilizator utilizator;
     private String type;
 
+    @Override
+    public String toString() {
+        return "UserSession{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", utilizator=" + utilizator +
+                ", type='" + type + '\'' +
+                '}';
+    }
+
     public UserSession() { }
 
     public UserSession(String token, Utilizator utilizator, String type) {
