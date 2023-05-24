@@ -74,7 +74,7 @@ public class AbstractRepo<E extends IEntity> implements IRepo<E> {
     @Override
     public E getById(Integer id) {
         logger.trace("");
-        logger.info("Getting by id {}",id);
+        logger.info("Getting by id {} {}",id, entityType);
         AtomicReference<E> result=new AtomicReference<>();
         result.set(null);
         Session.doTransaction((session, tx)->{

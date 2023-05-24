@@ -130,7 +130,7 @@ public class AppService implements IService {
     }
 
     @Override
-    public Participant addParticipant(Voluntar voluntar, Eveniment event) throws ServiceException {
+    public Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException {
         return addParticipant(voluntar, event, false);
     }
 

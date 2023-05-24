@@ -119,17 +119,17 @@ public class HelpingHandsRestController {
         return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
     }
 
-    @RequestMapping(value = "/eveniment/{id_eveniment}/add/{id_participant}/rol/{rol}", method = RequestMethod.PUT)
-    public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant,@PathVariable String rol){
+    @RequestMapping(value = "/eveniment/{id_eveniment}/add/{id_voluntar}/{rol}", method = RequestMethod.PUT)
+    public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_voluntar,@PathVariable String rol){
         try{
-            Voluntar voluntar = service.getVoluntarById(id_participant);
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
+            Voluntar voluntar = service.getVoluntarById(id_voluntar);
             Participant participant;
             if(Objects.equals(rol, "organizer")){
                 participant = service.addOrganizer(voluntar, eveniment);
             }
             else{
-                participant = service.addParticipant(voluntar, eveniment);
+                participant = service.addVolunteer(voluntar, eveniment);
             }
             return new ResponseEntity<Participant>(participant,HttpStatus.OK);
         } catch (ServiceException e) {
