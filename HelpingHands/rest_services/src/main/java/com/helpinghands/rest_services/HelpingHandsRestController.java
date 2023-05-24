@@ -2,7 +2,9 @@ package com.helpinghands.rest_services;
 
 import com.helpinghands.domain.Eveniment;
 import com.helpinghands.domain.Interest;
+import com.helpinghands.domain.Participant;
 import com.helpinghands.domain.Voluntar;
+import com.helpinghands.repo.EvenimentRepo;
 import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.rest_services.data.Credentials;
 import com.helpinghands.rest_services.data.EventParams;
@@ -104,6 +106,37 @@ public class HelpingHandsRestController {
                 .toArray(EvenimentDTO[]::new);
     }
 
+    @RequestMapping(value = "/eveniment/{id_eveniment}/remove/{id_participant}", method = RequestMethod.PUT)
+    public ResponseEntity<?> removeVoluntarFromEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant){
+        try{
+            Participant voluntar = service.getParticipantById(id_participant);
+            Eveniment eveniment = service.getEvenimentById(id_eveniment);
+            Eveniment eveniment_final = service.deleteParticipantFromEveniment(voluntar,eveniment);
+            return new ResponseEntity<Eveniment>(eveniment_final,HttpStatus.OK);
+        } catch (ServiceException e) {
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+        return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
+    }
+
+    @RequestMapping(value = "/eveniment/{id_eveniment}/add/{id_participant}/rol/{rol}", method = RequestMethod.PUT)
+    public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant,@PathVariable String rol){
+        try{
+            Voluntar voluntar = service.getVoluntarById(id_participant);
+            Eveniment eveniment = service.getEvenimentById(id_eveniment);
+            Participant participant;
+            if(Objects.equals(rol, "organizer")){
+                participant = service.addOrganizer(voluntar, eveniment);
+            }
+            else{
+                participant = service.addParticipant(voluntar, eveniment);
+            }
+            return new ResponseEntity<Participant>(participant,HttpStatus.OK);
+        } catch (ServiceException e) {
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
+    }
 
     @RequestMapping(value = "/evenimente/{id}", method = RequestMethod.PUT)
     public EvenimentDTO update(@PathVariable Integer id, @RequestBody EventParams eventParams) throws ServiceException, HHServerException {
