@@ -24,7 +24,9 @@ public class AppService implements IService {
     private final IVoluntarRepo voluntarRepo;
     private final IUserSessionRepo userSessionRepo;
 
-    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo) {
+    private final IUtilizatorRepo utilizatorRepo;
+
+    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo, IUtilizatorRepo utilizatorRepo) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
         this.chatRoomRepo = chatRoomRepo;
@@ -36,6 +38,7 @@ public class AppService implements IService {
         this.postRepo = postRepo;
         this.voluntarRepo = voluntarRepo;
         this.userSessionRepo = userSessionRepo;
+        this.utilizatorRepo = utilizatorRepo;
     }
 
     @Override
@@ -69,6 +72,13 @@ public class AppService implements IService {
         userSessionRepo.close(token);
         logger.info("Ok:{}", "Logout succesful");
         logger.traceExit();
+    }
+
+    @Override
+    public Utilizator createAccount(String username, String password, String email, String nume, String prenume) {
+        Utilizator utilizator= new Utilizator(username,password,email,nume,prenume);
+        utilizatorRepo.add(utilizator);
+
     }
 
     @Override
@@ -199,9 +209,9 @@ public class AppService implements IService {
     }
 
     @Override
-    public Participant addParticipant(Voluntar voluntar, Eveniment event) throws ServiceException {
+    public Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException {
         logger.trace("");
-        logger.info("addNormalParticipant {}", voluntar + "to" + event.getId());
+        logger.info("addVolunteer {}", voluntar + "to" + event.getId());
         logger.traceExit();
         return addParticipant(voluntar, event, false);
     }
@@ -260,8 +270,12 @@ public class AppService implements IService {
 
     @Override
     public Eveniment deleteParticipantFromEveniment(Participant participant, Eveniment eveniment) {
+        logger.traceEntry("");
+        logger.info("removeParticipant{}", "from " + eveniment.getId()+" total:"+ ((Collection<?>)eveniment.getParticipants()).size());
         eveniment.getParticipants().removeIf(p-> Objects.equals(p.getId(), participant.getId()));
         evenimentRepo.update(eveniment);
+        logger.info("Participant sters{} ramasi :", ((Collection<?>)eveniment.getParticipants()).size());
+        logger.traceExit();
         return eveniment;
     }
 
