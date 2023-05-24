@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class AppService implements IService {
@@ -24,9 +25,8 @@ public class AppService implements IService {
     private final IVoluntarRepo voluntarRepo;
     private final IUserSessionRepo userSessionRepo;
 
-    private final IUtilizatorRepo utilizatorRepo;
 
-    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo, IUtilizatorRepo utilizatorRepo) {
+    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo ) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
         this.chatRoomRepo = chatRoomRepo;
@@ -38,7 +38,7 @@ public class AppService implements IService {
         this.postRepo = postRepo;
         this.voluntarRepo = voluntarRepo;
         this.userSessionRepo = userSessionRepo;
-        this.utilizatorRepo = utilizatorRepo;
+
     }
 
     @Override
@@ -75,10 +75,14 @@ public class AppService implements IService {
     }
 
     @Override
-    public Utilizator createAccount(String username, String password, String email, String nume, String prenume) {
-        Utilizator utilizator= new Utilizator(username,password,email,nume,prenume);
-        utilizatorRepo.add(utilizator);
-        return null;
+    public Utilizator createAccount(String username, String password, String email, String nume, String prenume) throws ServiceException {
+
+        Voluntar voluntar = new Voluntar(username, password, email, nume, prenume,0,false,new HashSet<>());
+        if(Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(email, "") || Objects.equals(nume, "") || Objects.equals(prenume, ""))
+            throw new ServiceException("Invalid inputs for utilizator");
+
+        voluntarRepo.add(voluntar);
+        return voluntar;
     }
 
     @Override
