@@ -5,6 +5,7 @@ import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.rest_services.data.AddVoluntarRequestData;
 import com.helpinghands.rest_services.data.Credentials;
 import com.helpinghands.rest_services.data.EventParams;
+import com.helpinghands.rest_services.data.ParticipantDTO;
 import com.helpinghands.rest_services.dto.EvenimentDTO;
 import com.helpinghands.service.data.UserInfo;
 import com.helpinghands.service.IService;
@@ -130,6 +131,14 @@ public class HelpingHandsRestController {
         }
     }
 
+    @RequestMapping(value = "/evenimente/{id_eveniment}/participants", method = RequestMethod.GET)
+    public ParticipantDTO[] getEvenimentParticipants(@PathVariable Integer id_eveniment) throws ServiceException {
+        var ev = service.getEvenimentById(id_eveniment);
+        return Arrays.stream(service.getParticipants(ev))
+                .map(ParticipantDTO::fromParticipant)
+                .toArray(ParticipantDTO[]::new);
+    }
+
     @RequestMapping(value = "/evenimente/{id_eveniment}/participants", method = RequestMethod.PUT)
     public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @RequestBody AddVoluntarRequestData reqData){
         // JSON Body :  {"idVoluntar":"42", "role":"organizer"}
@@ -146,10 +155,11 @@ public class HelpingHandsRestController {
             }
             else
                 return new ResponseEntity<>("Invalid role", HttpStatus.BAD_REQUEST);
-            return new ResponseEntity<Participant>(participant,HttpStatus.OK);
+            return new ResponseEntity<>(ParticipantDTO.fromParticipant(participant)
+                    ,HttpStatus.OK);
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);}
     }
 
     @RequestMapping(value = "/evenimente/{id}", method = RequestMethod.PUT)
@@ -163,7 +173,8 @@ public class HelpingHandsRestController {
         var evt = service.getEvenimentById(id);
 
         var voluntar = (Voluntar)session.getUtilizator();
-        if(StreamSupport.stream(service.getOrganizers(evt).spliterator(),false)
+        if(Arrays.stream(service.getOrganizers(evt))
+                .map(Participant::getVoluntar)
                 .noneMatch(o-> Objects.equals(o.getId(), voluntar.getId()))){
             throw new HHServerException("Permission denied. User is not organizer for target event");
         }
