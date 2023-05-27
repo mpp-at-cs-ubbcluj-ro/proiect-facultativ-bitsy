@@ -69,4 +69,14 @@ public class Utilizator implements IEntity {
     }
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id=id;}
+
+    @Override
+    public String toString() {
+        return "Utilizator{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nume='" + nume + '\'' +
+                ", prenume='" + prenume + '\'' +
+                '}';
+    }
 }
