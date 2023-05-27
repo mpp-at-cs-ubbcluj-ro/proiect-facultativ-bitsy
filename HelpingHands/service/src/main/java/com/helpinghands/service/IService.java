@@ -39,4 +39,6 @@ public interface IService {
     Eveniment updateEveniment(Eveniment eveniment);
 
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
+
+    Post adaugaPostare(Post post);
 }

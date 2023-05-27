@@ -329,4 +329,12 @@ public class AppService implements IService {
         logger.traceExit();
         return eveniments;
     }
+
+    @Override
+    public Post adaugaPostare(Post post) {
+        logger.trace("");
+        logger.info("addPostare {}", post);
+        logger.traceExit();
+        return postRepo.add(post);
+    }
 }
