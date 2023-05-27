@@ -7,6 +7,7 @@ import com.helpinghands.rest_services.data.Credentials;
 import com.helpinghands.rest_services.data.EventParams;
 import com.helpinghands.rest_services.data.ParticipantDTO;
 import com.helpinghands.rest_services.dto.EvenimentDTO;
+import com.helpinghands.rest_services.dto.PostDTO;
 import com.helpinghands.service.data.UserInfo;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
@@ -50,10 +52,9 @@ public class HelpingHandsRestController {
         try{
             Utilizator utilizator  =service.createAccount(username,password,email,nume,prenume);
             return new ResponseEntity<Utilizator>(utilizator,HttpStatus.OK);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);}
+        }
     }
 
 
@@ -190,6 +191,16 @@ public class HelpingHandsRestController {
         evt.setStatus(evdto.getStatus());
 
         return EvenimentDTO.fromEveniment(service.updateEveniment(evt));
+    }
+
+    @RequestMapping(value="/posts", method = RequestMethod.POST)
+    public ResponseEntity<?> addPostare (@RequestBody PostDTO postDTO){
+        try{
+            Post post = new Post(postDTO.getDescriere(),postDTO.getData(),service.getEvenimentById(postDTO.getIdEv()), service.getVoluntarById(postDTO.getIdUser()));
+            return new ResponseEntity<Post>(post,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
