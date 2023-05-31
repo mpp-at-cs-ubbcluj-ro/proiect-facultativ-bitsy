@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Service.Autofill;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Data;
@@ -36,11 +37,18 @@ namespace HelpingHands.API
         public static async Task<Participant[]> GetParticipants(int eventId)
         {
             var p = await ClientBase.Get<Participant[]>($"/evenimente/{eventId}/participants");
-
             for (int i = 0; i < p.Length; i++)
                 Console.WriteLine(p);
-
             return p;
+        }
+
+        public static async Task<Interest[]> GetInterests()
+            => await ClientBase.Get<Interest[]>("/interests");
+
+        public static async Task<Eveniment> AddEveniment(Eveniment ev)
+        {
+            EventParams eventParams = new EventParams { Token = API.AppSession.UserData.Token, Eveniment = ev };
+            return await ClientBase.Post<Eveniment>("/evenimente", eventParams);
         }
 
 
