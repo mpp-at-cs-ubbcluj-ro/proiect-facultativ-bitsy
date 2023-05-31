@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Adapters;
+using HelpingHands.API;
 using HelpingHands.Data;
 using HelpingHands.Utils;
 using Newtonsoft.Json;
@@ -75,9 +76,21 @@ namespace HelpingHands
             //GetParticipants
         }
 
-        private void VolButtonAddParticipant_Click(object sender, EventArgs e)
+        private async void VolButtonAddParticipant_Click(object sender, EventArgs e)
         {
-            
+            int evId = Eveniment.Id;
+            int volId = AppSession.UserId;
+
+            try
+            {
+                var inscriere = await API.Client.AddVoluntarToEveniment(evId, volId, "volunteer");
+                await MessageBox.Alert(this, "You were added to eveniment!");
+            }
+            catch (Exception ex)
+            {
+                await MessageBox.Alert(this, ex.Message, "Aderation failed");
+                return;
+            }
         }
     }
 }
