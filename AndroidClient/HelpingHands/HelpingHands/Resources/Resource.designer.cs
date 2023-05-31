@@ -3391,6 +3391,9 @@ namespace HelpingHands
 			// aapt resource value: 0x7F070085
 			public const int tooltip_frame_light = 2131165317;
 			
+			// aapt resource value: 0x7F070086
+			public const int user_icon = 2131165318;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
