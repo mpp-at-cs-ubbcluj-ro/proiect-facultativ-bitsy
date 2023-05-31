@@ -7,6 +7,7 @@ using Android.Widget;
 using HelpingHands.Adapters;
 using HelpingHands.Data;
 using HelpingHands.Utils;
+using Java.Interop;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -46,12 +47,36 @@ namespace HelpingHands
 
             VolEvenimentName.Text = Eveniment.Name;
             VolEvenimentDescription.Text = Eveniment.Description;
-            VolEvenimentDate.Text = Eveniment.StartDate + " - " + Eveniment.EndDate;
+            VolEvenimentDate.Text = Eveniment.StartDate.ToString("dd.MM.yyyy") + " - " + Eveniment.EndDate.ToString("dd.MM.yyyy");
 
             VolButtonAddParticipant.Click += VolButtonAddParticipant_Click;
 
+            ParticipantListView.SetOnTouchListener(new ListTouchListener());
+
             Task.Run(Load);
         }
+
+        class ListTouchListener : Java.Lang.Object, ListView.IOnTouchListener
+        {
+            public bool OnTouch(View v, MotionEvent e)
+            {
+                var action = e.Action;
+                switch (action) {
+                    case MotionEventActions.Down:
+                        // Disallow ScrollView to intercept touch events.
+                        v.Parent.RequestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEventActions.Up:
+                        // Allow ScrollView to intercept touch events.
+                        v.Parent.RequestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                // Handle ListView touch events.
+                v.OnTouchEvent(e);
+                return true;
+            }
+        }               
 
         async void Load()
         {
@@ -65,7 +90,7 @@ namespace HelpingHands
                     Console.WriteLine("----------------------------");
                     Participants.ForEach(Console.WriteLine);
                     Console.WriteLine("----------------------------");
-                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);
+                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);                    
                 });
             }
             catch (Exception e)

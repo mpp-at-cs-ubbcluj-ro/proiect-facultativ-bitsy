@@ -1,49 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <GridLayout
+    android:layout_height="match_parent">    
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="1"
+        android:orientation="vertical"
+        android:overScrollMode="ifContentScrolls"
+        android:fillViewport="true"
         android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:text="Eveniment"
+            android:layout_marginTop="16dp"
+            />
 
         <TextView
             android:id="@+id/VolEvenimentName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"  
+            android:layout_height="wrap_content"
             android:textSize="25dp"
+            android:layout_marginLeft="15dp"
             android:text="ABCDE" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:text="Perioada de desfășurare"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:id="@+id/VolEvenimentDate"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:text="Descriere"
             />
         <TextView
             android:id="@+id/VolEvenimentDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"  
-            android:textSize="15dp"
-            android:text="ABCDE" />        
-        <Button android:id="@+id/VolButtonAddParticipant"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ma inscriu"
-            android:backgroundTint="#B30064" 
-            android:textColor="#ffffff"
-            />       
+            android:textSize="15dp"
+            android:layout_marginLeft="15dp"
+            android:text="ABCDE" />        
 
-         <ListView                    
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/ParticipantListView"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:text="Participanți"            
+            />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:id="@+id/ParticipantListView"         
             android:fadeScrollbars="true"
             android:scrollbars="vertical"
             android:verticalScrollbarPosition="right" 
             />
-        
-    </GridLayout>
-</RelativeLayout>
+
+        <Button
+            android:id="@+id/VolButtonAddParticipant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ma inscriu!"
+            android:backgroundTint="#B30064"
+            android:textColor="#ffffff"                        
+            />
+      
+    </LinearLayout>
+</ScrollView>
