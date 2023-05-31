@@ -31,16 +31,20 @@ public interface IService {
     UserSession getUserSession(String token) throws ServiceException;
 
     Eveniment[] getOrderedEveniments(EventOrderOption orderOption, int page, int itemsPerPage);
-    Iterable<Voluntar> getParticipants(Eveniment event);
-    Iterable<Voluntar> getOrganizers(Eveniment event);
-    Iterable<Voluntar> getVolunteers(Eveniment event);
+    Participant[] getParticipants(Eveniment event);
+    Participant[] getOrganizers(Eveniment event);
+    Participant[] getVolunteers(Eveniment event);
 
     Eveniment updateEveniment(Eveniment eveniment);
 
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
 
 
+
     Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment);
 
+
+
+    Post adaugaPostare(Post post);
 
 }

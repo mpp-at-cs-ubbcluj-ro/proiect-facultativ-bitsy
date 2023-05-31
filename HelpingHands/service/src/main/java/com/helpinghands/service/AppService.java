@@ -25,8 +25,7 @@ public class AppService implements IService {
     private final IVoluntarRepo voluntarRepo;
     private final IUserSessionRepo userSessionRepo;
 
-
-    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo ) {
+    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
         this.chatRoomRepo = chatRoomRepo;
@@ -38,7 +37,6 @@ public class AppService implements IService {
         this.postRepo = postRepo;
         this.voluntarRepo = voluntarRepo;
         this.userSessionRepo = userSessionRepo;
-
     }
 
     @Override
@@ -76,12 +74,18 @@ public class AppService implements IService {
 
     @Override
     public Utilizator createAccount(String username, String password, String email, String nume, String prenume) throws ServiceException {
-
+        logger.traceEntry("");
+        logger.info("Create Account{}", username + " " + password + " " + email + " " + nume + " " + prenume);
         Voluntar voluntar = new Voluntar(username, password, email, nume, prenume,0,false,new HashSet<>());
         if(Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(email, "") || Objects.equals(nume, "") || Objects.equals(prenume, ""))
+        {
+            logger.info("Error{} ","Invalid inputs");
+            logger.traceExit();
             throw new ServiceException("Invalid inputs for utilizator");
-
+        }
         voluntarRepo.add(voluntar);
+        logger.info("Ok{} ", voluntar);
+        logger.traceExit();
         return voluntar;
     }
 
@@ -102,9 +106,17 @@ public class AppService implements IService {
 
     @Override
     public Participant getParticipantById(Integer id) throws ServiceException {
+        logger.traceEntry("");
+        logger.info("getParticipantById{} ", id);
         var part = participantRepo.getById(id);
         if(part==null)
+        {
+            logger.info("Error{} ","Invalid id");
+            logger.traceExit();
             throw new ServiceException("Invalid Participant Id");
+        }
+        logger.info("Ok{} ","Participant found " + part);
+        logger.traceExit();
         return part;
     }
 
@@ -229,35 +241,35 @@ public class AppService implements IService {
     }
 
     @Override
-    public Iterable<Voluntar> getParticipants(Eveniment event) {
+    public Participant[] getParticipants(Eveniment event) {
         logger.trace("");
-        logger.info("getParticipants {}");
-        Iterable<Voluntar> voluntars = event.getParticipants().stream().map(Participant::getVoluntar).toList();
-        logger.info("Ok{}", ((Collection<?>) voluntars).size());
+        logger.info("getParticipants {}", event);
+        var voluntars = event.getParticipants().stream().toArray(Participant[]::new);
+        logger.info("Ok{}", voluntars.length);
         logger.traceExit();
         return voluntars;
     }
 
     @Override
-    public Iterable<Voluntar> getOrganizers(Eveniment event) {
+    public Participant[] getOrganizers(Eveniment event) {
         logger.traceEntry();
         logger.info("getOrganizers{} ", " from " + event.getId());
-        Iterable<Voluntar> organizers = event.getParticipants().stream()
+        var organizers = event.getParticipants().stream()
                 .filter(Participant::isOrganizer)
-                .map(Participant::getVoluntar).toList();
-        logger.info("Ok{} ", ((Collection<?>) organizers).size());
+                .toArray(Participant[]::new);
+        logger.info("Ok{} ", organizers.length);
         logger.traceExit();
         return organizers;
     }
 
     @Override
-    public Iterable<Voluntar> getVolunteers(Eveniment event) {
+    public Participant[] getVolunteers(Eveniment event) {
         logger.traceEntry("");
         logger.info("getVolunteers{} ", "from " + event.getId());
-        Iterable<Voluntar> volunteers = event.getParticipants().stream()
+        var volunteers = event.getParticipants().stream()
                 .filter(p->!p.isOrganizer())
-                .map(Participant::getVoluntar).toList();
-        logger.info("Ok{} ",  ((Collection<?>) volunteers).size());
+                .toArray(Participant[]::new);
+        logger.info("Ok{} ",  volunteers.length);
         logger.traceExit();
         return volunteers;
     }
@@ -319,8 +331,10 @@ public class AppService implements IService {
     }
 
     @Override
-    public Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment) {
-        return null;
+    public Post adaugaPostare(Post post) {
+        logger.trace("");
+        logger.info("addPostare {}", post);
+        logger.traceExit();
+        return postRepo.add(post);
     }
-
 }

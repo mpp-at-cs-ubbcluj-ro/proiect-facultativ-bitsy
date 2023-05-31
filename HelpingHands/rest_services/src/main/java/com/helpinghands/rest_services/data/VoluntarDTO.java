@@ -1,0 +1,102 @@
+package com.helpinghands.rest_services.data;
+
+import com.helpinghands.domain.Interest;
+import com.helpinghands.domain.Voluntar;
+
+public class VoluntarDTO {
+    private String username;
+    private String email;
+    private String nume;
+    private String prenume;
+    private int id;
+    private String[] interests;
+    private int xpPoints;
+    private Boolean isSponsor;
+    private Boolean isActiveSponsor;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNume(String nume) {
+        this.nume = nume;
+    }
+
+    public void setPrenume(String prenume) {
+        this.prenume = prenume;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setXpPoints(int xpPoints) {
+        this.xpPoints = xpPoints;
+    }
+
+    public void setSponsor(Boolean sponsor) {
+        isSponsor = sponsor;
+    }
+
+    public void setActiveSponsor(Boolean activeSponsor) {
+        isActiveSponsor = activeSponsor;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNume() {
+        return nume;
+    }
+
+    public String getPrenume() {
+        return prenume;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getXpPoints() {
+        return xpPoints;
+    }
+
+    public Boolean getSponsor() {
+        return isSponsor;
+    }
+
+    public Boolean getActiveSponsor() {
+        return isActiveSponsor;
+    }
+
+    public String[] getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String[] interests) {
+        this.interests = interests;
+    }
+
+    public static VoluntarDTO fromVoluntar(Voluntar v){
+        var r=new VoluntarDTO();
+        r.setUsername(v.getUsername());
+        r.setEmail(v.getEmail());
+        r.setNume(v.getNume());
+        r.setPrenume(v.getPrenume());
+        r.setId(v.getId());
+        r.setInterests(v.getInterests().stream().map(Interest::getName).toArray(String[]::new));
+        r.setXpPoints(v.getXpPoints());
+        r.setSponsor(v.isSponsor());
+        r.setActiveSponsor(v.isActiveSponsor());
+        return r;
+    }
+}

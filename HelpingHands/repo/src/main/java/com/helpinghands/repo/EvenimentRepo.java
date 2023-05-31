@@ -15,22 +15,6 @@ public class EvenimentRepo extends AbstractRepo<Eveniment> implements IEveniment
         super(Eveniment.class);
     }
 
-    /*@Override
-    public Eveniment add(Eveniment e) {
-        logger.trace("");
-        logger.info("Adding {}",e);
-        Session.doTransaction((session, tx)->{
-            e.getInterests().forEach(session::persist);
-
-            int id = (int)session.save(e);
-            tx.commit();
-            e.setId(id);
-        });
-        logger.info("Ok:{}",e);
-        logger.traceExit();
-        return e;
-    }*/
-
     @Override
     public Eveniment[] getOrderedPaged(EventOrderOption orderOption, int page, int itemsPerPage) {
         String query = "from Eveniment order by id";

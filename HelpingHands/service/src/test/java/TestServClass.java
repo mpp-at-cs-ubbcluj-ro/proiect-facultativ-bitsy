@@ -13,8 +13,8 @@ public class TestServClass extends TestCase {
     static IService service = new AppService(null, null, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo, null);
 
     public static void main(String[] args) throws ServiceException {
-        var u=service.login("user1","0000").getUtilizator();
-        var v = (Voluntar) u;
+        var u=service.login("user1","0000");
+        var v=(Voluntar)u.getUtilizator();
         System.out.println(u);
         //var ev=new Eveniment("a","b",LocalDateTime.now(),LocalDateTime.now(),"L",v,"PENDING");
         var ev=eventRepo.getById(2);
