@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="3" android:columnCount="1"
+        >        
+        <LinearLayout
+            android:layout_rowWeight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="0" 
+            android:orientation="vertical"
+            android:scrollbars="vertical">
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/DashboardView"
+                android:columnCount="1"
+                android:padding="@dimen/activity_horizontal_margin"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"                    
+                    android:textSize="20dp"
+                    android:text="Evenimente organizate"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Creeaza un eveniment"                    
+                    android:backgroundTint="#B30064"
+                    android:textColor="#ffffff"
+                    android:id="@+id/CreateEvButton" />
+
+                <ListView
+                    
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/OrganizatorEvenimenteListView"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"
+                    android:verticalScrollbarPosition="right" 
+                    />
+              
+            </GridLayout>            
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/HomeView"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:columnCount="1">
+                 <TextView                    
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:textSize="25dp"
+                    android:text="Evenimente" />
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/EvPrevButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Previous"                                 
+                        android:backgroundTint="#B30064"
+                        android:textColor="#ffffff"
+                        />
+                    <TextView
+                        android:id="@+id/EvPageTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1" 
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        />
+                     <Button
+                        android:id="@+id/EvNextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Next"                                 
+                        android:backgroundTint="#B30064"
+                        android:textColor="#ffffff"
+                        />
+                </GridLayout>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/EvenimenteListView"                    
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"
+                    android:verticalScrollbarPosition="right" 
+                    />
+            </GridLayout>           
+        </LinearLayout>
+    
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_rowWeight="0"
+            android:layout_row="1"
+            android:id="@+id/navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:background="?android:attr/windowBackground"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/navigation" />
+    </GridLayout>    
+</RelativeLayout>
