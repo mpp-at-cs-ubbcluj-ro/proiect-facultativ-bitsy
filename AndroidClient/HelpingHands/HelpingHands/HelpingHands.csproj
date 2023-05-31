@@ -74,6 +74,8 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\InterestAdapter.cs" />
+    <Compile Include="Adapters\ListAdapter.cs" />
     <Compile Include="Adapters\ParticipantAdapter.cs" />
     <Compile Include="Adapters\EvenimentAdapter.cs" />
     <Compile Include="AddEvenimentActivity.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="API\LoggingHandler.cs" />
     <Compile Include="API\AppSession.cs" />
     <Compile Include="Data\Eveniment.cs" />
+    <Compile Include="Data\EventParams.cs" />
     <Compile Include="Data\Interest.cs" />
     <Compile Include="Data\LoginInfo.cs" />
     <Compile Include="Data\Participant.cs" />
@@ -179,6 +182,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\participant_row.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\interest_row.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

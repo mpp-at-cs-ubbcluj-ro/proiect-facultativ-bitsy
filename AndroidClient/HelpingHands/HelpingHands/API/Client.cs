@@ -36,12 +36,15 @@ namespace HelpingHands.API
         public static async Task<Participant[]> GetParticipants(int eventId)
         {
             var p = await ClientBase.Get<Participant[]>($"/evenimente/{eventId}/participants");
-
             for (int i = 0; i < p.Length; i++)
                 Console.WriteLine(p);
-
             return p;
         }
+
+        public static async Task<Interest[]> GetInterests()
+            => await ClientBase.Get<Interest[]>("/interests");
+
+        //public static async Task<Eveniment>
 
 
     }

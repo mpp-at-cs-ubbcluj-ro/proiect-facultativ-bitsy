@@ -42,11 +42,24 @@
         android:text="Data sfarsit"/>        
         <EditText android:layout_width="300dp" android:layout_height="wrap_content" 
             android:id="@+id/EndDateBox" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
+        android:text="Locatie"/>        
+        <EditText android:layout_width="300dp" android:layout_height="wrap_content" 
+            android:id="@+id/LocatieBox" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
+        android:text="Interes"/>        
+        <Spinner android:layout_width="300dp" android:layout_height="wrap_content" 
+            android:id="@+id/InterestBox" />
+
+
+
         <Button
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:id="@+id/AddEventButton"
-             android:text="Creeaza"/>
+             android:text="Creeaza"/>        
         
 
     </GridLayout>
