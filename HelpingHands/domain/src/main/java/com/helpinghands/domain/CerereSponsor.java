@@ -7,6 +7,7 @@ public class CerereSponsor implements IEntity {
     private String adresaSediului;
     private String numeFirma;
     private SponsorType sponsorType;
+    private String status;
 
     public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType, Integer id) {
         this.volunteer = volunteer;
@@ -16,6 +17,8 @@ public class CerereSponsor implements IEntity {
         this.numeFirma = numeFirma;
         this.sponsorType = sponsorType;
         this.id = id;
+        this.status = "pending";
+        //o sa avem pending, accepted si declined
     }
 
     public Voluntar getVolunteer() {
@@ -64,6 +67,14 @@ public class CerereSponsor implements IEntity {
 
     public void setSponsorType(SponsorType sponsorType) {
         this.sponsorType = sponsorType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     private Integer id;

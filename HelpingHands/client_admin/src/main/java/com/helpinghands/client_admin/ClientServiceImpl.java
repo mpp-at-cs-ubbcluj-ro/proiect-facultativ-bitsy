@@ -132,4 +132,9 @@ public class ClientServiceImpl implements IService{
         return new Eveniment[0];
     }
 
+    @Override
+    public Post adaugaPostare(Post post) {
+        return null;
+    }
+
 }
