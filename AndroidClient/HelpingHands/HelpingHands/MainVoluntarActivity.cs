@@ -25,10 +25,12 @@ namespace HelpingHands
     {
         GridLayout HomeView;
         GridLayout DashboardView;
+        GridLayout ProfileView;
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
         Button EvNextButton;
         Button EvPrevButton;
+        Button ApplyForSponsorButton;
         TextView EvPageTextView;
         Button CreateEvButton;
 
@@ -52,6 +54,11 @@ namespace HelpingHands
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
 
+            ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
+            ApplyForSponsorButton = FindViewById<Button>(Resource.Id.ApplyForSponsorButton);
+            ApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
+
+
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
             EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
 
@@ -63,6 +70,11 @@ namespace HelpingHands
             DashboardView.Visibility = ViewStates.Gone;
             Task.Run(LoadHome);
             Task.Run(LoadDashboard);
+        }
+
+        private async void ApplyForSponsorButton_Click(object sender, EventArgs e)
+        {
+            await MessageBox.Alert(this, "CLICK PE APPLY FOR SPONSOR");
         }
 
         private void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -177,6 +189,20 @@ namespace HelpingHands
 
         }
 
+        async void LoadProfilePage()
+        {
+            try
+            {
+                Intent intent = new Intent(this, typeof(AccountDetails));
+                StartActivity(intent);
+            }
+            catch (Exception e)
+            {
+                await MessageBox.Alert(this, "Incarcarea paginii a esuat!", "Error");
+            }
+
+        }
+
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
@@ -184,12 +210,19 @@ namespace HelpingHands
                 case Resource.Id.navigation_home:
                     HomeView.Visibility = ViewStates.Visible;
                     DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;
                     LoadHome();
                     return true;
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
+                    ProfileView.Visibility= ViewStates.Gone;
                     LoadDashboard();
+                    return true;
+                case Resource.Id.navigation_profile:
+                    HomeView.Visibility= ViewStates.Gone;
+                    DashboardView.Visibility= ViewStates.Gone;
+                    LoadProfilePage();
                     return true;
                 case Resource.Id.navigation_notifications:
                     
