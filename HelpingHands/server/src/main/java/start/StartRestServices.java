@@ -16,7 +16,6 @@ public class StartRestServices {
         SpringApplication.run(StartRestServices.class, args);
     }
 
-
     static IInterestRepo interestRepo = new InterestRepo();
     static IVoluntarRepo voluntarRepo = new VoluntarRepo();
     static IEvenimentRepo eventRepo = new EvenimentRepo();
