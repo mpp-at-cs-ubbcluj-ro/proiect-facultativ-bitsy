@@ -61,7 +61,7 @@ namespace HelpingHands
 
 
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
-            //EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
+
 
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
 
@@ -79,13 +79,10 @@ namespace HelpingHands
             navigation.SelectedItemId = tab;
             
         }
-
-
         private async void ApplyForSponsorButton_Click(object sender, EventArgs e)
         {
             await MessageBox.Alert(this, "CLICK PE APPLY FOR SPONSOR");
         }
-
 
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
