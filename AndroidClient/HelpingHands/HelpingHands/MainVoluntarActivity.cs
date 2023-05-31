@@ -30,7 +30,7 @@ namespace HelpingHands
         Button EvNextButton;
         Button EvPrevButton;
         TextView EvPageTextView;
-        Button CreateEvButton;
+        Button CreateEvButton;        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -52,8 +52,7 @@ namespace HelpingHands
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
 
-            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
-            EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
+            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
@@ -63,31 +62,34 @@ namespace HelpingHands
             DashboardView.Visibility = ViewStates.Gone;
             Task.Run(LoadHome);
             Task.Run(LoadDashboard);
+
+            int tab = Intent.GetIntExtra("tab", 0);
+            navigation.SelectedItemId = tab;
+            
         }
 
-        private void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            Console.WriteLine($"Clicked index {e.Position}");
+            Console.WriteLine($"Clicked index {e.Position}");                                    
             var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[e.Position];
             Console.WriteLine($"{ev}");
 
-            Intent intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
+            Intent intent;            
+            if ((await Client.GetParticipants(ev.Id)).Any(_ => _.IsOrganizer && _.Voluntar.Id == AppSession.UserId))
+            {
+                Console.WriteLine("Organizer cu vanilie");
+                intent = new Intent(this, typeof(ViewEvenimentOrganizatorActivity));
+            }
+            else
+            {
+                Console.WriteLine("Voluntar cu vanilie");
+                intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
+            }
+
             intent.PutExtra("eveniment", JsonConvert.SerializeObject(ev));
             StartActivity(intent);
 
-        }
-
-        private void EvenimenteListView_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            Console.WriteLine("Selected index ");
-            Intent intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));            
-
-            var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[EvenimenteListView.SelectedItemPosition];
-
-            Console.WriteLine(ev);
-            intent.PutExtra("eveniment", JsonConvert.SerializeObject(ev));
-            StartActivity(intent);
-        }
+        }        
 
         void CreateEvButton_Click(object sender, EventArgs e)
         {
