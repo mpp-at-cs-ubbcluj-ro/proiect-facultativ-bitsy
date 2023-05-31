@@ -89,7 +89,10 @@ namespace HelpingHands
             {
                 await Client.AddEveniment(ev);
                 await MessageBox.Alert(this, "Evenimentul a fost adaugat cu succes");
-                Finish();                
+
+                var intent = new Intent(this, typeof(MainVoluntarActivity));
+                intent.PutExtra("tab", 1);
+                StartActivity(intent);                
             }
             catch(Exception ex)
             {
