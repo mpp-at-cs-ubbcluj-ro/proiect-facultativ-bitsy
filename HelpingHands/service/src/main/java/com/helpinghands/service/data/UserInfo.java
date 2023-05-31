@@ -16,6 +16,8 @@ public class UserInfo{
 
     private String token;
 
+    public UserInfo(){}
+
     public UserInfo(String type, Utilizator utilizator, String token) {
         this.type = type;
         this.utilizator = utilizator;

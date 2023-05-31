@@ -45,6 +45,9 @@ namespace HelpingHands.API
         public static async Task<Interest[]> GetInterests()
             => await ClientBase.Get<Interest[]>("/interests");
 
+        public static async Task<Interest[]> GetVoluntarInterests(int volId)
+            => await ClientBase.Get<Interest[]>($"/interests/{volId}");
+
         public static async Task<Eveniment> AddEveniment(Eveniment ev)
         {
             EventParams eventParams = new EventParams { Token = API.AppSession.UserData.Token, Eveniment = ev };

@@ -15,22 +15,6 @@ public class EvenimentRepo extends AbstractRepo<Eveniment> implements IEveniment
         super(Eveniment.class);
     }
 
-    /*@Override
-    public Eveniment add(Eveniment e) {
-        logger.trace("");
-        logger.info("Adding {}",e);
-        Session.doTransaction((session, tx)->{
-            e.getInterests().forEach(session::persist);
-
-            int id = (int)session.save(e);
-            tx.commit();
-            e.setId(id);
-        });
-        logger.info("Ok:{}",e);
-        logger.traceExit();
-        return e;
-    }*/
-
     @Override
     public Eveniment[] getOrderedPaged(EventOrderOption orderOption, int page, int itemsPerPage) {
         String query = "from Eveniment order by id";
@@ -46,6 +30,35 @@ public class EvenimentRepo extends AbstractRepo<Eveniment> implements IEveniment
             result.set(session.createQuery(q, Eveniment.class)
                     .setFirstResult(page*itemsPerPage)
                     .setMaxResults(itemsPerPage)
+                    .stream()
+                    .filter(ev-> {
+                        // to force foreign references to load
+                        var x=ev.getInterests().size();
+                        var y=ev.getParticipants().size();
+                        var z=ev.getInitiator();
+                        return true;
+                    })
+                    .toArray(Eveniment[]::new));
+            tx.commit();
+        });
+        return result.get();
+    }
+
+    @Override
+    public Eveniment[] getByOrganizer(int organizerId) {
+        /*String query = "from Eveniment ev inner join Participant p " +
+                "where p.voluntar.id=:volId " +
+                "and p.organizer=:isOrg";*/
+
+        String query="select ev from Eveniment as ev inner join ev.participants as p " +
+                "where p.voluntar.id=:volId " +
+                "and p.organizer=:isOrg";
+
+        AtomicReference<Eveniment[]> result = new AtomicReference<>();
+        Session.doTransaction((session, tx)->{
+            result.set(session.createQuery(query, Eveniment.class)
+                    .setParameter("volId", organizerId)
+                    .setParameter("isOrg", true)
                     .stream()
                     .filter(ev-> {
                         // to force foreign references to load

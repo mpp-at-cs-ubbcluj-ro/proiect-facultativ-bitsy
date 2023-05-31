@@ -16,7 +16,6 @@ public class StartRestServices {
         SpringApplication.run(StartRestServices.class, args);
     }
 
-
     static IInterestRepo interestRepo = new InterestRepo();
     static IVoluntarRepo voluntarRepo = new VoluntarRepo();
     static IEvenimentRepo eventRepo = new EvenimentRepo();
@@ -24,6 +23,7 @@ public class StartRestServices {
     static IUserSessionRepo userSessionRepo = new UserSessionRepo();
     static IAdminRepo adminRepo = new AdminRepo();
     static ICerereSponsorRepo cerereSponsorRepo = new CerereSponsorRepo();
+
     @Bean
     static IService getService() {
         return new AppService(adminRepo, cerereSponsorRepo, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo, userSessionRepo);

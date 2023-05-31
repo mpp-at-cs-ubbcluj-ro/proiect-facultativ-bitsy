@@ -14,9 +14,8 @@ public class TestServClass extends TestCase {
 
     public static void main(String[] args) throws ServiceException {
         var u=service.login("user1","0000");
-        var v=(Voluntar)u;
+        var v=(Voluntar)u.getUtilizator();
         System.out.println(u);
-
         //var ev=new Eveniment("a","b",LocalDateTime.now(),LocalDateTime.now(),"L",v,"PENDING");
         var ev=eventRepo.getById(2);
         System.out.println(ev);
