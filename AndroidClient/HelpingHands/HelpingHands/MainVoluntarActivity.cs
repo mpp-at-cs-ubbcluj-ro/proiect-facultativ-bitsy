@@ -61,13 +61,9 @@ namespace HelpingHands
 
 
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
-<<<<<<< HEAD
-           // EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
-=======
-            //EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
+
 
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
->>>>>>> 5a43df5701ab478c9dc91367cf877732d48979d2
 
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
@@ -83,20 +79,11 @@ namespace HelpingHands
             navigation.SelectedItemId = tab;
             
         }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 5a43df5701ab478c9dc91367cf877732d48979d2
         private async void ApplyForSponsorButton_Click(object sender, EventArgs e)
         {
             await MessageBox.Alert(this, "CLICK PE APPLY FOR SPONSOR");
         }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 5a43df5701ab478c9dc91367cf877732d48979d2
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             Console.WriteLine($"Clicked index {e.Position}");                                    

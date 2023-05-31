@@ -57,9 +57,9 @@ namespace HelpingHands
                 {
                     Console.WriteLine("Account Profile Details");
                     Nume.Text = Nume.Text + " : " +  AppSession.UserData.User.Nume;
-                    Email.Text = Email.Text + " : " + AppSession.UserData.User.Email;
+                    Email.Text = Email.Text + "     : " + AppSession.UserData.User.Email;
                     Prenume.Text = Prenume.Text + " : " + AppSession.UserData.User.Prenume;
-                    XpPct.Text = XpPct.Text + " : " + AppSession.UserData.User.XpPoints;
+                    XpPct.Text = XpPct.Text + "  : " + AppSession.UserData.User.XpPoints;
                 });
                 InterestAdapter = new InterestAdapter(this, (await API.Client.GetVoluntarInterests(AppSession.UserId)).ToList());
                 RunOnUiThread(() => InterestBox.Adapter = InterestAdapter);
