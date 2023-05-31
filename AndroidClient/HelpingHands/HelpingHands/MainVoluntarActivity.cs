@@ -54,17 +54,17 @@ namespace HelpingHands
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
 
-<<<<<<< HEAD
+
             ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
             ApplyForSponsorButton = FindViewById<Button>(Resource.Id.ApplyForSponsorButton);
-            ApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
+            //ApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
 
 
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
-            EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
-=======
+            //EvenimenteListView.ItemSelected += EvenimenteListView_ItemSelected;
+
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
->>>>>>> e7794c24b85affb4964f015769136ac34a639a45
+
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
@@ -80,16 +80,14 @@ namespace HelpingHands
             
         }
 
-<<<<<<< HEAD
+
         private async void ApplyForSponsorButton_Click(object sender, EventArgs e)
         {
             await MessageBox.Alert(this, "CLICK PE APPLY FOR SPONSOR");
         }
 
-        private void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-=======
+
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
->>>>>>> e7794c24b85affb4964f015769136ac34a639a45
         {
             Console.WriteLine($"Clicked index {e.Position}");                                    
             var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[e.Position];

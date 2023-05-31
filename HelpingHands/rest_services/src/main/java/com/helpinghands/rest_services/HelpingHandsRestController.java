@@ -203,4 +203,9 @@ public class HelpingHandsRestController {
         }
     }
 
+    @RequestMapping(value = "/interests/{id}", method = RequestMethod.GET)
+    public Iterable<Interest> getInterests(@PathVariable Integer id) throws ServiceException {
+        return service.getVoluntarInterest(id);
+    }
+
 }

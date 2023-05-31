@@ -40,4 +40,6 @@ public interface IService {
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
     Post adaugaPostare(Post post);
 
+    Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException;
+
 }

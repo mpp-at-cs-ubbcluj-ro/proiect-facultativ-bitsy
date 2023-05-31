@@ -26,6 +26,7 @@ namespace HelpingHands
         TextView Email;
         TextView XpPct;
         Button ApplyForSponsorButton;
+        Spinner InterestBox;
 
         InterestAdapter InterestAdapter;
 
@@ -39,14 +40,12 @@ namespace HelpingHands
             Nume = FindViewById<TextView>(Resource.Id.Nume);
             Email = FindViewById<TextView>(Resource.Id.Email);
             XpPct = FindViewById<TextView>(Resource.Id.XpPct);
+            InterestBox = FindViewById<Spinner>(Resource.Id.InterestBox);
 
             ApplyForSponsorButton = FindViewById<Button>(Resource.Id.ApplyForSponsorButton);
 
             ApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
 
-            //
-
-            //InterestBox.Adapter = 
             Task.Run(Load);
         }
 
@@ -57,15 +56,17 @@ namespace HelpingHands
                 RunOnUiThread(async () =>
                 {
                     Console.WriteLine("Account Profile Details");
-                    Nume.Text = Nume.Text + AppSession.UserData.User.Nume;
-                    Email.Text = Email.Text + AppSession.UserData.User.Email;
-                    Prenume.Text = Prenume.Text + AppSession.UserData.User.Prenume;
-                    XpPct.Text = XpPct.Text + AppSession.UserData.User.XpPoints;
+                    Nume.Text = Nume.Text + " : " +  AppSession.UserData.User.Nume;
+                    Email.Text = Email.Text + " : " + AppSession.UserData.User.Email;
+                    Prenume.Text = Prenume.Text + " : " + AppSession.UserData.User.Prenume;
+                    XpPct.Text = XpPct.Text + " : " + AppSession.UserData.User.XpPoints;
                 });
+                InterestAdapter = new InterestAdapter(this, (await API.Client.GetVoluntarInterests(AppSession.UserId)).ToList());
+                RunOnUiThread(() => InterestBox.Adapter = InterestAdapter);
             }
             catch (Exception e)
             {
-                await MessageBox.Alert(this, $"FAILED ACCOUNT PAGE4\n\n{e.Message}", "Error");
+                await MessageBox.Alert(this, $"FAILED ACCOUNT PAGE\n\n{e.Message}", "Error");
             }
         }
 

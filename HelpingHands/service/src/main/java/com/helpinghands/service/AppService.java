@@ -337,4 +337,15 @@ public class AppService implements IService {
         logger.traceExit();
         return postRepo.add(post);
     }
+
+    @Override
+    public Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException {
+        logger.trace("");
+        logger.info("getInterest of voluntar:  {}", volId);
+        Voluntar voluntar = this.getVoluntarById(volId);
+        Iterable<Interest> interests = voluntar.getInterests();
+        logger.info("found interests {}", ((Collection<?>) interests).size());
+        logger.traceExit();
+        return interests;
+    }
 }
