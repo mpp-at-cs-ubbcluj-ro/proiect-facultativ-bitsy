@@ -5,10 +5,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Adapters;
-using HelpingHands.API;
 using HelpingHands.Data;
 using HelpingHands.Utils;
-using Java.Interop;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,14 +17,13 @@ using System.Threading.Tasks;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class ViewEvenimentVoluntarActivity : Activity
+    internal class ViewEvenimentOrganizatorActivity : Activity
     {
         Eveniment Eveniment;
 
-        TextView VolEvenimentName;
-        TextView VolEvenimentDescription;
+        EditText VolEvenimentName;
+        EditText VolEvenimentDescription;
         TextView VolEvenimentDate;
-        TextView VolEvenimentInterese;
         Button VolButtonAddParticipant;
         ListView ParticipantListView;
 
@@ -34,25 +31,23 @@ namespace HelpingHands
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Console.WriteLine("HERE IN VOLUNTAR");
+            Console.WriteLine("HERE IN ORGANIZER");
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_view_eveniment_voluntar);
+            SetContentView(Resource.Layout.activity_view_eveniment_organizator);
 
             Eveniment = JsonConvert.DeserializeObject<Eveniment>(Intent.GetStringExtra("eveniment"));
 
             ParticipantListView = FindViewById<ListView>(Resource.Id.ParticipantListView);
 
-            VolEvenimentName = FindViewById<TextView>(Resource.Id.VolEvenimentName);
-            VolEvenimentDescription = FindViewById<TextView>(Resource.Id.VolEvenimentDescription);
+            VolEvenimentName = FindViewById<EditText>(Resource.Id.VolEvenimentName);
+            VolEvenimentDescription = FindViewById<EditText>(Resource.Id.VolEvenimentDescription);
             VolEvenimentDate = FindViewById<TextView>(Resource.Id.VolEvenimentDate);
-            VolEvenimentInterese = FindViewById<TextView>(Resource.Id.VolEvenimentInterese);
             VolButtonAddParticipant = FindViewById<Button>(Resource.Id.VolButtonAddParticipant);
 
             VolEvenimentName.Text = Eveniment.Name;
             VolEvenimentDescription.Text = Eveniment.Description;
             VolEvenimentDate.Text = Eveniment.StartDate.ToString("dd.MM.yyyy") + " - " + Eveniment.EndDate.ToString("dd.MM.yyyy");
-            VolEvenimentInterese.Text = string.Join(", ", Eveniment.Interests);
 
             VolButtonAddParticipant.Click += VolButtonAddParticipant_Click;
 
@@ -66,7 +61,8 @@ namespace HelpingHands
             public bool OnTouch(View v, MotionEvent e)
             {
                 var action = e.Action;
-                switch (action) {
+                switch (action)
+                {
                     case MotionEventActions.Down:
                         // Disallow ScrollView to intercept touch events.
                         v.Parent.RequestDisallowInterceptTouchEvent(true);
@@ -81,12 +77,12 @@ namespace HelpingHands
                 v.OnTouchEvent(e);
                 return true;
             }
-        }               
+        }
 
         async void Load()
         {
             try
-            {                
+            {
                 RunOnUiThread(async () =>
                 {
                     Console.WriteLine("Getting participants");
@@ -95,7 +91,7 @@ namespace HelpingHands
                     Console.WriteLine("----------------------------");
                     Participants.ForEach(Console.WriteLine);
                     Console.WriteLine("----------------------------");
-                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);                    
+                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);
                 });
             }
             catch (Exception e)
@@ -105,21 +101,9 @@ namespace HelpingHands
             //GetParticipants
         }
 
-        private async void VolButtonAddParticipant_Click(object sender, EventArgs e)
+        private void VolButtonAddParticipant_Click(object sender, EventArgs e)
         {
-            int evId = Eveniment.Id;
-            int volId = AppSession.UserId;
 
-            try
-            {
-                var inscriere = await API.Client.AddVoluntarToEveniment(evId, volId, "volunteer");
-                await MessageBox.Alert(this, "You were added to eveniment!");
-            }
-            catch (Exception ex)
-            {
-                await MessageBox.Alert(this, ex.Message, "Aderation failed");
-                return;
-            }
         }
     }
 }
