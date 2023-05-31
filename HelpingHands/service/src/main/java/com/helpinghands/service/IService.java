@@ -40,11 +40,6 @@ public interface IService {
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
 
 
-
-    Eveniment deleteVoluntarFromEveniment(Voluntar voluntar, Eveniment eveniment);
-
-
-
     Post adaugaPostare(Post post);
 
 }
