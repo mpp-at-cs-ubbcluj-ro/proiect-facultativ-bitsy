@@ -6,28 +6,11 @@ using System.Collections.Generic;
 
 namespace HelpingHands.Adapters
 {
-    internal class ParticipantAdapter : BaseAdapter<Participant>
-    {
-        List<Participant> Items;
-        Activity Context;
-        public ParticipantAdapter(Activity context, List<Participant> items) : base()
-        {
-            this.Context = context;
-            this.Items = items;
-        }
-
-
-        public override Participant this[int position] => Items[position];
-
-        public override int Count => Items.Count;
-
-        public override long GetItemId(int position) => position;
-
-        private static string AutoEllipsis(string s, int cnt)
-        {
-            if (s.Length < cnt) return s;
-            return s.Substring(cnt-2) + "...";
-        }
+    internal class ParticipantAdapter : ListAdapter<Participant>
+    {        
+        public ParticipantAdapter(Activity context, List<Participant> items) : base(context, items)
+        {        
+        }        
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {

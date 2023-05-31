@@ -1,27 +1,17 @@
 ﻿using Android.App;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using HelpingHands.Data;
 using System.Collections.Generic;
 
 namespace HelpingHands.Adapters
 {
-    internal class EvenimentAdapter : BaseAdapter<Eveniment>
+    internal class EvenimentAdapter : ListAdapter<Eveniment>
     {
-        List<Eveniment> Items;
-        Activity Context;
-        public EvenimentAdapter(Activity context, List<Eveniment> items) : base()
+        public EvenimentAdapter(Activity context, List<Eveniment> items) : base(context, items)
         {
-            this.Context = context;
-            this.Items = items;
-        }
-
-
-        public override Eveniment this[int position] => Items[position];
-
-        public override int Count => Items.Count;
-
-        public override long GetItemId(int position) => position;
+        }        
 
         private static string AutoEllipsis(string s, int cnt)
         {
