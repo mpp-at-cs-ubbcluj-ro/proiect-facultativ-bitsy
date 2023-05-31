@@ -50,14 +50,13 @@ public class LoginPageController {
                 MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info","Accesul este restrictionat! Trebuie introduse credentialele unui administrator!");
             }else {
                 Utilizator utilizator = userInfo.getUtilizator();
-
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/com/helpinghands/client_admin/adminPage.fxml"));
                 AnchorPane root = loader.load();
 
                 AdminPageController adminPageController = loader.getController();
-                //adminPageController.setService(service);
-                //homePageController.setAdmin(utilizator);
+                adminPageController.setServer(service);
+                adminPageController.setAdmin(userInfo);
 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root, 1103, 644));

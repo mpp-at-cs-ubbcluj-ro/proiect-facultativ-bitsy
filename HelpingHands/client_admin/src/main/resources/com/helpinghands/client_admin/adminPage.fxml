@@ -12,14 +12,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="644.0" prefWidth="1103.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.AdminPageController">
    <children>
-      <TableView layoutX="47.0" layoutY="237.0" prefHeight="290.0" prefWidth="1011.0">
+      <TableView fx:id="cerereSponsorsList" layoutX="47.0" layoutY="237.0" prefHeight="290.0" prefWidth="1011.0">
         <columns>
-          <TableColumn prefWidth="200.0" text="Nume firma" />
-          <TableColumn prefWidth="123.20001220703125" text="CIF" />
-            <TableColumn prefWidth="163.20001220703125" text="Telefon" />
-            <TableColumn prefWidth="200.800048828125" text="Adresa" />
-            <TableColumn prefWidth="147.99993896484375" text="Sponsorizare" />
-            <TableColumn prefWidth="168.80010986328125" text="Voluntar" />
+          <TableColumn fx:id="firmaColumn" prefWidth="200.0" text="Nume firma" />
+          <TableColumn fx:id="cifColumn" prefWidth="123.20001220703125" text="CIF" />
+            <TableColumn fx:id="telefonColumn" prefWidth="163.20001220703125" text="Telefon" />
+            <TableColumn fx:id="adresaColumn" prefWidth="200.800048828125" text="Adresa" />
+            <TableColumn fx:id="sponsorizareColumn" prefWidth="147.99993896484375" text="Sponsorizare" />
+            <TableColumn fx:id="voluntarColumn" prefWidth="168.80010986328125" text="Voluntar" />
         </columns>
       </TableView>
       <ImageView fitHeight="231.0" fitWidth="234.0" layoutX="869.0" pickOnBounds="true" preserveRatio="true">
@@ -37,17 +37,17 @@
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Label>
-      <Button layoutX="48.0" layoutY="55.0" mnemonicParsing="false" text="Logout" textFill="#b60065">
+      <Button fx:id="logoutButton" onAction="#logoutButtonClicked" layoutX="48.0" layoutY="55.0" mnemonicParsing="false" text="Logout" textFill="#b60065">
          <font>
             <Font name="System Bold Italic" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="48.0" layoutY="560.0" mnemonicParsing="false" text="Accept application" textFill="#b60065">
+      <Button fx:id="acceptButton" layoutX="48.0" layoutY="560.0" mnemonicParsing="false" text="Accept application" textFill="#b60065">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="290.0" layoutY="560.0" mnemonicParsing="false" text="Decline application" textFill="#b60065">
+      <Button fx:id="declineButton" layoutX="290.0" layoutY="560.0" mnemonicParsing="false" text="Decline application" textFill="#b60065">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>
