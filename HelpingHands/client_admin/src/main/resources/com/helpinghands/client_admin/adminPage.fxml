@@ -4,13 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="644.0" prefWidth="1103.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.AdminPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1019.0" prefWidth="1155.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.AdminPageController">
    <children>
       <TableView fx:id="cerereSponsorsList" layoutX="47.0" layoutY="237.0" prefHeight="290.0" prefWidth="1011.0">
         <columns>
@@ -22,7 +22,7 @@
             <TableColumn fx:id="voluntarColumn" prefWidth="168.80010986328125" text="Voluntar" />
         </columns>
       </TableView>
-      <ImageView fitHeight="231.0" fitWidth="234.0" layoutX="869.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="231.0" fitWidth="234.0" layoutX="924.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../../logo.png" />
          </image>
@@ -37,7 +37,7 @@
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="logoutButton" onAction="#logoutButtonClicked" layoutX="48.0" layoutY="55.0" mnemonicParsing="false" text="Logout" textFill="#b60065">
+      <Button fx:id="logoutButton" layoutX="48.0" layoutY="55.0" mnemonicParsing="false" onAction="#logoutButtonClicked" text="Logout" textFill="#b60065">
          <font>
             <Font name="System Bold Italic" size="16.0" />
          </font>
@@ -62,5 +62,25 @@
             <Image url="@../../../../../../../sad.png" />
          </image>
       </ImageView>
+      <TableView layoutX="47.0" layoutY="664.0" prefHeight="320.0" prefWidth="753.0">
+        <columns>
+          <TableColumn prefWidth="168.79998779296875" text="Eveniment" />
+          <TableColumn prefWidth="121.60003662109375" text="Data inceput" />
+            <TableColumn prefWidth="119.199951171875" text="Data sfarsit" />
+            <TableColumn prefWidth="134.39996337890625" text="Locatie" />
+            <TableColumn prefWidth="208.00002441406252" text="Descriere" />
+        </columns>
+      </TableView>
+      <Label layoutX="47.0" layoutY="627.0" text="Events" textFill="#b60065">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="860.0" layoutY="664.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="219.0" text="Notify users about event" textFill="#b60065">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Button>
+      <TextArea layoutX="860.0" layoutY="736.0" prefHeight="231.0" prefWidth="219.0" text="Hello Dear!&#10;Have you heard about this event? &#10;Don't miss the chance to participate!&#10;See you there!&#10;&#10;&#10;&#10;&#10;&#10;&#10;Best regards,&#10;Helping Hands Team" />
    </children>
 </AnchorPane>
