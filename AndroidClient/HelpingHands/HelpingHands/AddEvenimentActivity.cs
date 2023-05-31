@@ -71,6 +71,7 @@ namespace HelpingHands
             var desc = DescriereBox.Text;
             var startDate = DateTime.ParseExact(StartDateBox.Text, "dd.MM.yyyy", null);
             var endDate = DateTime.ParseExact(EndDateBox.Text, "dd.MM.yyyy", null);
+
             var loc = LocatieBox.Text;
             var interest = new Interest[] { (InterestBox.Adapter as InterestAdapter)[InterestBox.SelectedItemPosition] };
             var ev = new Eveniment
