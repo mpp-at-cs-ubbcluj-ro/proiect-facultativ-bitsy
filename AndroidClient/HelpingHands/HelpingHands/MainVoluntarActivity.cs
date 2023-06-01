@@ -24,13 +24,8 @@ namespace HelpingHands
     public partial class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         GridLayout HomeView;
-<<<<<<< HEAD
         GridLayout DashboardView;
         GridLayout ProfileView;
-=======
-        GridLayout DashboardView;        
-
->>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
         ListView VoluntarEvenimenteListView;
@@ -61,22 +56,14 @@ namespace HelpingHands
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
 
-<<<<<<< HEAD
-
             ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
             ApplyForSponsorButton = FindViewById<Button>(Resource.Id.ApplyForSponsorButton);
             //ApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
 
-
-            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
-
-
-            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
-=======
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
             OrganizatorEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
             VoluntarEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
->>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
+
 
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
@@ -91,7 +78,7 @@ namespace HelpingHands
             int tab = Intent.GetIntExtra("tab", 0);
             navigation.SelectedItemId = tab;
 
-            OnCreateAccountPage();
+           // OnCreateAccountPage();
         }
 
         bool EventSelected = false;
@@ -259,18 +246,7 @@ namespace HelpingHands
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
-<<<<<<< HEAD
-                    ProfileView.Visibility= ViewStates.Gone;
-                    LoadDashboard();
-                    return true;
-                case Resource.Id.navigation_profile:
-                    HomeView.Visibility= ViewStates.Gone;
-                    DashboardView.Visibility= ViewStates.Gone;
-                    LoadProfilePage();
-                    return true;
-                case Resource.Id.navigation_notifications:
-                    
-=======
+
                     ProfileView.Visibility = ViewStates.Gone;
                     LoadDashboard();
                     return true;
@@ -280,7 +256,7 @@ namespace HelpingHands
                     ProfileView.Visibility = ViewStates.Visible;                    
                     return true;
                 case Resource.Id.navigation_notifications:                    
->>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
+
                     return true;
             }
             return false;

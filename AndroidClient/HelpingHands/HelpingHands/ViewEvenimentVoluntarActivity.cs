@@ -120,17 +120,7 @@ namespace HelpingHands
             int evId = Eveniment.Id;
             int volId = AppSession.UserId;
 
-<<<<<<< HEAD
-            try
-            {
-                var inscriere = await API.Client.AddVoluntarToEveniment(evId, volId, "volunteer");
-                await MessageBox.Alert(this, "You were added to eveniment!");
-            }
-            catch (Exception ex)
-            {
-                await MessageBox.Alert(this, ex.Message, "Aderation failed");
-                return;
-=======
+
             if (VolButtonAddParticipant.Text == "Ma retrag")
             {
                 try
@@ -163,7 +153,7 @@ namespace HelpingHands
                     await MessageBox.Alert(this, ex.Message, "Aderation failed");
                     return;
                 }
->>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
+
             }
         }
     }

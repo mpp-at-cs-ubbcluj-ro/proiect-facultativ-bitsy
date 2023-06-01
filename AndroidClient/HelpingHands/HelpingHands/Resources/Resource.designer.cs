@@ -3897,7 +3897,7 @@ namespace HelpingHands
 			public const int navigation_notifications = 2131230907;
 			
 			// aapt resource value: 0x7F0800BC
-			public const int navigation_profile = 2131230908;
+			public const int navigation_user = 2131230908;
 			
 			// aapt resource value: 0x7F0800BD
 			public const int never = 2131230909;
