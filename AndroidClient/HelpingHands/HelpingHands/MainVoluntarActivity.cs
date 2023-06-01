@@ -28,6 +28,7 @@ namespace HelpingHands
 
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
+        ListView VoluntarEvenimenteListView;
         Button EvNextButton;
         Button EvPrevButton;
         TextView EvPageTextView;
@@ -41,6 +42,7 @@ namespace HelpingHands
 
             HomeView = FindViewById<GridLayout>(Resource.Id.HomeView);            
             EvenimenteListView = FindViewById<ListView>(Resource.Id.EvenimenteListView);
+            VoluntarEvenimenteListView = FindViewById<ListView>(Resource.Id.VoluntarEvenimenteListView);
             EvNextButton = FindViewById<Button>(Resource.Id.EvNextButton);
             EvPrevButton = FindViewById<Button>(Resource.Id.EvPrevButton);            
             EvPageTextView = FindViewById<TextView>(Resource.Id.EvPageTextView);
@@ -53,7 +55,9 @@ namespace HelpingHands
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
 
-            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
+            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
+            OrganizatorEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
+            VoluntarEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
@@ -72,14 +76,22 @@ namespace HelpingHands
 
         bool EventSelected = false;
 
-        private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        
+        protected override void OnResume()
         {
+            base.OnResume();            
+            Console.WriteLine("RESULTHERE");
+            Task.Run(LoadDashboard);          
+        }
+
+        private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {                        
             Console.WriteLine("EventSelected");
             if (EventSelected) return;
             EventSelected = true;     
             
             Console.WriteLine($"Clicked index {e.Position}");                                    
-            var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[e.Position];
+            var ev = ((sender as ListView).Adapter as EvenimentAdapter)[e.Position];
             Console.WriteLine($"{ev}");
 
             Intent intent;
@@ -175,14 +187,18 @@ namespace HelpingHands
             }
         }
 
+        List<Eveniment> ParticipantEvenimente = new List<Eveniment>();
+
         async void LoadDashboard()
         {
             try
             {
-                ManagedEvenimente = (await API.Client.GetEvenimenteByOrganizerId(AppSession.UserId)).ToList();
+                ManagedEvenimente = (await Client.GetEvenimenteByOrganizerId(AppSession.UserId)).ToList();
+                ParticipantEvenimente = (await Client.GetEvenimenteByVoluntar(AppSession.UserId)).ToList();
                 RunOnUiThread(() =>
                 {
                     OrganizatorEvenimenteListView.Adapter = new EvenimentAdapter(this, ManagedEvenimente);
+                    VoluntarEvenimenteListView.Adapter = new EvenimentAdapter(this, ParticipantEvenimente);
                 });
             }
             catch (Exception e)

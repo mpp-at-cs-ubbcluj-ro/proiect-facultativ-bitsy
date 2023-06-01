@@ -119,7 +119,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"                    
                             android:text="Sponsor"
-                            />                
+                            />                                     
                      </TableRow>
                      <TableRow android:layout_width="match_parent" android:layout_height="wrap_content">                                        
                         <Button
@@ -151,20 +151,37 @@
                     android:layout_centerInParent="true"                    
                     android:textSize="20dp"
                     android:text="Evenimente organizate"
-                    />
-
+                    />          
+                
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Creeaza un eveniment"                    
                     android:backgroundTint="#B30064"
-                    android:textColor="#ffffff"
+                    android:textColor="#ffffff"                    
                     android:id="@+id/CreateEvButton" />
 
                 <ListView                    
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
+                    android:layout_height="270dp"
                     android:id="@+id/OrganizatorEvenimenteListView"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"
+                    android:verticalScrollbarPosition="right" 
+                    />                
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"                    
+                    android:textSize="20dp"
+                    android:text="Evenimente la care particip"
+                    />
+
+                <ListView                    
+                    android:layout_width="match_parent"
+                    android:layout_height="270dp"
+                    android:id="@+id/VoluntarEvenimenteListView"
                     android:fadeScrollbars="true"
                     android:scrollbars="vertical"
                     android:verticalScrollbarPosition="right" 
