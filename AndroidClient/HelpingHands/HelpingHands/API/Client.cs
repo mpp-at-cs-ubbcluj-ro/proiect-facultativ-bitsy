@@ -29,10 +29,13 @@ namespace HelpingHands.API
             => await ClientBase.Get<Eveniment[]>($"/evenimente?page={page}&perPage={perPage}");
 
         public static async Task<Eveniment[]> GetEvenimenteByOrganizerId(int orgId)
-            => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={orgId}");
+            => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={orgId}&isOrganizer=1");
 
         public static async Task<Participant> AddVoluntarToEveniment(int eventId, int volId, string role)
             => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants", new RequestDataAddVoluntar(volId, role));
+
+        public static async Task<Eveniment> RemoveParticipantFromEveniment(int eventId, int participantId)
+            => await ClientBase.Delete<Eveniment>($"/evenimente/{eventId}/participants/{participantId}?token={AppSession.UserData.Token}");
 
         public static async Task<Participant[]> GetParticipants(int eventId)
         {
@@ -54,6 +57,10 @@ namespace HelpingHands.API
             return await ClientBase.Post<Eveniment>("/evenimente", eventParams);
         }
 
+        public static async Task<Interest[]> GetVoluntarInterests(int volId)
+            => await ClientBase.Get<Interest[]>($"/interests?voluntar={volId}");
 
+        public static async Task<Eveniment[]> GetEvenimenteByVoluntar(int volId)
+            => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={volId}");
     }
 }

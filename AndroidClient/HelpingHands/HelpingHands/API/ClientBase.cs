@@ -47,12 +47,14 @@ namespace HelpingHands.API
             return default(T);
         }
 
-        public async Task<bool> Delete<T>(string uri)
+        public async Task<T> Delete<T>(string uri)
         {
             HttpResponseMessage response = await HttpClient.DeleteAsync(URL_Base + uri);
             if (!response.IsSuccessStatusCode)
-                return false;
-            return true;
+            {
+                throw new ArgumentException(await response.Content.ReadAsStringAsync());
+            }
+            return await response.Content.ReadAsAsync<T>();
         }
     }
 }

@@ -21,13 +21,19 @@ using Xamarin.Essentials;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
+    public partial class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         GridLayout HomeView;
+<<<<<<< HEAD
         GridLayout DashboardView;
         GridLayout ProfileView;
+=======
+        GridLayout DashboardView;        
+
+>>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
+        ListView VoluntarEvenimenteListView;
         Button EvNextButton;
         Button EvPrevButton;
         Button ApplyForSponsorButton;
@@ -42,6 +48,7 @@ namespace HelpingHands
 
             HomeView = FindViewById<GridLayout>(Resource.Id.HomeView);            
             EvenimenteListView = FindViewById<ListView>(Resource.Id.EvenimenteListView);
+            VoluntarEvenimenteListView = FindViewById<ListView>(Resource.Id.VoluntarEvenimenteListView);
             EvNextButton = FindViewById<Button>(Resource.Id.EvNextButton);
             EvPrevButton = FindViewById<Button>(Resource.Id.EvPrevButton);            
             EvPageTextView = FindViewById<TextView>(Resource.Id.EvPageTextView);
@@ -54,6 +61,7 @@ namespace HelpingHands
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
 
+<<<<<<< HEAD
 
             ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
             ApplyForSponsorButton = FindViewById<Button>(Resource.Id.ApplyForSponsorButton);
@@ -64,6 +72,11 @@ namespace HelpingHands
 
 
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
+=======
+            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
+            OrganizatorEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
+            VoluntarEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
+>>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
 
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
@@ -77,7 +90,18 @@ namespace HelpingHands
 
             int tab = Intent.GetIntExtra("tab", 0);
             navigation.SelectedItemId = tab;
-            
+
+            OnCreateAccountPage();
+        }
+
+        bool EventSelected = false;
+
+        
+        protected override void OnResume()
+        {
+            base.OnResume();            
+            Console.WriteLine("RESULTHERE");
+            Task.Run(LoadDashboard);          
         }
         private async void ApplyForSponsorButton_Click(object sender, EventArgs e)
         {
@@ -85,26 +109,35 @@ namespace HelpingHands
         }
 
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
+        {                        
+            Console.WriteLine("EventSelected");
+            if (EventSelected) return;
+            EventSelected = true;     
+            
             Console.WriteLine($"Clicked index {e.Position}");                                    
-            var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[e.Position];
+            var ev = ((sender as ListView).Adapter as EvenimentAdapter)[e.Position];
             Console.WriteLine($"{ev}");
 
-            Intent intent;            
-            if ((await Client.GetParticipants(ev.Id)).Any(_ => _.IsOrganizer && _.Voluntar.Id == AppSession.UserId))
+            Intent intent;
+            try
             {
-                Console.WriteLine("Organizer cu vanilie");
-                intent = new Intent(this, typeof(ViewEvenimentOrganizatorActivity));
+                if ((await Client.GetParticipants(ev.Id)).Any(_ => _.IsOrganizer && _.Voluntar.Id == AppSession.UserId))
+                {
+                    Console.WriteLine("Organizer cu vanilie");
+                    intent = new Intent(this, typeof(ViewEvenimentOrganizatorActivity));
+                }
+                else
+                {
+                    Console.WriteLine("Voluntar cu vanilie");
+                    intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
+                }
             }
-            else
-            {
-                Console.WriteLine("Voluntar cu vanilie");
-                intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
-            }
+            catch(Exception ex) { await MessageBox.Alert(this, ex.Message); return; }
+            EventSelected = false;
 
             intent.PutExtra("eveniment", JsonConvert.SerializeObject(ev));
             StartActivity(intent);
-
+            
         }        
 
         void CreateEvButton_Click(object sender, EventArgs e)
@@ -178,14 +211,18 @@ namespace HelpingHands
             }
         }
 
+        List<Eveniment> ParticipantEvenimente = new List<Eveniment>();
+
         async void LoadDashboard()
         {
             try
             {
-                ManagedEvenimente = (await API.Client.GetEvenimenteByOrganizerId(AppSession.UserId)).ToList();
+                ManagedEvenimente = (await Client.GetEvenimenteByOrganizerId(AppSession.UserId)).ToList();
+                ParticipantEvenimente = (await Client.GetEvenimenteByVoluntar(AppSession.UserId)).ToList();
                 RunOnUiThread(() =>
                 {
                     OrganizatorEvenimenteListView.Adapter = new EvenimentAdapter(this, ManagedEvenimente);
+                    VoluntarEvenimenteListView.Adapter = new EvenimentAdapter(this, ParticipantEvenimente);
                 });
             }
             catch (Exception e)
@@ -222,6 +259,7 @@ namespace HelpingHands
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
+<<<<<<< HEAD
                     ProfileView.Visibility= ViewStates.Gone;
                     LoadDashboard();
                     return true;
@@ -232,6 +270,17 @@ namespace HelpingHands
                     return true;
                 case Resource.Id.navigation_notifications:
                     
+=======
+                    ProfileView.Visibility = ViewStates.Gone;
+                    LoadDashboard();
+                    return true;
+                case Resource.Id.navigation_user:
+                    HomeView.Visibility = ViewStates.Gone;
+                    DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Visible;                    
+                    return true;
+                case Resource.Id.navigation_notifications:                    
+>>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
                     return true;
             }
             return false;

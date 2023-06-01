@@ -12,7 +12,11 @@
         android:title="@string/title_dashboard" />
 
    <item
+<<<<<<< HEAD
         android:id="@+id/navigation_profile"
+=======
+        android:id="@+id/navigation_user"
+>>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
         android:icon="@drawable/user_icon"
         android:title="@string/title_dashboard" /> 
 
