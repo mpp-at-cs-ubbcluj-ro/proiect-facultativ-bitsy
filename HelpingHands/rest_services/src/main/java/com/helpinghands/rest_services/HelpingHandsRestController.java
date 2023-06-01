@@ -35,9 +35,12 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/interests",method= RequestMethod.GET)
-    public Interest[] getInterestByName(@RequestParam Optional<String> name) throws ServiceException {
+    public Interest[] getInterest(@RequestParam Optional<String> name, @RequestParam Optional<Integer> voluntar) throws ServiceException {
         if(name.isPresent())
             return Collections.singletonList(service.getInterestByName(name.get())).toArray(Interest[]::new);
+        if(voluntar.isPresent())
+            return StreamSupport.stream(service.getVoluntarInterest(voluntar.get()).spliterator(),false)
+                    .toArray(Interest[]::new);
         return StreamSupport.stream(service.getInterests().spliterator(),false)
                 .toArray(Interest[]::new);
     }
@@ -205,6 +208,8 @@ public class HelpingHandsRestController {
         }
     }
 
+    // Se poate confunda cu "getInterestById(id)".
+    // Use "/interests?voluntar={id}" - implementat mai sus
     @RequestMapping(value = "/interests/{id}", method = RequestMethod.GET)
     public Iterable<Interest> getInterests(@PathVariable Integer id) throws ServiceException {
         return service.getVoluntarInterest(id);
