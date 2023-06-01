@@ -24,9 +24,7 @@ namespace HelpingHands
         TextView AccEmail;
         TextView AccXpPct;
         Button AccApplyForSponsorButton;
-        Spinner AccInterestBox;
-
-        InterestAdapter InterestAdapter;
+        Spinner AccInterestBox;        
 
         protected void OnCreateAccountPage()
         {
