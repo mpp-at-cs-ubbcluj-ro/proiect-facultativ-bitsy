@@ -119,13 +119,15 @@ public class HelpingHandsRestController {
                 .toArray(EvenimentDTO[]::new);
     }
 
-    @RequestMapping(value = "/eveniment/{id_eveniment}/remove/{id_participant}", method = RequestMethod.PUT)
-    public ResponseEntity<?> removeVoluntarFromEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant){
+    @RequestMapping(value = "/evenimente/{id_eveniment}/participants/{id_participant}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> removeVoluntarFromEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant, @RequestParam String token){
         try{
+            service.getUserSession(token); // check if valid token
+
             Participant voluntar = service.getParticipantById(id_participant);
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
             Eveniment eveniment_final = service.deleteParticipantFromEveniment(voluntar,eveniment);
-            return new ResponseEntity<Eveniment>(eveniment_final,HttpStatus.OK);
+            return new ResponseEntity<EvenimentDTO>(EvenimentDTO.fromEveniment(eveniment_final),HttpStatus.OK);
         }catch (Exception e){
             System.out.println(e.getMessage());
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
