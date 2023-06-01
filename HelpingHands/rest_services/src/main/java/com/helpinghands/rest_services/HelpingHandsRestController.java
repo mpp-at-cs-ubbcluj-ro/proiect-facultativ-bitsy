@@ -35,9 +35,12 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/interests",method= RequestMethod.GET)
-    public Interest[] getInterestByName(@RequestParam Optional<String> name) throws ServiceException {
+    public Interest[] getInterest(@RequestParam Optional<String> name, @RequestParam Optional<Integer> voluntar) throws ServiceException {
         if(name.isPresent())
             return Collections.singletonList(service.getInterestByName(name.get())).toArray(Interest[]::new);
+        if(voluntar.isPresent())
+            return StreamSupport.stream(service.getVoluntarInterest(voluntar.get()).spliterator(),false)
+                    .toArray(Interest[]::new);
         return StreamSupport.stream(service.getInterests().spliterator(),false)
                 .toArray(Interest[]::new);
     }
@@ -119,13 +122,15 @@ public class HelpingHandsRestController {
                 .toArray(EvenimentDTO[]::new);
     }
 
-    @RequestMapping(value = "/eveniment/{id_eveniment}/remove/{id_participant}", method = RequestMethod.PUT)
-    public ResponseEntity<?> removeVoluntarFromEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant){
+    @RequestMapping(value = "/evenimente/{id_eveniment}/participants/{id_participant}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> removeVoluntarFromEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant, @RequestParam String token){
         try{
+            service.getUserSession(token); // check if valid token
+
             Participant voluntar = service.getParticipantById(id_participant);
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
             Eveniment eveniment_final = service.deleteParticipantFromEveniment(voluntar,eveniment);
-            return new ResponseEntity<Eveniment>(eveniment_final,HttpStatus.OK);
+            return new ResponseEntity<EvenimentDTO>(EvenimentDTO.fromEveniment(eveniment_final),HttpStatus.OK);
         }catch (Exception e){
             System.out.println(e.getMessage());
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
@@ -203,6 +208,8 @@ public class HelpingHandsRestController {
         }
     }
 
+    // Se poate confunda cu "getInterestById(id)".
+    // Use "/interests?voluntar={id}" - implementat mai sus
     @RequestMapping(value = "/interests/{id}", method = RequestMethod.GET)
     public Iterable<Interest> getInterests(@PathVariable Integer id) throws ServiceException {
         return service.getVoluntarInterest(id);
