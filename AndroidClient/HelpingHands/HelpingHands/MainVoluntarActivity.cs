@@ -21,10 +21,11 @@ using Xamarin.Essentials;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
+    public partial class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         GridLayout HomeView;
-        GridLayout DashboardView;
+        GridLayout DashboardView;        
+
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
         Button EvNextButton;
@@ -65,30 +66,42 @@ namespace HelpingHands
 
             int tab = Intent.GetIntExtra("tab", 0);
             navigation.SelectedItemId = tab;
-            
+
+            OnCreateAccountPage();
         }
+
+        bool EventSelected = false;
 
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
+            Console.WriteLine("EventSelected");
+            if (EventSelected) return;
+            EventSelected = true;     
+            
             Console.WriteLine($"Clicked index {e.Position}");                                    
             var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[e.Position];
             Console.WriteLine($"{ev}");
 
-            Intent intent;            
-            if ((await Client.GetParticipants(ev.Id)).Any(_ => _.IsOrganizer && _.Voluntar.Id == AppSession.UserId))
+            Intent intent;
+            try
             {
-                Console.WriteLine("Organizer cu vanilie");
-                intent = new Intent(this, typeof(ViewEvenimentOrganizatorActivity));
+                if ((await Client.GetParticipants(ev.Id)).Any(_ => _.IsOrganizer && _.Voluntar.Id == AppSession.UserId))
+                {
+                    Console.WriteLine("Organizer cu vanilie");
+                    intent = new Intent(this, typeof(ViewEvenimentOrganizatorActivity));
+                }
+                else
+                {
+                    Console.WriteLine("Voluntar cu vanilie");
+                    intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
+                }
             }
-            else
-            {
-                Console.WriteLine("Voluntar cu vanilie");
-                intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
-            }
+            catch(Exception ex) { await MessageBox.Alert(this, ex.Message); return; }
+            EventSelected = false;
 
             intent.PutExtra("eveniment", JsonConvert.SerializeObject(ev));
             StartActivity(intent);
-
+            
         }        
 
         void CreateEvButton_Click(object sender, EventArgs e)
@@ -186,15 +199,21 @@ namespace HelpingHands
                 case Resource.Id.navigation_home:
                     HomeView.Visibility = ViewStates.Visible;
                     DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;
                     LoadHome();
                     return true;
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
+                    ProfileView.Visibility = ViewStates.Gone;
                     LoadDashboard();
                     return true;
-                case Resource.Id.navigation_notifications:
-                    
+                case Resource.Id.navigation_user:
+                    HomeView.Visibility = ViewStates.Gone;
+                    DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Visible;                    
+                    return true;
+                case Resource.Id.navigation_notifications:                    
                     return true;
             }
             return false;

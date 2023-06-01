@@ -34,6 +34,9 @@ namespace HelpingHands.API
         public static async Task<Participant> AddVoluntarToEveniment(int eventId, int volId, string role)
             => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants", new RequestDataAddVoluntar(volId, role));
 
+        public static async Task<Eveniment> RemoveParticipantFromEveniment(int eventId, int participantId)
+            => await ClientBase.Delete<Eveniment>($"/evenimente/{eventId}/participants/{participantId}?token={AppSession.UserData.Token}");
+
         public static async Task<Participant[]> GetParticipants(int eventId)
         {
             var p = await ClientBase.Get<Participant[]>($"/evenimente/{eventId}/participants");
@@ -51,6 +54,8 @@ namespace HelpingHands.API
             return await ClientBase.Post<Eveniment>("/evenimente", eventParams);
         }
 
-
+        public static async Task<Interest[]> GetVoluntarInterests(int volId)
+            => await ClientBase.Get<Interest[]>($"/interests?voluntar={volId}");
+            
     }
 }

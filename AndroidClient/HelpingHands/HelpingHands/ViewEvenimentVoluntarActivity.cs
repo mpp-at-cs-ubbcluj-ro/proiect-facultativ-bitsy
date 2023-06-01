@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Adapters;
+using HelpingHands.API;
 using HelpingHands.Data;
 using HelpingHands.Utils;
 using Java.Interop;
@@ -88,13 +89,23 @@ namespace HelpingHands
             {                
                 RunOnUiThread(async () =>
                 {
+                    Participants.Clear();
                     Console.WriteLine("Getting participants");
                     Participants = (await API.Client.GetParticipants(Eveniment.Id)).ToList();
 
                     Console.WriteLine("----------------------------");
                     Participants.ForEach(Console.WriteLine);
                     Console.WriteLine("----------------------------");
-                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);                    
+                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);           
+                    
+                    if(Participants.Any(p=>p.Voluntar.Id == AppSession.UserId))
+                    {
+                        VolButtonAddParticipant.Text = "Ma retrag";
+                    }
+                    else
+                    {
+                        VolButtonAddParticipant.Text = "Ma inscriu";
+                    }
                 });
             }
             catch (Exception e)
@@ -104,9 +115,44 @@ namespace HelpingHands
             //GetParticipants
         }
 
-        private void VolButtonAddParticipant_Click(object sender, EventArgs e)
+        private async void VolButtonAddParticipant_Click(object sender, EventArgs e)
         {
-            
+            int evId = Eveniment.Id;
+            int volId = AppSession.UserId;
+
+            if (VolButtonAddParticipant.Text == "Ma retrag")
+            {
+                try
+                {
+                    var participant = Participants.Where(p => p.Voluntar.Id == AppSession.UserId).FirstOrDefault();
+                    if(participant==null)
+                    {
+                        throw new ArgumentNullException("Participant is null");
+                    }
+                    _ = await Client.RemoveParticipantFromEveniment(evId, participant.Id);
+                    await MessageBox.Alert(this, "You are no logner part of this eveniment!");
+                    Load();
+                }
+                catch (Exception ex)
+                {
+                    await MessageBox.Alert(this, ex.Message, "Retragere failed");
+                    return;
+                }                
+            }
+            else
+            {
+                try
+                {
+                    var inscriere = await Client.AddVoluntarToEveniment(evId, volId, "volunteer");
+                    await MessageBox.Alert(this, "You were added to eveniment!");
+                    Load();
+                }
+                catch (Exception ex)
+                {
+                    await MessageBox.Alert(this, ex.Message, "Aderation failed");
+                    return;
+                }
+            }
         }
     }
 }
