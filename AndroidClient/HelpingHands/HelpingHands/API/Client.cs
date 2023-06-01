@@ -54,6 +54,8 @@ namespace HelpingHands.API
             return await ClientBase.Post<Eveniment>("/evenimente", eventParams);
         }
 
-
+        public static async Task<Interest[]> GetVoluntarInterests(int volId)
+            => await ClientBase.Get<Interest[]>($"/interests?voluntar={volId}");
+            
     }
 }

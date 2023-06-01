@@ -21,10 +21,11 @@ using Xamarin.Essentials;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
+    public partial class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         GridLayout HomeView;
-        GridLayout DashboardView;
+        GridLayout DashboardView;        
+
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
         Button EvNextButton;
@@ -65,7 +66,8 @@ namespace HelpingHands
 
             int tab = Intent.GetIntExtra("tab", 0);
             navigation.SelectedItemId = tab;
-            
+
+            OnCreateAccountPage();
         }
 
         bool EventSelected = false;
@@ -197,15 +199,21 @@ namespace HelpingHands
                 case Resource.Id.navigation_home:
                     HomeView.Visibility = ViewStates.Visible;
                     DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;
                     LoadHome();
                     return true;
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
+                    ProfileView.Visibility = ViewStates.Gone;
                     LoadDashboard();
                     return true;
-                case Resource.Id.navigation_notifications:
-                    
+                case Resource.Id.navigation_user:
+                    HomeView.Visibility = ViewStates.Gone;
+                    DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Visible;                    
+                    return true;
+                case Resource.Id.navigation_notifications:                    
                     return true;
             }
             return false;

@@ -74,6 +74,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountDetails.cs" />
     <Compile Include="Adapters\InterestAdapter.cs" />
     <Compile Include="Adapters\ListAdapter.cs" />
     <Compile Include="Adapters\ParticipantAdapter.cs" />
