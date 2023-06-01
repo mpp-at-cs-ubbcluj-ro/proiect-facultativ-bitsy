@@ -68,27 +68,38 @@ namespace HelpingHands
             
         }
 
+        bool EventSelected = false;
+
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
+            Console.WriteLine("EventSelected");
+            if (EventSelected) return;
+            EventSelected = true;     
+            
             Console.WriteLine($"Clicked index {e.Position}");                                    
             var ev = (EvenimenteListView.Adapter as EvenimentAdapter)[e.Position];
             Console.WriteLine($"{ev}");
 
-            Intent intent;            
-            if ((await Client.GetParticipants(ev.Id)).Any(_ => _.IsOrganizer && _.Voluntar.Id == AppSession.UserId))
+            Intent intent;
+            try
             {
-                Console.WriteLine("Organizer cu vanilie");
-                intent = new Intent(this, typeof(ViewEvenimentOrganizatorActivity));
+                if ((await Client.GetParticipants(ev.Id)).Any(_ => _.IsOrganizer && _.Voluntar.Id == AppSession.UserId))
+                {
+                    Console.WriteLine("Organizer cu vanilie");
+                    intent = new Intent(this, typeof(ViewEvenimentOrganizatorActivity));
+                }
+                else
+                {
+                    Console.WriteLine("Voluntar cu vanilie");
+                    intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
+                }
             }
-            else
-            {
-                Console.WriteLine("Voluntar cu vanilie");
-                intent = new Intent(this, typeof(ViewEvenimentVoluntarActivity));
-            }
+            catch(Exception ex) { await MessageBox.Alert(this, ex.Message); return; }
+            EventSelected = false;
 
             intent.PutExtra("eveniment", JsonConvert.SerializeObject(ev));
             StartActivity(intent);
-
+            
         }        
 
         void CreateEvButton_Click(object sender, EventArgs e)
