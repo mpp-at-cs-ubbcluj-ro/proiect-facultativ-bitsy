@@ -9,15 +9,25 @@ public class CerereSponsor implements IEntity {
     private SponsorType sponsorType;
     private String status;
 
-    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType, Integer id) {
+    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType) {
         this.volunteer = volunteer;
         this.cifFirma = cifFirma;
         this.telefon = telefon;
         this.adresaSediului = adresaSediului;
         this.numeFirma = numeFirma;
         this.sponsorType = sponsorType;
-        this.id = id;
         this.status = "pending";
+        //o sa avem pending, accepted si declined
+    }
+
+    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType, String status) {
+        this.volunteer = volunteer;
+        this.cifFirma = cifFirma;
+        this.telefon = telefon;
+        this.adresaSediului = adresaSediului;
+        this.numeFirma = numeFirma;
+        this.sponsorType = sponsorType;
+        this.status = status;
         //o sa avem pending, accepted si declined
     }
 

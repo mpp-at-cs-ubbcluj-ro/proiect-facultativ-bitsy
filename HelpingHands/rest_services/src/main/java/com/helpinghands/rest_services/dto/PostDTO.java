@@ -12,7 +12,6 @@ public class PostDTO {
     private String descriere;
     private Integer idEv;
     private Integer idUser;
-    private LocalDateTime data;
 
     public Integer getId() {
         return id;
@@ -46,11 +45,4 @@ public class PostDTO {
         this.idUser = idUser;
     }
 
-    public LocalDateTime getData() {
-        return data;
-    }
-
-    public void setData(LocalDateTime data) {
-        this.data = data;
-    }
 }

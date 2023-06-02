@@ -1,6 +1,8 @@
 package com.helpinghands.repo;
 
 import com.helpinghands.domain.Eveniment;
+import com.helpinghands.domain.Participant;
+import com.helpinghands.domain.Post;
 import com.helpinghands.domain.SponsorType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +15,10 @@ public class SponsorTypesRepo extends AbstractRepo<SponsorType> implements ISpon
     public SponsorTypesRepo(Class<SponsorType> entityType) {
         super(entityType);
     }
+    public SponsorTypesRepo() {
+        super(SponsorType.class);
+    }
+
 
     @Override
     public SponsorType getByName(String name) {

@@ -79,17 +79,21 @@
     <Compile Include="Adapters\ListAdapter.cs" />
     <Compile Include="Adapters\ParticipantAdapter.cs" />
     <Compile Include="Adapters\EvenimentAdapter.cs" />
+    <Compile Include="Adapters\SponsorTypesAdapter.cs" />
     <Compile Include="AddEvenimentActivity.cs" />
     <Compile Include="API\Client.cs" />
     <Compile Include="API\ClientBase.cs" />
     <Compile Include="API\LoggingHandler.cs" />
     <Compile Include="API\AppSession.cs" />
+    <Compile Include="ApplySponsorshipActivity.cs" />
+    <Compile Include="Data\CerereSponsor.cs" />
     <Compile Include="Data\Eveniment.cs" />
     <Compile Include="Data\EventParams.cs" />
     <Compile Include="Data\Interest.cs" />
     <Compile Include="Data\LoginInfo.cs" />
     <Compile Include="Data\Participant.cs" />
     <Compile Include="Data\RequestDataAddVoluntar.cs" />
+    <Compile Include="Data\SponsorType.cs" />
     <Compile Include="Data\User.cs" />
     <Compile Include="Data\UserSession.cs" />
     <Compile Include="Data\Voluntar.cs" />
@@ -177,9 +181,6 @@
     <AndroidResource Include="Resources\drawable\startDateGradient.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\activity_add_eveniment.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_view_eveniment_voluntar.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +212,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\remove_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_apply_sponsorship.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_add_eveniment.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

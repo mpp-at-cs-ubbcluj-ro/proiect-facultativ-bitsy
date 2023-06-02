@@ -16,8 +16,8 @@ public class CerereSponsorRepo extends AbstractRepo<CerereSponsor> implements IC
         super(CerereSponsor.class);
     }
     @Override
-    public void applyforSponsorship(CerereSponsor cerereSponsor) {
-        this.add(cerereSponsor);
+    public CerereSponsor applyforSponsorship(CerereSponsor cerereSponsor) {
+        return this.add(cerereSponsor);
     }
 
     @Override
