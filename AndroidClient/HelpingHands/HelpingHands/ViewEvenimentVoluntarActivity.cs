@@ -119,7 +119,7 @@ namespace HelpingHands
         {
             int evId = Eveniment.Id;
             int volId = AppSession.UserId;
-
+       
             if (VolButtonAddParticipant.Text == "Ma retrag")
             {
                 try

@@ -24,8 +24,7 @@ namespace HelpingHands
     public partial class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         GridLayout HomeView;
-        GridLayout DashboardView;        
-
+        GridLayout DashboardView;                        
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
         ListView VoluntarEvenimenteListView;
@@ -54,7 +53,6 @@ namespace HelpingHands
             OrganizatorEvenimenteListView = FindViewById<ListView>(Resource.Id.OrganizatorEvenimenteListView);
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
-
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
             OrganizatorEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
             VoluntarEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
@@ -82,7 +80,7 @@ namespace HelpingHands
             base.OnResume();            
             Console.WriteLine("RESULTHERE");
             Task.Run(LoadDashboard);          
-        }
+        }        
 
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {                        
@@ -221,14 +219,14 @@ namespace HelpingHands
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
-                    ProfileView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;                    
                     LoadDashboard();
                     return true;
                 case Resource.Id.navigation_user:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Visible;                    
-                    return true;
+                    return true;                                
                 case Resource.Id.navigation_notifications:                    
                     return true;
             }

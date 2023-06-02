@@ -1,16 +1,10 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Adapters;
 using HelpingHands.API;
 using HelpingHands.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HelpingHands
@@ -41,7 +35,6 @@ namespace HelpingHands
             AccApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
 
             ProfileView.Visibility = ViewStates.Gone;
-
             Task.Run(Load);
         }
 
@@ -57,7 +50,7 @@ namespace HelpingHands
                     AccPrenume.Text = AppSession.UserData.User.Prenume;
                     AccXpPct.Text = AppSession.UserData.User.XpPoints.ToString();
                 });
-                var interestAdapter = new InterestAdapter(this, (await API.Client.GetVoluntarInterests(AppSession.UserId)).ToList());
+                var interestAdapter = new InterestAdapter(this, (await API.Client.GetVoluntarInterests(AppSession.UserId)).ToList());                
                 RunOnUiThread(() => AccInterestBox.Adapter = interestAdapter);
             }
             catch (Exception e)
