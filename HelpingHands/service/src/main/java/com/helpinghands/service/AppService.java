@@ -290,7 +290,7 @@ public class AppService implements IService {
         logger.info("removeParticipant{}", "from " + eveniment.getId()+" total:"+ ((Collection<?>)eveniment.getParticipants()).size());
         eveniment.getParticipants().removeIf(p-> Objects.equals(p.getId(), participant.getId()));
         evenimentRepo.update(eveniment);
-        logger.info("Participant sters{} ramasi :", ((Collection<?>)eveniment.getParticipants()).size());
+        logger.info("Participant sters {} ramasi :", ((Collection<?>)eveniment.getParticipants()).size());
         logger.traceExit();
         return eveniment;
     }

@@ -149,7 +149,10 @@ namespace HelpingHands
                     Console.WriteLine("----------------------------");
                     Participants.ForEach(Console.WriteLine);
                     Console.WriteLine("----------------------------");
-                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);
+                    var adapter = new ParticipantAdapter(this, Participants, true);
+                    adapter.RemoveButtonClick += Adapter_RemoveButtonClick;
+                    ParticipantListView.Adapter = adapter;
+
                 });
             }
             catch (Exception e)
@@ -157,6 +160,20 @@ namespace HelpingHands
                 await MessageBox.Alert(this, $"GET request failed. Connection possibly failed\n\n{e.Message}", "Error");
             }
             //GetParticipants
+        }
+
+        private async void Adapter_RemoveButtonClick(ImageView sender, int participantId)
+        {   
+            try
+            {
+                Eveniment = await Client.RemoveParticipantFromEveniment(Eveniment.Id, participantId);
+                Task.Run(Load);
+                await MessageBox.Alert(this, "Removed successfully");
+            }
+            catch(Exception ex)
+            {
+                await MessageBox.Alert(this, ex.Message, "Error");
+            }            
         }
 
         private async void VolButtonUpdate_Click(object sender, EventArgs e)
