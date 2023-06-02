@@ -198,7 +198,6 @@
     <AndroidResource Include="Resources\drawable\user_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\account_main.xml" />
     <AndroidResource Include="Resources\layout\activity_view_eveniment_organizator.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>

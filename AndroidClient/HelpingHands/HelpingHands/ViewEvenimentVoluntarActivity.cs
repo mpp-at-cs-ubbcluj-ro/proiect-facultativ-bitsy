@@ -89,13 +89,23 @@ namespace HelpingHands
             {                
                 RunOnUiThread(async () =>
                 {
+                    Participants.Clear();
                     Console.WriteLine("Getting participants");
                     Participants = (await API.Client.GetParticipants(Eveniment.Id)).ToList();
 
                     Console.WriteLine("----------------------------");
                     Participants.ForEach(Console.WriteLine);
                     Console.WriteLine("----------------------------");
-                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);                    
+                    ParticipantListView.Adapter = new ParticipantAdapter(this, Participants);           
+                    
+                    if(Participants.Any(p=>p.Voluntar.Id == AppSession.UserId))
+                    {
+                        VolButtonAddParticipant.Text = "Ma retrag";
+                    }
+                    else
+                    {
+                        VolButtonAddParticipant.Text = "Ma inscriu";
+                    }
                 });
             }
             catch (Exception e)
@@ -110,15 +120,38 @@ namespace HelpingHands
             int evId = Eveniment.Id;
             int volId = AppSession.UserId;
 
-            try
+            if (VolButtonAddParticipant.Text == "Ma retrag")
             {
-                var inscriere = await API.Client.AddVoluntarToEveniment(evId, volId, "volunteer");
-                await MessageBox.Alert(this, "You were added to eveniment!");
+                try
+                {
+                    var participant = Participants.Where(p => p.Voluntar.Id == AppSession.UserId).FirstOrDefault();
+                    if(participant==null)
+                    {
+                        throw new ArgumentNullException("Participant is null");
+                    }
+                    _ = await Client.RemoveParticipantFromEveniment(evId, participant.Id);
+                    await MessageBox.Alert(this, "You are no logner part of this eveniment!");
+                    Load();
+                }
+                catch (Exception ex)
+                {
+                    await MessageBox.Alert(this, ex.Message, "Retragere failed");
+                    return;
+                }                
             }
-            catch (Exception ex)
+            else
             {
-                await MessageBox.Alert(this, ex.Message, "Aderation failed");
-                return;
+                try
+                {
+                    var inscriere = await Client.AddVoluntarToEveniment(evId, volId, "volunteer");
+                    await MessageBox.Alert(this, "You were added to eveniment!");
+                    Load();
+                }
+                catch (Exception ex)
+                {
+                    await MessageBox.Alert(this, ex.Message, "Aderation failed");
+                    return;
+                }
             }
         }
     }

@@ -1,50 +1,46 @@
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Google.Android.Material.BottomNavigation;
 using HelpingHands.Adapters;
 using HelpingHands.API;
-using HelpingHands.Data;
 using HelpingHands.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Android.App.DatePickerDialog;
 
 namespace HelpingHands
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class AccountDetails : Activity
+    public partial class MainVoluntarActivity
     {
-        TextView Prenume;
-        TextView Nume;
-        TextView Email;
-        TextView XpPct;
-        Button ApplyForSponsorButton;
-        Spinner InterestBox;
+        GridLayout ProfileView;
 
-        InterestAdapter InterestAdapter;
+        TextView AccPrenume;
+        TextView AccNume;
+        TextView AccEmail;
+        TextView AccXpPct;
+        Button AccApplyForSponsorButton;
+        Spinner AccInterestBox;        
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected void OnCreateAccountPage()
         {
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.account_main);
+            ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
 
-            Prenume = FindViewById<TextView>(Resource.Id.Prenume);
-            Nume = FindViewById<TextView>(Resource.Id.Nume);
-            Email = FindViewById<TextView>(Resource.Id.Email);
-            XpPct = FindViewById<TextView>(Resource.Id.XpPct);
-            InterestBox = FindViewById<Spinner>(Resource.Id.InterestBox);
+            AccPrenume = FindViewById<TextView>(Resource.Id.AccPrenume);
+            AccNume = FindViewById<TextView>(Resource.Id.AccNume);
+            AccEmail = FindViewById<TextView>(Resource.Id.AccEmail);
+            AccXpPct = FindViewById<TextView>(Resource.Id.AccXpPct);
+            AccInterestBox = FindViewById<Spinner>(Resource.Id.AccInterestBox);
 
-            ApplyForSponsorButton = FindViewById<Button>(Resource.Id.ApplyForSponsorButton);
+            AccApplyForSponsorButton = FindViewById<Button>(Resource.Id.AccApplyForSponsorButton);
 
-            ApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
+            AccApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
+
+            ProfileView.Visibility = ViewStates.Gone;
 
             Task.Run(Load);
         }
@@ -56,13 +52,13 @@ namespace HelpingHands
                 RunOnUiThread(async () =>
                 {
                     Console.WriteLine("Account Profile Details");
-                    Nume.Text = Nume.Text + " : " +  AppSession.UserData.User.Nume;
-                    Email.Text = Email.Text + "     : " + AppSession.UserData.User.Email;
-                    Prenume.Text = Prenume.Text + " : " + AppSession.UserData.User.Prenume;
-                    XpPct.Text = XpPct.Text + "  : " + AppSession.UserData.User.XpPoints;
+                    AccNume.Text =AppSession.UserData.User.Nume;
+                    AccEmail.Text = AppSession.UserData.User.Email;
+                    AccPrenume.Text = AppSession.UserData.User.Prenume;
+                    AccXpPct.Text = AppSession.UserData.User.XpPoints.ToString();
                 });
-                InterestAdapter = new InterestAdapter(this, (await API.Client.GetVoluntarInterests(AppSession.UserId)).ToList());
-                RunOnUiThread(() => InterestBox.Adapter = InterestAdapter);
+                var interestAdapter = new InterestAdapter(this, (await API.Client.GetVoluntarInterests(AppSession.UserId)).ToList());
+                RunOnUiThread(() => AccInterestBox.Adapter = interestAdapter);
             }
             catch (Exception e)
             {

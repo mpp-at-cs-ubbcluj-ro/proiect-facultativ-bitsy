@@ -18,7 +18,7 @@ namespace HelpingHands.API
     internal class ClientBase
     {
         public static string BaseAddress =
-            DeviceInfo.Platform == DevicePlatform.Android ? "http://192.168.0.103:8080" : "http://localhost:8080";        
+            DeviceInfo.Platform == DevicePlatform.Android ? "http://192.168.43.243:8080" : "http://localhost:8080";        
         private static string URL_Base = BaseAddress + "/helpinghands";
         
         private HttpClient HttpClient = new HttpClient(new LoggingHandler(new HttpClientHandler()));
@@ -47,12 +47,14 @@ namespace HelpingHands.API
             return default(T);
         }
 
-        public async Task<bool> Delete<T>(string uri)
+        public async Task<T> Delete<T>(string uri)
         {
             HttpResponseMessage response = await HttpClient.DeleteAsync(URL_Base + uri);
             if (!response.IsSuccessStatusCode)
-                return false;
-            return true;
+            {
+                throw new ArgumentException(await response.Content.ReadAsStringAsync());
+            }
+            return await response.Content.ReadAsAsync<T>();
         }
     }
 }
