@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using Google.Android.Material.BottomNavigation;
 using HelpingHands.Adapters;
@@ -53,15 +54,36 @@ namespace HelpingHands
             AddEventButton = FindViewById<Button>(Resource.Id.AddEventButton);
 
             AddEventButton.Click += AddEventButton_Click;
-
-            //
-
-            //InterestBox.Adapter = 
-            Task.Run(Load);
             
+            Task.Run(Load);
+
+            StartDateBox.Text = DateTime.Now.ToString("dd.MM.yyyy");
+            EndDateBox.Text = DateTime.Now.ToString("dd.MM.yyyy");
+
+            StartDateBox.FocusChange += DateBox_FocusChange;
+            EndDateBox.FocusChange += DateBox_FocusChange;
+            StartDateBox.Touch += DateBox_Touch;
+            EndDateBox.Touch += DateBox_Touch;
 
             StartDateBox.Click += DateBox_Click;
             EndDateBox.Click += DateBox_Click;
+        }
+
+        private void DateBox_Touch(object sender, View.TouchEventArgs e)
+        {
+            View view = this.CurrentFocus;
+            if (view != null) 
+            {
+                InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
+                imm.HideSoftInputFromWindow(view.WindowToken, 0);
+            }
+
+            var input = (sender as EditText);
+            var inType = input.InputType;
+            input.InputType = Android.Text.InputTypes.Null;
+            input.OnTouchEvent(e.Event);
+            input.InputType = inType;
+            e.Handled = true;
         }
 
         private async void AddEventButton_Click(object sender, EventArgs e)
@@ -112,6 +134,15 @@ namespace HelpingHands
 
         private void DateBox_Click(object sender, EventArgs e)
         {
+            TargetDateBox = sender as EditText;
+            var dateTimeNow = DateTime.Now;
+            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day);
+            datePicker.Show();
+        }
+
+        private void DateBox_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus) return;
             TargetDateBox = sender as EditText;
             var dateTimeNow = DateTime.Now;
             DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day);
