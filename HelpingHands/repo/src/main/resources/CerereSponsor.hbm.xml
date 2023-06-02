@@ -12,6 +12,7 @@
         <property name="telefon" column="telefon"/>
         <property name="adresaSediului" column="adresaSediului"/>
         <property name="numeFirma" column="numeFirma"/>
+        <property name="status" column="status"/>
 
         <many-to-one name="volunteer" class="com.helpinghands.domain.Voluntar" fetch="select">
             <column name="idVoluntar" not-null="true" />

@@ -1,3 +1,4 @@
+using Android.Content;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Adapters;
@@ -17,8 +18,8 @@ namespace HelpingHands
         TextView AccNume;
         TextView AccEmail;
         TextView AccXpPct;
+        TextView AccInterests;
         Button AccApplyForSponsorButton;
-        Spinner AccInterestBox;        
 
         protected void OnCreateAccountPage()
         {
@@ -28,7 +29,7 @@ namespace HelpingHands
             AccNume = FindViewById<TextView>(Resource.Id.AccNume);
             AccEmail = FindViewById<TextView>(Resource.Id.AccEmail);
             AccXpPct = FindViewById<TextView>(Resource.Id.AccXpPct);
-            AccInterestBox = FindViewById<Spinner>(Resource.Id.AccInterestBox);
+            AccInterests = FindViewById<TextView> (Resource.Id.AccInterests);
 
             AccApplyForSponsorButton = FindViewById<Button>(Resource.Id.AccApplyForSponsorButton);
 
@@ -49,9 +50,11 @@ namespace HelpingHands
                     AccEmail.Text = AppSession.UserData.User.Email;
                     AccPrenume.Text = AppSession.UserData.User.Prenume;
                     AccXpPct.Text = AppSession.UserData.User.XpPoints.ToString();
+                    var interestsList = await API.Client.GetVoluntarInterests(AppSession.UserId);
+                    var interestsText = string.Join(", ", interestsList.Select(x => x.Name));
+
+                    AccInterests.Text = interestsText;
                 });
-                var interestAdapter = new InterestAdapter(this, (await API.Client.GetVoluntarInterests(AppSession.UserId)).ToList());                
-                RunOnUiThread(() => AccInterestBox.Adapter = interestAdapter);
             }
             catch (Exception e)
             {
@@ -61,7 +64,8 @@ namespace HelpingHands
 
         private void ApplyForSponsorButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Intent intent = new Intent(this, typeof(ApplySponsorshipActivity));
+            StartActivity(intent);
         }
     }
 }

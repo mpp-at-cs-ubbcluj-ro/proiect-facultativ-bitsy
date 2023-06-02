@@ -52,7 +52,8 @@
                             android:textSize="22dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(First Name)"                    
+                            android:text="(First Name)"  
+                            android:textColor="#B30064"
                             android:id="@+id/AccPrenume"
                             android:layout_gravity="fill_horizontal"/> 
                     </TableRow>
@@ -67,7 +68,8 @@
                             android:textSize="22dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"                    
-                            android:text="(Last Name)"                    
+                            android:text="(Last Name)"    
+                            android:textColor="#B30064"
                             android:id="@+id/AccNume"                     
                             />
                     </TableRow>
@@ -82,7 +84,8 @@
                             android:textSize="22dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"                    
-                            android:text="(Email)"                    
+                            android:text="(Email)"     
+                            android:textColor="#B30064"
                             android:id="@+id/AccEmail"                     
                             />
                     </TableRow>
@@ -97,7 +100,8 @@
                             android:textSize="22dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"                    
-                            android:text="(XP)"                    
+                            android:text="(XP)"      
+                            android:textColor="#B30064"
                             android:id="@+id/AccXpPct"                     
                             />
                     </TableRow>
@@ -108,9 +112,15 @@
                             android:layout_height="wrap_content"                    
                             android:text="Interests"
                             />
-                        <Spinner android:layout_width="300dp" android:layout_height="wrap_content" 
-                        android:id="@+id/AccInterestBox" 
-                        android:textSize="22dp"/>
+                        <TextView
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="22dp"
+                            android:textColor="#B30064"
+                            android:text="(Interese)"
+                            android:id="@+id/AccInterests"
+                        />
+
                     </TableRow>
                     <TableRow android:layout_width="match_parent" android:layout_height="wrap_content">
                 
@@ -119,7 +129,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"                    
                             android:text="Sponsor"
-                            />                                     
+                            />
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />                                     
                      </TableRow>
                      <TableRow android:layout_width="match_parent" android:layout_height="wrap_content">                                        
                         <Button

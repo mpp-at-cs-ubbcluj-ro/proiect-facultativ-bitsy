@@ -24,8 +24,9 @@ public class AppService implements IService {
     private final IPostRepo postRepo;
     private final IVoluntarRepo voluntarRepo;
     private final IUserSessionRepo userSessionRepo;
+    private final ISponsorTypeRepo sponsorTypeRepo;
 
-    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo) {
+    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo, ISponsorTypeRepo sponsorTypeRepo) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
         this.chatRoomRepo = chatRoomRepo;
@@ -37,6 +38,7 @@ public class AppService implements IService {
         this.postRepo = postRepo;
         this.voluntarRepo = voluntarRepo;
         this.userSessionRepo = userSessionRepo;
+        this.sponsorTypeRepo = sponsorTypeRepo;
     }
 
     @Override
@@ -357,5 +359,42 @@ public class AppService implements IService {
         logger.info("found interests {}", ((Collection<?>) interests).size());
         logger.traceExit();
         return interests;
+    }
+
+    @Override
+    public CerereSponsor applyForSponsorship(CerereSponsor cerereSponsor) {
+        logger.trace("");
+        logger.info("apply for Sponsorship - voluntar: {} ", cerereSponsor.getVolunteer());
+        CerereSponsor cerereSponsor1 = this.cerereSponsorRepo.applyforSponsorship(cerereSponsor);
+        logger.info("application succesfull {}", cerereSponsor1.getVolunteer() + " " + cerereSponsor1.getStatus());
+        logger.traceExit();
+        return cerereSponsor1;
+    }
+
+    @Override
+    public SponsorType getSponsorTypeByName(String name) throws ServiceException {
+        logger.trace("");
+        logger.info("getSponsorTypeByName {}", name);
+        var sponsorType = sponsorTypeRepo.getByName(name);
+
+        if(sponsorType==null){
+            logger.info("Error:{}", "Sponsor Type not found");
+            logger.traceExit();
+            throw new ServiceException("Sponsor Type not found");
+        }
+
+        logger.info("Ok:{}", sponsorType);
+        logger.traceExit();
+        return sponsorType;
+    }
+
+    @Override
+    public Iterable<SponsorType> getSponsorTypes() {
+        logger.trace("");
+        logger.info("getSponsorTypes {}");
+        Iterable<SponsorType> sponsorTypes = sponsorTypeRepo.getAll();
+        logger.info("Ok:{}", ((Collection<?>) sponsorTypes).size());
+        logger.traceExit();
+        return sponsorTypes;
     }
 }

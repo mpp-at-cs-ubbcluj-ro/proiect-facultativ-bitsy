@@ -65,5 +65,13 @@ namespace HelpingHands.API
 
         public static async Task<Eveniment[]> GetEvenimenteByVoluntar(int volId)
             => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={volId}");
+
+        public static async Task<SponsorType[]> GetSponsorTypes()
+            => await ClientBase.Get<SponsorType[]>($"/sponsorTypes");
+
+        public static async Task<CerereSponsor> ApplySponsorship(CerereSponsor sponsor)
+        {
+            return await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);
+        }
     }
 }

@@ -43,4 +43,9 @@ public interface IService {
 
     Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException;
 
+    CerereSponsor applyForSponsorship(CerereSponsor cerereSponsor);
+
+    SponsorType getSponsorTypeByName(String name) throws ServiceException;
+
+    Iterable<SponsorType> getSponsorTypes();
 }

@@ -6,6 +6,7 @@ import com.helpinghands.rest_services.data.AddVoluntarRequestData;
 import com.helpinghands.rest_services.data.Credentials;
 import com.helpinghands.rest_services.data.EventParams;
 import com.helpinghands.rest_services.data.ParticipantDTO;
+import com.helpinghands.rest_services.dto.CerereDTO;
 import com.helpinghands.rest_services.dto.EvenimentDTO;
 import com.helpinghands.rest_services.dto.PostDTO;
 import com.helpinghands.service.data.UserInfo;
@@ -224,18 +225,36 @@ public class HelpingHandsRestController {
     @RequestMapping(value="/posts", method = RequestMethod.POST)
     public ResponseEntity<?> addPostare (@RequestBody PostDTO postDTO){
         try{
-            Post post = new Post(postDTO.getDescriere(),postDTO.getData(),service.getEvenimentById(postDTO.getIdEv()), service.getVoluntarById(postDTO.getIdUser()));
-            return new ResponseEntity<Post>(post,HttpStatus.OK);
+            Post post = new Post(postDTO.getDescriere(),LocalDateTime.now(),service.getEvenimentById(postDTO.getIdEv()), service.getVoluntarById(postDTO.getIdUser()));
+            Post p = service.adaugaPostare(post);
+            return new ResponseEntity<Post>(p,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
-    // Se poate confunda cu "getInterestById(id)".
-    // Use "/interests?voluntar={id}" - implementat mai sus
+
     @RequestMapping(value = "/interests/{id}", method = RequestMethod.GET)
     public Iterable<Interest> getInterests(@PathVariable Integer id) throws ServiceException {
         return service.getVoluntarInterest(id);
+    }
+
+    @RequestMapping(value = "/sponsorship", method = RequestMethod.POST)
+    public ResponseEntity<?> applyForSponsorship(@RequestBody CerereDTO cerereDTO){
+        try{
+            CerereSponsor cerereSponsor = new CerereSponsor(service.getVoluntarById(cerereDTO.getVolId()), cerereDTO.getCifFirma(), cerereDTO.getTelefon(), cerereDTO.getAdresa(), cerereDTO.getNumeFirma(),service.getSponsorTypeByName(cerereDTO.getSponsorType()), "pending");
+            CerereSponsor cerereSp = service.applyForSponsorship(cerereSponsor);
+            return new ResponseEntity<CerereDTO>(cerereDTO, HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/sponsorTypes", method = RequestMethod.GET)
+    public Iterable<SponsorType> getSponsorTypes(){
+        return service.getSponsorTypes();
     }
 
 }
