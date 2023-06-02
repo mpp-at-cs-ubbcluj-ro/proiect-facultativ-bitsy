@@ -24,19 +24,12 @@ namespace HelpingHands
     public partial class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         GridLayout HomeView;
-<<<<<<< HEAD
-        GridLayout DashboardView;
-        GridLayout ProfileView;
-=======
-        GridLayout DashboardView;        
-
->>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
+        GridLayout DashboardView;                        
         ListView EvenimenteListView;
         ListView OrganizatorEvenimenteListView;
         ListView VoluntarEvenimenteListView;
         Button EvNextButton;
         Button EvPrevButton;
-        Button ApplyForSponsorButton;
         TextView EvPageTextView;
         Button CreateEvButton;        
 
@@ -60,24 +53,9 @@ namespace HelpingHands
             OrganizatorEvenimenteListView = FindViewById<ListView>(Resource.Id.OrganizatorEvenimenteListView);
             CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
             CreateEvButton.Click += CreateEvButton_Click;
-
-<<<<<<< HEAD
-
-            ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
-            ApplyForSponsorButton = FindViewById<Button>(Resource.Id.ApplyForSponsorButton);
-            //ApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
-
-
-            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
-
-
-            EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
-=======
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
             OrganizatorEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
             VoluntarEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
->>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
-
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
@@ -102,11 +80,7 @@ namespace HelpingHands
             base.OnResume();            
             Console.WriteLine("RESULTHERE");
             Task.Run(LoadDashboard);          
-        }
-        private async void ApplyForSponsorButton_Click(object sender, EventArgs e)
-        {
-            await MessageBox.Alert(this, "CLICK PE APPLY FOR SPONSOR");
-        }
+        }        
 
         private async void EvenimenteListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {                        
@@ -232,20 +206,6 @@ namespace HelpingHands
 
         }
 
-        async void LoadProfilePage()
-        {
-            try
-            {
-                Intent intent = new Intent(this, typeof(AccountDetails));
-                StartActivity(intent);
-            }
-            catch (Exception e)
-            {
-                await MessageBox.Alert(this, "Incarcarea paginii a esuat!", "Error");
-            }
-
-        }
-
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
@@ -259,28 +219,15 @@ namespace HelpingHands
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
-<<<<<<< HEAD
-                    ProfileView.Visibility= ViewStates.Gone;
-                    LoadDashboard();
-                    return true;
-                case Resource.Id.navigation_profile:
-                    HomeView.Visibility= ViewStates.Gone;
-                    DashboardView.Visibility= ViewStates.Gone;
-                    LoadProfilePage();
-                    return true;
-                case Resource.Id.navigation_notifications:
-                    
-=======
-                    ProfileView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;                    
                     LoadDashboard();
                     return true;
                 case Resource.Id.navigation_user:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Visible;                    
-                    return true;
+                    return true;                                
                 case Resource.Id.navigation_notifications:                    
->>>>>>> 8a11c750ca4e083d89da77cabb6b4c84a545d238
                     return true;
             }
             return false;

@@ -46,10 +46,6 @@ public class EvenimentRepo extends AbstractRepo<Eveniment> implements IEveniment
 
     @Override
     public Eveniment[] getByOrganizer(int organizerId) {
-        /*String query = "from Eveniment ev inner join Participant p " +
-                "where p.voluntar.id=:volId " +
-                "and p.organizer=:isOrg";*/
-
         String query="select ev from Eveniment as ev inner join ev.participants as p " +
                 "where p.voluntar.id=:volId " +
                 "and p.organizer=:isOrg";
@@ -59,6 +55,31 @@ public class EvenimentRepo extends AbstractRepo<Eveniment> implements IEveniment
             result.set(session.createQuery(query, Eveniment.class)
                     .setParameter("volId", organizerId)
                     .setParameter("isOrg", true)
+                    .stream()
+                    .filter(ev-> {
+                        // to force foreign references to load
+                        var x=ev.getInterests().size();
+                        var y=ev.getParticipants().size();
+                        var z=ev.getInitiator();
+                        return true;
+                    })
+                    .toArray(Eveniment[]::new));
+            tx.commit();
+        });
+        return result.get();
+    }
+
+    @Override
+    public Eveniment[] getByVoluntar(int volId){
+        String query="select ev from Eveniment as ev inner join ev.participants as p " +
+                "where p.voluntar.id=:volId " +
+                "and p.organizer=:isOrg";
+
+        AtomicReference<Eveniment[]> result = new AtomicReference<>();
+        Session.doTransaction((session, tx)->{
+            result.set(session.createQuery(query, Eveniment.class)
+                    .setParameter("volId", volId)
+                    .setParameter("isOrg", false)
                     .stream()
                     .filter(ev-> {
                         // to force foreign references to load

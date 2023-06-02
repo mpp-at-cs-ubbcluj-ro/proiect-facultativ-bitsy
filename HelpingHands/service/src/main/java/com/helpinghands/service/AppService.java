@@ -331,6 +331,16 @@ public class AppService implements IService {
     }
 
     @Override
+    public Eveniment[] getEvenimentByVoluntarId(Integer volId){
+        logger.traceEntry();
+        logger.info("getEvenimentByVoluntarId{} ", volId);
+        Eveniment[] eveniments = evenimentRepo.getByVoluntar(volId);
+        logger.info("Ok{} ", eveniments.length);
+        logger.traceExit();
+        return eveniments;
+    }
+
+    @Override
     public Post adaugaPostare(Post post) {
         logger.trace("");
         logger.info("addPostare {}", post);

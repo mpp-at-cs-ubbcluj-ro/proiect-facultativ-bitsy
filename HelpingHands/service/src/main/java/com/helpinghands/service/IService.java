@@ -38,6 +38,7 @@ public interface IService {
     Eveniment updateEveniment(Eveniment eveniment);
 
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
+    Eveniment[] getEvenimentByVoluntarId(Integer volId);
     Post adaugaPostare(Post post);
 
     Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException;
