@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using HelpingHands.Adapters;
+using HelpingHands.API;
 using HelpingHands.Data;
 using HelpingHands.Utils;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Android.App.DatePickerDialog;
+using static Java.Util.Jar.Attributes;
 
 namespace HelpingHands
 {
@@ -25,7 +27,7 @@ namespace HelpingHands
 
         EditText VolEvenimentName;
         EditText VolEvenimentDescription;        
-        Button VolButtonAddParticipant;
+        Button VolButtonUpdate;
         ListView ParticipantListView;
         Spinner InterestBox;
         EditText StartDateBox;
@@ -47,8 +49,8 @@ namespace HelpingHands
             ParticipantListView = FindViewById<ListView>(Resource.Id.ParticipantListView);
 
             VolEvenimentName = FindViewById<EditText>(Resource.Id.VolEvenimentName);
-            VolEvenimentDescription = FindViewById<EditText>(Resource.Id.VolEvenimentDescription);            
-            VolButtonAddParticipant = FindViewById<Button>(Resource.Id.VolButtonAddParticipant);
+            VolEvenimentDescription = FindViewById<EditText>(Resource.Id.VolEvenimentDescription);
+            VolButtonUpdate = FindViewById<Button>(Resource.Id.VolButtonUpdate);
             InterestBox = FindViewById<Spinner>(Resource.Id.InterestBox);
 
             StartDateBox = FindViewById<EditText>(Resource.Id.StartDateBox);
@@ -62,7 +64,7 @@ namespace HelpingHands
             EndDateBox.Text = Eveniment.EndDate.ToString("dd.MM.yyyy");
             LocatieBox.Text = Eveniment.Location;
 
-            VolButtonAddParticipant.Click += VolButtonAddParticipant_Click;
+            VolButtonUpdate.Click += VolButtonUpdate_Click;
 
             ParticipantListView.SetOnTouchListener(new ListTouchListener());
 
@@ -81,7 +83,7 @@ namespace HelpingHands
             if (!e.HasFocus) return;
             TargetDateBox = sender as EditText;
             var dateTimeNow = DateTime.Now;
-            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day);
+            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month - 1, dateTimeNow.Day);
             datePicker.Show();
         }
 
@@ -157,22 +159,51 @@ namespace HelpingHands
             //GetParticipants
         }
 
-        private void VolButtonAddParticipant_Click(object sender, EventArgs e)
+        private async void VolButtonUpdate_Click(object sender, EventArgs e)
         {
-
+            var nume = VolEvenimentName.Text;
+            var desc = VolEvenimentDescription.Text;
+            Console.WriteLine("Dates lalalala");
+            Console.WriteLine(StartDateBox.Text);
+            Console.WriteLine(EndDateBox.Text);
+            var startDate = DateTime.ParseExact(StartDateBox.Text, "dd.MM.yyyy", null);
+            var endDate = DateTime.ParseExact(EndDateBox.Text, "dd.MM.yyyy", null);
+            var loc = LocatieBox.Text;
+            var interest = new Interest[] { (InterestBox.Adapter as InterestAdapter)[InterestBox.SelectedItemPosition] };
+            var ev = new Eveniment
+            {
+                Id=Eveniment.Id,
+                Name = nume,
+                Description = desc,
+                StartDate = startDate,
+                EndDate = endDate,
+                Location = loc,
+                Interests = interest.Select(_ => _.Name).ToArray(),
+                InitiatorId = Eveniment.InitiatorId,
+                Status = Eveniment.Status
+            };
+            try
+            {
+                await Client.UpdateEveniment(ev);                
+                await MessageBox.Alert(this, "Eveniment updated successfully");                                
+            }
+            catch(Exception ex)
+            {
+                await MessageBox.Alert(this, ex.Message);
+            }
         }
 
         private void DateBox_Click(object sender, EventArgs e)
         {
             TargetDateBox = sender as EditText;
             var dateTimeNow = DateTime.Now;
-            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day);
+            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month - 1, dateTimeNow.Day);
             datePicker.Show();
         }
 
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
-            TargetDateBox.Text = new DateTime(year, month, dayOfMonth).ToString("dd.MM.yyyy");
+            TargetDateBox.Text = new DateTime(year, month + 1, dayOfMonth).ToString("dd.MM.yyyy");
         }
     }
 }

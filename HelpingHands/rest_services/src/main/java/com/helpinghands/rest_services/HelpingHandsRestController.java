@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @CrossOrigin
@@ -203,6 +204,18 @@ public class HelpingHandsRestController {
             evt.setStartDate(evdto.getStartDate());
         if(evdto.getEndDate()!=null)
             evt.setEndDate(evdto.getEndDate());
+        if(evdto.getInterests()!=null) {
+            evt.setInterests(Arrays.stream(evdto.getInterests())
+                    .map(name -> {
+                        try {
+                            return service.getInterestByName(name);
+                        } catch (ServiceException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .collect(Collectors.toSet()));
+        }
+
         evt.setStatus(evdto.getStatus());
 
         return EvenimentDTO.fromEveniment(service.updateEveniment(evt));

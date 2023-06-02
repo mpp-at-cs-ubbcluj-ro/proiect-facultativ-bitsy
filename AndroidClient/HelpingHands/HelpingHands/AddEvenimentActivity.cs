@@ -35,7 +35,7 @@ namespace HelpingHands
 
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
-            TargetDateBox.Text = new DateTime(year, month, dayOfMonth).ToString("dd.MM.yyyy");                               
+            TargetDateBox.Text = new DateTime(year, month+1, dayOfMonth).ToString("dd.MM.yyyy");                               
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -136,7 +136,7 @@ namespace HelpingHands
         {
             TargetDateBox = sender as EditText;
             var dateTimeNow = DateTime.Now;
-            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day);
+            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month-1, dateTimeNow.Day);
             datePicker.Show();
         }
 
@@ -145,7 +145,7 @@ namespace HelpingHands
             if (!e.HasFocus) return;
             TargetDateBox = sender as EditText;
             var dateTimeNow = DateTime.Now;
-            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day);
+            DatePickerDialog datePicker = new DatePickerDialog(this, this, dateTimeNow.Year, dateTimeNow.Month-1, dateTimeNow.Day);
             datePicker.Show();
         }
     }

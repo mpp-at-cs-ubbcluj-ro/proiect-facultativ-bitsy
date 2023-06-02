@@ -54,6 +54,12 @@ namespace HelpingHands.API
             return await ClientBase.Post<Eveniment>("/evenimente", eventParams);
         }
 
+        public static async Task<Eveniment> UpdateEveniment(Eveniment ev)
+        {
+            EventParams eventParams = new EventParams { Token = API.AppSession.UserData.Token, Eveniment = ev };
+            return await ClientBase.Put<Eveniment>($"/evenimente/{ev.Id}", eventParams);
+        }
+
         public static async Task<Interest[]> GetVoluntarInterests(int volId)
             => await ClientBase.Get<Interest[]>($"/interests?voluntar={volId}");
 
