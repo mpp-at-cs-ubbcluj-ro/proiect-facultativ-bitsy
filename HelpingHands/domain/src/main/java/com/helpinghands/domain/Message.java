@@ -4,6 +4,7 @@ public class Message implements IEntity {
     String text;
     Utilizator sender;
     ChatRoom chatRoom;
+    public Message() {}
 
     public Message(String text, Utilizator sender, ChatRoom chatRoom) {
         this.text = text;

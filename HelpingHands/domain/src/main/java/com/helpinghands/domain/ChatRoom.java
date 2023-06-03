@@ -4,6 +4,8 @@ public class ChatRoom implements IEntity {
     Eveniment eveniment;
     boolean isWithSponsor;
 
+    public ChatRoom() {}
+
     public ChatRoom(Eveniment eveniment, boolean isWithSponsor) {
         this.eveniment = eveniment;
         this.isWithSponsor = isWithSponsor;

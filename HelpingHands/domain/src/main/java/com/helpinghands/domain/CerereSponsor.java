@@ -1,12 +1,28 @@
 package com.helpinghands.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="CereriSponsor")
 public class CerereSponsor implements IEntity {
+    @ManyToOne(targetEntity = Voluntar.class,
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinColumn(name="idVoluntar")
     private Voluntar volunteer;
+    @Column(name="cifFirma")
     private String cifFirma;
+    @Column(name="telefon")
     private String telefon;
+    @Column(name="adresaSediului")
     private String adresaSediului;
+    @Column(name="numeFirma")
     private String numeFirma;
+    @ManyToOne(targetEntity = SponsorType.class,
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinColumn(name="isSponsorType") // vezi in tabel
     private SponsorType sponsorType;
+
+    @Column(name="status")
     private String status;
 
     public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType) {
@@ -29,6 +45,9 @@ public class CerereSponsor implements IEntity {
         this.sponsorType = sponsorType;
         this.status = status;
         //o sa avem pending, accepted si declined
+    }
+
+    public CerereSponsor() {
     }
 
     public Voluntar getVolunteer() {
@@ -87,6 +106,8 @@ public class CerereSponsor implements IEntity {
         this.status = status;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id=id;}

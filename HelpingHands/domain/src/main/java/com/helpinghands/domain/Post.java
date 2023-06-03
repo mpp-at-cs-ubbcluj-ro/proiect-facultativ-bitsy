@@ -8,6 +8,8 @@ public class Post implements IEntity {
     Eveniment eveniment;
     Utilizator author;
 
+    public Post() {}
+
     public Post(String descriere, LocalDateTime data, Eveniment eveniment, Utilizator author) {
         this.descriere = descriere;
         this.data = data;

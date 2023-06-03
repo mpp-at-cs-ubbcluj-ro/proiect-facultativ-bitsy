@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.StreamSupport;
 
@@ -31,18 +32,28 @@ public class CerereSponsorRepo extends AbstractRepo<CerereSponsor> implements IC
             var rt = cq.from(entityType);
             result.set(session.createQuery(cq.select(rt)).getResultList()
                     .stream().peek(c->{
+                        System.out.println(c.getVolunteer());
                         var x=c.getVolunteer();
+                        System.out.println();
                     }).toList());
             tx.commit();
         });
         logger.info("Got all");
         logger.traceExit();
         return result.get();
+
     }
 
     @Override
     public CerereSponsor getById(Integer id) {
         logger.trace("");
+        logger.info("Getting by id {} {}",id, entityType);
+        return  StreamSupport.stream(getAll().spliterator(), false)
+                .filter(x-> Objects.equals(x.getId(), id))
+                .findFirst()
+                .orElse(null);
+
+        /*logger.trace("");
         logger.info("Getting by id {} {}",id, entityType);
         AtomicReference<CerereSponsor> result=new AtomicReference<>();
         result.set(null);
@@ -54,6 +65,6 @@ public class CerereSponsorRepo extends AbstractRepo<CerereSponsor> implements IC
         });
         logger.info("Got by id {}",result.get());
         logger.traceExit();
-        return result.get();
+        return result.get();*/
     }
 }

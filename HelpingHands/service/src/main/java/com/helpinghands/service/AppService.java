@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
+
 import java.util.*;
 
 public class AppService implements IService {
@@ -411,6 +412,52 @@ public class AppService implements IService {
         logger.info("Ok:{}", ((Collection<?>) sponsorTypes).size());
         logger.traceExit();
         return sponsorTypes;
+    }
+
+    @Override
+    public CerereSponsor[] getPendingSponsorRequests() {
+        logger.trace("");
+        logger.info("getPendingSponsorRequests {}");
+        Iterable<CerereSponsor> cerereSponsors = cerereSponsorRepo.getAll();
+        List<CerereSponsor> cerereSponsorspending = new ArrayList<>();
+        for(CerereSponsor cerereSponsor: cerereSponsors){
+            if(cerereSponsor.getStatus().equals("pending")){
+                cerereSponsorspending.add(cerereSponsor);
+            }
+        }
+        logger.info("Ok:{}", ((Collection<?>) cerereSponsors).size());
+        logger.traceExit();
+        return  cerereSponsorspending.toArray(CerereSponsor[]::new);
+    }
+
+    @Override
+    public CerereSponsor addCerereSponsor(CerereSponsor cerereSponsor) {
+        logger.trace("");
+        logger.info("addCerereSponsor {0}", cerereSponsor);
+        CerereSponsor cerereSponsor1 = cerereSponsorRepo.add(cerereSponsor);
+        logger.info("Ok:{}", cerereSponsor1);
+        logger.traceExit();
+        return cerereSponsor1;
+    }
+
+    @Override
+    public CerereSponsor updateCerereSponsor(CerereSponsor cerereSponsor) {
+        logger.trace("");
+        logger.info("updateCerereSponsor {0}", cerereSponsor);
+        CerereSponsor cerereSponsor1 = cerereSponsorRepo.update(cerereSponsor);
+        logger.info("Ok:{}", cerereSponsor1);
+        logger.traceExit();
+        return cerereSponsor1;
+    }
+
+    @Override
+    public CerereSponsor getCerereSponsorById(Integer id) {
+        logger.trace("");
+        logger.info("getCerereSponsorById {}", id);
+        CerereSponsor cerereSponsor = cerereSponsorRepo.getById(id);
+        logger.info("Ok:{}", cerereSponsor);
+        logger.traceExit();
+        return cerereSponsor;
     }
 
 }
