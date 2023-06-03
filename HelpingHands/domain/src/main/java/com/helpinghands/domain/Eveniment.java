@@ -52,6 +52,10 @@ public class Eveniment implements IEntity {
 
     public Eveniment() { }
 
+    public Eveniment(Eveniment value) {
+
+    }
+
     @Override
     public String toString() {
         return "Eveniment{" +
