@@ -7,7 +7,7 @@ import com.helpinghands.service.data.UserInfo;
 public interface IService {
     UserInfo login(String username, String password) throws ServiceException;
     void logout(String token);
-
+    Eveniment[] getActualEvenimente();
     Utilizator createAccount(String username, String password, String email, String nume, String prenume) throws ServiceException;
     Iterable<Interest> getInterests();
 
@@ -22,8 +22,8 @@ public interface IService {
     void addVoluntarInterest(Voluntar voluntar, Interest interest);
     void removeVoluntarInterest(Voluntar voluntar, Interest interest);
     Eveniment addEvent(Eveniment e) throws ServiceException;
-    Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException;
 
+    Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException;
     Participant addOrganizer(Voluntar voluntar, Eveniment event) throws ServiceException;
 
     Eveniment deleteParticipantFromEveniment(Participant participant, Eveniment eveniment);
@@ -40,12 +40,8 @@ public interface IService {
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
     Eveniment[] getEvenimentByVoluntarId(Integer volId);
     Post adaugaPostare(Post post);
-
     Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException;
-
     CerereSponsor applyForSponsorship(CerereSponsor cerereSponsor);
-
     SponsorType getSponsorTypeByName(String name) throws ServiceException;
-
     Iterable<SponsorType> getSponsorTypes();
 }
