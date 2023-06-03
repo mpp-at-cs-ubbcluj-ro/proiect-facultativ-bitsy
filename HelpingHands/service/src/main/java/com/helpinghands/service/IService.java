@@ -4,6 +4,7 @@ import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.service.data.UserInfo;
 
+
 public interface IService {
     UserInfo login(String username, String password) throws ServiceException;
     void logout(String token);
@@ -48,4 +49,11 @@ public interface IService {
     SponsorType getSponsorTypeByName(String name) throws ServiceException;
 
     Iterable<SponsorType> getSponsorTypes();
+    CerereSponsor[] getPendingSponsorRequests();
+
+    CerereSponsor addCerereSponsor(CerereSponsor cerereSponsor);
+
+    CerereSponsor updateCerereSponsor(CerereSponsor cerereSponsor);
+
+    CerereSponsor getCerereSponsorById(Integer id);
 }
