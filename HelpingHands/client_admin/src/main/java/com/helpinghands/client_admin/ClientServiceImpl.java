@@ -38,6 +38,12 @@ public class ClientServiceImpl implements IService{
     }
 
     @Override
+    public Eveniment[] getActualEvenimente() {
+        return execute(()->restTemplate.getForObject(URL+"/actualevenimente",
+                Eveniment[].class));
+    }
+
+    @Override
     public Utilizator createAccount(String username, String password, String email, String nume, String prenume) throws ServiceException {
         return null;
     }
@@ -132,9 +138,34 @@ public class ClientServiceImpl implements IService{
         return new Eveniment[0];
     }
 
+    @Override
+    public Eveniment[] getEvenimentByVoluntarId(Integer volId) {
+        return new Eveniment[0];
+    }
+
 
     @Override
     public Post adaugaPostare(Post post) {
+        return null;
+    }
+
+    @Override
+    public Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public CerereSponsor applyForSponsorship(CerereSponsor cerereSponsor) {
+        return null;
+    }
+
+    @Override
+    public SponsorType getSponsorTypeByName(String name) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public Iterable<SponsorType> getSponsorTypes() {
         return null;
     }
 

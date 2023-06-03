@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.LoginPageController">
    <children>
-      <ImageView fitHeight="315.0" fitWidth="305.0" layoutX="246.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="315.0" fitWidth="305.0" layoutX="257.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../../logo.png" />
          </image>
@@ -21,13 +21,13 @@
             <Font name="System Bold Italic" size="22.0" />
          </font>
       </Label>
-      <TextField fx:id="loginUsername" layoutX="349.0" layoutY="298.0" />
-      <Label layoutX="232.0" layoutY="297.0" text="Username" textFill="#b60065">
+      <TextField fx:id="loginUsername" layoutX="376.0" layoutY="298.0" />
+      <Label layoutX="275.0" layoutY="297.0" text="Username" textFill="#b60065">
          <font>
             <Font name="System Bold Italic" size="19.0" />
          </font>
       </Label>
-      <Label layoutX="232.0" layoutY="363.0" text="Password" textFill="#b60065">
+      <Label layoutX="277.0" layoutY="363.0" text="Password" textFill="#b60065">
          <font>
             <Font name="System Bold Italic" size="19.0" />
          </font>
@@ -37,6 +37,6 @@
             <Font name="System Bold Italic" size="17.0" />
          </font>
       </Button>
-      <PasswordField fx:id="loginPassword" layoutX="350.0" layoutY="364.0" />
+      <PasswordField fx:id="loginPassword" layoutX="376.0" layoutY="364.0" />
    </children>
 </AnchorPane>

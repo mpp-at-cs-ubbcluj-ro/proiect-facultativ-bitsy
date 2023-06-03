@@ -62,8 +62,6 @@ public class HelpingHandsRestController {
         }
     }
 
-
-
     @RequestMapping(value="/logout",method = RequestMethod.GET)
     public ResponseEntity<?> logout(@RequestParam String token){
         service.logout(token);
@@ -251,11 +249,11 @@ public class HelpingHandsRestController {
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-
     @RequestMapping(value = "/sponsorTypes", method = RequestMethod.GET)
     public Iterable<SponsorType> getSponsorTypes(){
         return service.getSponsorTypes();
     }
+
 
     @RequestMapping(value = "/cererisponsoripending",method = RequestMethod.GET)
     public CerereSponsor[] getCereriSponsorPending(){
@@ -302,4 +300,12 @@ public class HelpingHandsRestController {
            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
        }
    }
+
+
+    @RequestMapping(value = "/actualevenimente", method = RequestMethod.GET)
+    public Eveniment[] getActualEvenimente() {
+        return service.getActualEvenimente();
+    }
+
+
 }

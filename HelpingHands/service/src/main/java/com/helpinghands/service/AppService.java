@@ -7,6 +7,8 @@ import com.helpinghands.service.data.UserInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDateTime;
+
 import java.util.*;
 
 public class AppService implements IService {
@@ -70,6 +72,22 @@ public class AppService implements IService {
         userSessionRepo.close(token);
         logger.info("Ok:{}", "Logout succesful");
         logger.traceExit();
+    }
+
+    @Override
+    public Eveniment[] getActualEvenimente() {
+        logger.trace("");
+        logger.info("Get evenimente actuale ");
+
+        List<Eveniment> eveniments = new ArrayList<>();
+
+        for(Eveniment eveniment: evenimentRepo.getAll()){
+            if(Objects.equals(eveniment.getStatus(), "PENDING")){
+                eveniments.add(eveniment);
+            }
+        }
+        logger.traceEntry();
+        return eveniments.toArray(Eveniment[]::new);
     }
 
     @Override
@@ -395,6 +413,7 @@ public class AppService implements IService {
         logger.traceExit();
         return sponsorTypes;
     }
+
     @Override
     public CerereSponsor[] getPendingSponsorRequests() {
         logger.trace("");
@@ -440,6 +459,5 @@ public class AppService implements IService {
         logger.traceExit();
         return cerereSponsor;
     }
-
 
 }

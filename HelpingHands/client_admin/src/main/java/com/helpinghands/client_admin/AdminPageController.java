@@ -1,9 +1,12 @@
 package com.helpinghands.client_admin;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.helpinghands.domain.Admin;
 import com.helpinghands.domain.CerereSponsor;
+import com.helpinghands.domain.Eveniment;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.data.UserInfo;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,16 +16,23 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class AdminPageController {
     private IService server;
     private UserInfo admin;
 
     ObservableList<CerereSponsor> cerereSponsorsModel = FXCollections.observableArrayList();
+    ObservableList<Eveniment> evenimentsModel = FXCollections.observableArrayList();
 
     @FXML
     Button logoutButton;
@@ -32,6 +42,21 @@ public class AdminPageController {
 
     @FXML
     Button declineButton;
+
+    @FXML
+    TableColumn<Eveniment,String> evenimentColumn;
+
+    @FXML
+    TableColumn<Eveniment,String> inceputColumn;
+
+    @FXML
+    TableColumn<Eveniment,String> sfarsitColumn;
+
+    @FXML
+    TableColumn<Eveniment,String> locatieColumn;
+
+    @FXML
+    TableColumn<Eveniment,String> descriereColumn;
 
     @FXML
     TableColumn<CerereSponsor,String> firmaColumn;
@@ -54,12 +79,45 @@ public class AdminPageController {
     @FXML
     TableView<CerereSponsor> cerereSponsorsList;
 
+    @FXML
+    TableView<Eveniment> evenimentList;
+
     public void setServer(IService server){
         this.server = server;
     }
 
     public void setAdmin(UserInfo admin){
         this.admin = admin;
+        initModel();
+    }
+
+    public void initModel(){
+        Eveniment[] messages = server.getActualEvenimente();
+//        List<Eveniment> evt = StreamSupport.stream(messages, false)
+//                .collect(Collectors.toList());
+        List<Eveniment> evt = List.of(messages);
+        System.out.println(evt.toArray().length);
+        System.out.println(evt);
+        //evt.forEach(System.out::println);
+        evenimentsModel.setAll(evt);
+    }
+
+    @FXML
+    public void initialize(){
+        //pt evenimente
+        evenimentColumn.setCellValueFactory(new PropertyValueFactory<Eveniment,String>("name"));
+        locatieColumn.setCellValueFactory(new PropertyValueFactory<Eveniment,String>("location"));
+        inceputColumn.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        ));
+        sfarsitColumn.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        ));
+        descriereColumn.setCellValueFactory(new PropertyValueFactory<Eveniment,String>("description"));
+
+        //models
+        //cerereSponsorsList.setItems(cerereSponsorsModel);
+        evenimentList.setItems(evenimentsModel);
     }
 
     @FXML
