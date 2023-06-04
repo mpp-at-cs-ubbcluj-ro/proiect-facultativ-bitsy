@@ -6,6 +6,7 @@ using Android.Service.Autofill;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Data;
+using HelpingHands.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace HelpingHands.API
         private static ClientBase ClientBase = new ClientBase();
 
         public static async Task<UserSession> Login(string username, string password)
-            => await ClientBase.Post<UserSession>("/login", new LoginInfo(username, password));
+            => await ClientBase.Post<UserSession>("/login", new LoginInfo(username, RSA.Encrypt(password)));
         
 
         public static async Task<Eveniment[]> GetEvenimente()
@@ -70,10 +71,10 @@ namespace HelpingHands.API
             => await ClientBase.Get<SponsorType[]>($"/sponsorTypes");
 
         public static async Task<CerereSponsor> ApplySponsorship(CerereSponsor sponsor)
-            => await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);        
+            => await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);
 
-        public static async Task<User> Register(string username, string password, string email, string nume, string prenume)        
-            => await ClientBase.Post<User>("/register", new { username, password, email, nume, prenume });
+        public static async Task<User> Register(string username, string password, string email, string nume, string prenume)
+            => await ClientBase.Post<User>("/register", new { username, password = RSA.Encrypt(password), email, nume, prenume });
 
         public static async Task Logout()
             => await Task.Run(() => ClientBase.GetNoContent($"/logout?token={AppSession.UserData.Token}"));
