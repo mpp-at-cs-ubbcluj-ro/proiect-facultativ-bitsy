@@ -23,6 +23,13 @@ namespace HelpingHands.API
         
         private HttpClient HttpClient = new HttpClient(new LoggingHandler(new HttpClientHandler()));
 
+        public async void GetNoContent(string uri)
+        {
+            HttpResponseMessage response = await HttpClient.GetAsync(URL_Base + uri);
+            if (!response.IsSuccessStatusCode)
+                throw new RestException(await response.Content.ReadAsStringAsync());            
+        }
+
         public async Task<T> Get<T>(string uri)
         {           
             HttpResponseMessage response = await HttpClient.GetAsync(URL_Base + uri);

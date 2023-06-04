@@ -149,6 +149,20 @@
                             android:textColor="#ffffff"                    
                             />
                     </TableRow>            
+                    <TableRow android:layout_width="match_parent" android:layout_height="wrap_content">                                        
+                        <Button
+                            android:textSize="15dp"
+                            android:layout_width="182.5dp"
+                            android:text="Logout"
+                            android:id="@+id/AccLogoutButton"
+                            android:gravity="center"
+                            android:layout_span="2"
+                            android:layout_gravity="left"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#B30064"
+                            android:textColor="#ffffff"                    
+                            />
+                    </TableRow>            
                 </TableLayout>        
             </GridLayout>
 
