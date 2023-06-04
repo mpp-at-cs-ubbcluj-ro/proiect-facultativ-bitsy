@@ -3,9 +3,7 @@ package com.helpinghands.rest_services;
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.rest_services.data.*;
-import com.helpinghands.rest_services.dto.CerereDTO;
-import com.helpinghands.rest_services.dto.EvenimentDTO;
-import com.helpinghands.rest_services.dto.PostDTO;
+import com.helpinghands.rest_services.dto.*;
 import com.helpinghands.service.data.UserInfo;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
@@ -15,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -302,6 +297,17 @@ public class HelpingHandsRestController {
     @RequestMapping(value = "/actualevenimente", method = RequestMethod.GET)
     public Eveniment[] getActualEvenimente() {
         return service.getActualEvenimente();
+    }
+
+    @RequestMapping(value="/posts/{id}",method = RequestMethod.GET)
+    public List<PostVolDTO> getPostOfVol(@PathVariable Integer id){
+        List<PostVolDTO> postVolDTOSList = new ArrayList<PostVolDTO>();
+        for(Post p: service.getPostsOfVoluntar(id))
+        {
+            PostVolDTO postVolDTO = new PostVolDTO(p.getId(), p.getAuthor().getId(), EvenimentNoParticipantsDTO.fromEveniment(p.getEveniment()), p.getDescriere(), p.getData());
+            postVolDTOSList.add(postVolDTO);
+        }
+        return  postVolDTOSList;
     }
 
 

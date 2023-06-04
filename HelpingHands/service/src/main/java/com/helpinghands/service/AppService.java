@@ -7,8 +7,6 @@ import com.helpinghands.service.data.UserInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDateTime;
-
 import java.util.*;
 
 public class AppService implements IService {
@@ -458,6 +456,21 @@ public class AppService implements IService {
         logger.info("Ok:{}", cerereSponsor);
         logger.traceExit();
         return cerereSponsor;
+    }
+
+    @Override
+    public List<Post> getPostsOfVoluntar(Integer volId) {
+        logger.trace("");
+        logger.info("getPostsOfVoluntar{} ", volId);
+        List<Post> volPosts = postRepo.getPostsOfVol(volId);
+//        for(Post p: postRepo.getAll()){
+//            for(Eveniment ev: getEvenimentByVoluntarId(volId))
+//                if(p.getEveniment().equals(ev.getId()))
+//                    volPosts.add(p);
+//        }
+        logger.info("Ok:{}", volPosts.size());
+        logger.traceExit();
+        return volPosts;
     }
 
 }

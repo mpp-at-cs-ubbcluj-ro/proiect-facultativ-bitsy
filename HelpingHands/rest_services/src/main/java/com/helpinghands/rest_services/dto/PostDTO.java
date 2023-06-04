@@ -12,6 +12,7 @@ public class PostDTO {
     private String descriere;
     private Integer idEv;
     private Integer idUser;
+    private LocalDateTime data;
 
     public Integer getId() {
         return id;
