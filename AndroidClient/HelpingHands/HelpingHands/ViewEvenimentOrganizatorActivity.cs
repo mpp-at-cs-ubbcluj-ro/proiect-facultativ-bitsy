@@ -8,6 +8,7 @@ using Android.Widget;
 using HelpingHands.Adapters;
 using HelpingHands.API;
 using HelpingHands.Data;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using Newtonsoft.Json;
 using System;
@@ -21,42 +22,29 @@ using static Java.Util.Jar.Attributes;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    internal class ViewEvenimentOrganizatorActivity : Activity, IOnDateSetListener
+    [UI.Layout("activity_view_eveniment_organizator")]
+    internal class ViewEvenimentOrganizatorActivity : AutoLoadActivity, IOnDateSetListener
     {
         Eveniment Eveniment;
 
-        EditText VolEvenimentName;
-        EditText VolEvenimentDescription;        
-        Button VolButtonUpdate;
-        ListView ParticipantListView;
-        Spinner InterestBox;
-        EditText StartDateBox;
-        EditText EndDateBox;
+        [Control] EditText VolEvenimentName;
+        [Control] EditText VolEvenimentDescription;
+        [Control] Button VolButtonUpdate;
+        [Control] ListView ParticipantListView;
+        [Control] Spinner InterestBox;
+        [Control] EditText StartDateBox;
+        [Control] EditText EndDateBox;
         EditText TargetDateBox;
-        EditText LocatieBox;
+        [Control] EditText LocatieBox;
 
         List<Participant> Participants = new List<Participant>();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             Console.WriteLine("HERE IN ORGANIZER");
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_view_eveniment_organizator);
+            base.OnCreate(savedInstanceState);            
 
-            Eveniment = JsonConvert.DeserializeObject<Eveniment>(Intent.GetStringExtra("eveniment"));
-
-            ParticipantListView = FindViewById<ListView>(Resource.Id.ParticipantListView);
-
-            VolEvenimentName = FindViewById<EditText>(Resource.Id.VolEvenimentName);
-            VolEvenimentDescription = FindViewById<EditText>(Resource.Id.VolEvenimentDescription);
-            VolButtonUpdate = FindViewById<Button>(Resource.Id.VolButtonUpdate);
-            InterestBox = FindViewById<Spinner>(Resource.Id.InterestBox);
-
-            StartDateBox = FindViewById<EditText>(Resource.Id.StartDateBox);
-            EndDateBox = FindViewById<EditText>(Resource.Id.EndDateBox);
-            LocatieBox = FindViewById<EditText>(Resource.Id.LocatieBox);
-            
+            Eveniment = JsonConvert.DeserializeObject<Eveniment>(Intent.GetStringExtra("eveniment"));                        
 
             VolEvenimentName.Text = Eveniment.Name;
             VolEvenimentDescription.Text = Eveniment.Description;

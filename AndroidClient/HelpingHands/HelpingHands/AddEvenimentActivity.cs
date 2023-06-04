@@ -9,6 +9,7 @@ using Google.Android.Material.BottomNavigation;
 using HelpingHands.Adapters;
 using HelpingHands.API;
 using HelpingHands.Data;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using System;
 using System.Collections.Generic;
@@ -20,16 +21,17 @@ using static Android.App.DatePickerDialog;
 namespace HelpingHands
 {    
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class AddEvenimentActivity : Activity, IOnDateSetListener
+    [UI.Layout("activity_add_eveniment")]
+    public class AddEvenimentActivity : AutoLoadActivity, IOnDateSetListener
     {
-        EditText NumeBox;
-        EditText DescriereBox;
-        EditText StartDateBox;
-        EditText EndDateBox;
+        [Control] EditText NumeBox;
+        [Control] EditText DescriereBox;
+        [Control] EditText StartDateBox;
+        [Control] EditText EndDateBox;
         EditText TargetDateBox;
-        Spinner InterestBox;
-        EditText LocatieBox;
-        Button AddEventButton;
+        [Control] Spinner InterestBox;
+        [Control] EditText LocatieBox;
+        [Control] Button AddEventButton;
 
         InterestAdapter InterestAdapter;
 
@@ -40,18 +42,7 @@ namespace HelpingHands
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_add_eveniment);
-
-            NumeBox = FindViewById<EditText>(Resource.Id.NumeBox);
-            DescriereBox = FindViewById<EditText>(Resource.Id.DescriereBox);
-            LocatieBox = FindViewById<EditText>(Resource.Id.LocatieBox);
-            InterestBox = FindViewById<Spinner>(Resource.Id.InterestBox);
-
-            StartDateBox = FindViewById<EditText>(Resource.Id.StartDateBox);
-            EndDateBox = FindViewById<EditText>(Resource.Id.EndDateBox);
-            AddEventButton = FindViewById<Button>(Resource.Id.AddEventButton);
+            base.OnCreate(savedInstanceState);                                                
 
             AddEventButton.Click += AddEventButton_Click;
             
