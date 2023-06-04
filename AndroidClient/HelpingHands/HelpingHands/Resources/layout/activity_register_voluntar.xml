@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8" ?> 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,62 +15,58 @@
         <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"                
-        android:text="Apply for sponship account" android:layout_columnSpan="2" android:textSize="18dp" />        
+        android:text="Inregistrare voluntar" android:layout_columnSpan="2" android:textSize="18dp" />        
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_columnSpan="2"/>        
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
-        android:text="CifFirma"/>
+        android:text="Nume utilizator"/>
         <EditText
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:id="@+id/CifFirmaBox"                                    
+            android:id="@+id/UsernameBox"                                    
              />
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
-        android:text="Telefon"/>
-        <EditText
-            android:id="@+id/TelefonBox"
-            android:inputType="phone"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content" />
+        android:text="Parola"/>
         
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
-        android:text="Adresa Firmei"/>        
-        <EditText android:layout_width="300dp" android:layout_height="wrap_content" 
-            android:id="@+id/AdresaBox"  />
+        <EditText android:id="@+id/Pass1Box"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:layout_width="300dp"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
-        android:text="Nume Firma"/>        
+        android:text="Confirma Parola"/>
+        
+        <EditText android:id="@+id/Pass2Box"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:layout_width="300dp"/>
+               
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
+        android:text="Email"/>        
+        <EditText android:layout_width="300dp" android:layout_height="wrap_content" 
+            android:id="@+id/EmailBox" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
+        android:text="Nume"/>        
         <EditText android:layout_width="300dp" android:layout_height="wrap_content" 
             android:id="@+id/NumeBox" />
 
-
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Type of sponsorship"
-            android:height="70dp"
-            android:paddingTop="26dp"
-            android:layout_gravity="center_vertical" 
-            />        
-        <Spinner android:layout_width="200dp" android:layout_height="70dp" 
-            android:id="@+id/TypesBox" 
-             />
-
-
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
+        android:text="Prenume"/>        
+        <EditText android:layout_width="300dp" android:layout_height="wrap_content" 
+            android:id="@+id/PrenumeBox" />       
 
         <Button
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:id="@+id/ApplySponsorshipButton"
-             android:backgroundTint="#B30064"
-            android:textColor="#ffffff"   
-             android:text="Send Application"/>        
-        
+             android:id="@+id/RegisterButton"
+             android:text="Ma inregistrez"
+             android:layout_marginRight="70dp"
+             android:backgroundTint="#B30064" 
+             android:textColor="#ffffff"/>                
 
-    </GridLayout>
-    
-   
+    </GridLayout>   
 
 </RelativeLayout>

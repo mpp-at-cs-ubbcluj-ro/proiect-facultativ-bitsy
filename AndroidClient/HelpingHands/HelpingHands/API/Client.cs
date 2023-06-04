@@ -70,8 +70,11 @@ namespace HelpingHands.API
             => await ClientBase.Get<SponsorType[]>($"/sponsorTypes");
 
         public static async Task<CerereSponsor> ApplySponsorship(CerereSponsor sponsor)
+            => await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);        
+
+        public static async Task<User> Register(string username, string password, string email, string nume, string prenume)
         {
-            return await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);
+            return await ClientBase.Post<User>("/register", new { username, password, email, nume, prenume });
         }
     }
 }

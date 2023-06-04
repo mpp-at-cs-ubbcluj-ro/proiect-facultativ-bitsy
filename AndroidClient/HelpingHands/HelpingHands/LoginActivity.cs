@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.SE.Omapi;
@@ -17,6 +18,7 @@ namespace HelpingHands
         EditText PasswordBox;
         EditText UsernameBox;
         Button LoginButton;
+        TextView RegisterLink;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -27,8 +29,17 @@ namespace HelpingHands
             PasswordBox = FindViewById<EditText>(Resource.Id.PasswordBox);
             UsernameBox = FindViewById<EditText>(Resource.Id.UsernameBox);
             LoginButton = FindViewById<Button>(Resource.Id.LoginButton);
-            
+            RegisterLink = FindViewById<TextView>(Resource.Id.RegisterLink);
+            RegisterLink.PaintFlags |= PaintFlags.UnderlineText;
+
             LoginButton.Click += LoginButton_Clicked;
+            RegisterLink.Click += RegisterLink_Click;
+        }
+
+        private void RegisterLink_Click(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(this, typeof(RegisterVoluntarActivity));
+            StartActivity(intent);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

@@ -2,10 +2,7 @@ package com.helpinghands.rest_services;
 
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
-import com.helpinghands.rest_services.data.AddVoluntarRequestData;
-import com.helpinghands.rest_services.data.Credentials;
-import com.helpinghands.rest_services.data.EventParams;
-import com.helpinghands.rest_services.data.ParticipantDTO;
+import com.helpinghands.rest_services.data.*;
 import com.helpinghands.rest_services.dto.CerereDTO;
 import com.helpinghands.rest_services.dto.EvenimentDTO;
 import com.helpinghands.rest_services.dto.PostDTO;
@@ -53,12 +50,12 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/register",method = RequestMethod.POST)
-    public ResponseEntity<?> UtilizatorRegister (@RequestParam String username,@RequestParam String password,@RequestParam String email,@RequestParam String nume,@RequestParam String prenume){
+    public ResponseEntity<?> UtilizatorRegister (@RequestBody UserRegisterParams params){
         try{
-            Utilizator utilizator  =service.createAccount(username,password,email,nume,prenume);
-            return new ResponseEntity<Utilizator>(utilizator,HttpStatus.OK);
+            Utilizator utilizator  =service.createAccount(params.getUsername(),params.getPassword(),params.getEmail(),params.getNume(),params.getPrenume());
+            return new ResponseEntity<>(UserDTO.fromUtilizator(utilizator),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
