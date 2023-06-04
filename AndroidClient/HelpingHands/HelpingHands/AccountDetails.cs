@@ -21,13 +21,28 @@ namespace HelpingHands
         [Control] TextView AccXpPct;
         [Control] TextView AccInterests;
         [Control] Button AccApplyForSponsorButton;
+        [Control] Button AccLogoutButton;
 
         protected void OnCreate_AccountPage()
         {            
             AccApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
+            AccLogoutButton.Click += AccLogoutButton_Click;
 
             ProfileView.Visibility = ViewStates.Gone;
             Task.Run(Load);
+        }
+
+        private async void AccLogoutButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await Client.Logout();                
+                StartActivity(new Intent(this, typeof(LoginActivity)));
+            }
+            catch(Exception ex)
+            {
+                await MessageBox.Alert(this, ex.Message, "Logout failed");
+            }
         }
 
         async void Load()

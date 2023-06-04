@@ -72,9 +72,10 @@ namespace HelpingHands.API
         public static async Task<CerereSponsor> ApplySponsorship(CerereSponsor sponsor)
             => await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);        
 
-        public static async Task<User> Register(string username, string password, string email, string nume, string prenume)
-        {
-            return await ClientBase.Post<User>("/register", new { username, password, email, nume, prenume });
-        }
+        public static async Task<User> Register(string username, string password, string email, string nume, string prenume)        
+            => await ClientBase.Post<User>("/register", new { username, password, email, nume, prenume });
+
+        public static async Task Logout()
+            => await Task.Run(() => ClientBase.GetNoContent($"/logout?token={AppSession.UserData.Token}"));
     }
 }

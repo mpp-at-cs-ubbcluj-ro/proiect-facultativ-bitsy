@@ -52,13 +52,12 @@ namespace HelpingHands
 
                 var user = await Client.Register(username, pass1, email, nume, prenume);
                 await MessageBox.Alert(this, "Register successful");
-                Intent intent = new Intent(this, typeof(LoginActivity));
-                StartActivity(intent);
+                StartActivity(new Intent(this, typeof(LoginActivity)));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await MessageBox.Alert(this, ex.Message, "Error");
-            }                        
+            }
         }
     }
 }
