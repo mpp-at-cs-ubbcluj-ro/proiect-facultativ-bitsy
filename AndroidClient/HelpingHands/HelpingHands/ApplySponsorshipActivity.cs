@@ -9,6 +9,7 @@ using Google.Android.Material.BottomNavigation;
 using HelpingHands.Adapters;
 using HelpingHands.API;
 using HelpingHands.Data;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using System;
 using System.Collections.Generic;
@@ -21,35 +22,23 @@ using static Android.Icu.Text.Transliterator;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class ApplySponsorshipActivity : Activity
+    [UI.Layout("activity_apply_sponsorship")]
+    public class ApplySponsorshipActivity : AutoLoadActivity
     {
-        EditText CifFirmaBox;
-        EditText TelefonBox;
-        EditText AdresaBox;
-        EditText NumeBox;
-        Spinner TypesBox;
-        Button ApplySponsorshipButton;
+        [Control] EditText CifFirmaBox;
+        [Control] EditText TelefonBox;
+        [Control] EditText AdresaBox;
+        [Control] EditText NumeBox;
+        [Control] Spinner TypesBox;
+        [Control] Button ApplySponsorshipButton;
 
         SponsorTypesAdapter SponsorTypesAdapter;
 
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_apply_sponsorship);
-
-            NumeBox = FindViewById<EditText>(Resource.Id.NumeBox);
-            CifFirmaBox = FindViewById<EditText>(Resource.Id.CifFirmaBox);
-            AdresaBox = FindViewById<EditText>(Resource.Id.AdresaBox);
-            TelefonBox = FindViewById<EditText>(Resource.Id.TelefonBox);
-
-            TypesBox = FindViewById<Spinner>(Resource.Id.TypesBox);
-
-            ApplySponsorshipButton = FindViewById<Button>(Resource.Id.ApplySponsorshipButton);
-
+            base.OnCreate(savedInstanceState);           
             ApplySponsorshipButton.Click += ApplySponsorshipButton_Click;
-
             Task.Run(Load);
         }
 

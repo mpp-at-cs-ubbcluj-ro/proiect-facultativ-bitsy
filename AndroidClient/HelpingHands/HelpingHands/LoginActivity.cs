@@ -7,29 +7,25 @@ using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.API;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using System;
 
 namespace HelpingHands
 {
-    [Activity(Label = "HelpingHands", Theme = "@style/AppTheme", MainLauncher = true)]    
-    public class LoginActivity : Activity
+    [Activity(Label = "HelpingHands", Theme = "@style/AppTheme", MainLauncher = true)]
+    [UI.Layout("activity_login")]
+    public class LoginActivity : AutoLoadActivity
     {
-        EditText PasswordBox;
-        EditText UsernameBox;
-        Button LoginButton;
-        TextView RegisterLink;
+        [Control] EditText PasswordBox;
+        [Control] EditText UsernameBox;
+        [Control] Button LoginButton;
+        [Control] TextView RegisterLink;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_login);
-
-            PasswordBox = FindViewById<EditText>(Resource.Id.PasswordBox);
-            UsernameBox = FindViewById<EditText>(Resource.Id.UsernameBox);
-            LoginButton = FindViewById<Button>(Resource.Id.LoginButton);
-            RegisterLink = FindViewById<TextView>(Resource.Id.RegisterLink);
+            base.OnCreate(savedInstanceState);            
+            
             RegisterLink.PaintFlags |= PaintFlags.UnderlineText;
 
             LoginButton.Click += LoginButton_Clicked;

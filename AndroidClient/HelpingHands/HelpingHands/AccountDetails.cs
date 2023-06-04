@@ -3,6 +3,7 @@ using Android.Views;
 using Android.Widget;
 using HelpingHands.Adapters;
 using HelpingHands.API;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using System;
 using System.Linq;
@@ -12,27 +13,17 @@ namespace HelpingHands
 {
     public partial class MainVoluntarActivity
     {
-        GridLayout ProfileView;
+        [Control] GridLayout ProfileView;
 
-        TextView AccPrenume;
-        TextView AccNume;
-        TextView AccEmail;
-        TextView AccXpPct;
-        TextView AccInterests;
-        Button AccApplyForSponsorButton;
+        [Control] TextView AccPrenume;
+        [Control] TextView AccNume;
+        [Control] TextView AccEmail;
+        [Control] TextView AccXpPct;
+        [Control] TextView AccInterests;
+        [Control] Button AccApplyForSponsorButton;
 
-        protected void OnCreateAccountPage()
-        {
-            ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
-
-            AccPrenume = FindViewById<TextView>(Resource.Id.AccPrenume);
-            AccNume = FindViewById<TextView>(Resource.Id.AccNume);
-            AccEmail = FindViewById<TextView>(Resource.Id.AccEmail);
-            AccXpPct = FindViewById<TextView>(Resource.Id.AccXpPct);
-            AccInterests = FindViewById<TextView> (Resource.Id.AccInterests);
-
-            AccApplyForSponsorButton = FindViewById<Button>(Resource.Id.AccApplyForSponsorButton);
-
+        protected void OnCreate_AccountPage()
+        {            
             AccApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
 
             ProfileView.Visibility = ViewStates.Gone;
