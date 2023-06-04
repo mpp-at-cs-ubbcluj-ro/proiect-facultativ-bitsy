@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<ScrollPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.AdminPageController">
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.AdminPageController">
    <content>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="876.0" prefWidth="1126.0">
          <children>
@@ -36,7 +35,7 @@
                   <Font name="System Bold Italic" size="25.0" />
                </font>
             </Label>
-            <Label layoutX="45.0" layoutY="128.0" prefHeight="36.0" prefWidth="234.0" text="Sponsorship applications" textFill="#b60065">
+            <Label layoutX="45.0" layoutY="128.0" prefHeight="36.0" prefWidth="250.0" text="Sponsorship applications" textFill="#b60065">
                <font>
                   <Font name="System Bold Italic" size="20.0" />
                </font>
