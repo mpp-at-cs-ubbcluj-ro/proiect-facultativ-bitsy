@@ -59,6 +59,9 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:id="@+id/AddEventButton"
+             android:layout_marginRight="70dp"
+             android:backgroundTint="#B30064" 
+             android:textColor="#ffffff"
              android:text="Creeaza"/>        
         
 

@@ -3,36 +3,11 @@ package com.helpinghands.rest_services.data;
 import com.helpinghands.domain.Interest;
 import com.helpinghands.domain.Voluntar;
 
-public class VoluntarDTO {
-    private String username;
-    private String email;
-    private String nume;
-    private String prenume;
-    private int id;
+public class VoluntarDTO extends UserDTO {
     private String[] interests;
     private int xpPoints;
     private Boolean isSponsor;
     private Boolean isActiveSponsor;
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setNume(String nume) {
-        this.nume = nume;
-    }
-
-    public void setPrenume(String prenume) {
-        this.prenume = prenume;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setXpPoints(int xpPoints) {
         this.xpPoints = xpPoints;
@@ -44,26 +19,6 @@ public class VoluntarDTO {
 
     public void setActiveSponsor(Boolean activeSponsor) {
         isActiveSponsor = activeSponsor;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getNume() {
-        return nume;
-    }
-
-    public String getPrenume() {
-        return prenume;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getXpPoints() {

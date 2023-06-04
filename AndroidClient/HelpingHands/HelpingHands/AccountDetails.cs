@@ -3,6 +3,7 @@ using Android.Views;
 using Android.Widget;
 using HelpingHands.Adapters;
 using HelpingHands.API;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using System;
 using System.Linq;
@@ -12,31 +13,36 @@ namespace HelpingHands
 {
     public partial class MainVoluntarActivity
     {
-        GridLayout ProfileView;
+        [Control] GridLayout ProfileView;
 
-        TextView AccPrenume;
-        TextView AccNume;
-        TextView AccEmail;
-        TextView AccXpPct;
-        TextView AccInterests;
-        Button AccApplyForSponsorButton;
+        [Control] TextView AccPrenume;
+        [Control] TextView AccNume;
+        [Control] TextView AccEmail;
+        [Control] TextView AccXpPct;
+        [Control] TextView AccInterests;
+        [Control] Button AccApplyForSponsorButton;
+        [Control] Button AccLogoutButton;
 
-        protected void OnCreateAccountPage()
-        {
-            ProfileView = FindViewById<GridLayout>(Resource.Id.ProfileView);
-
-            AccPrenume = FindViewById<TextView>(Resource.Id.AccPrenume);
-            AccNume = FindViewById<TextView>(Resource.Id.AccNume);
-            AccEmail = FindViewById<TextView>(Resource.Id.AccEmail);
-            AccXpPct = FindViewById<TextView>(Resource.Id.AccXpPct);
-            AccInterests = FindViewById<TextView> (Resource.Id.AccInterests);
-
-            AccApplyForSponsorButton = FindViewById<Button>(Resource.Id.AccApplyForSponsorButton);
-
+        protected void OnCreate_AccountPage()
+        {            
             AccApplyForSponsorButton.Click += ApplyForSponsorButton_Click;
+            AccLogoutButton.Click += AccLogoutButton_Click;
 
             ProfileView.Visibility = ViewStates.Gone;
             Task.Run(Load);
+        }
+
+        private async void AccLogoutButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await Client.Logout();                
+                StartActivity(new Intent(this, typeof(LoginActivity)));
+            }
+            catch(Exception ex)
+            {
+                await MessageBox.Alert(this, ex.Message, "Logout failed");
+            }
         }
 
         async void Load()

@@ -2,10 +2,7 @@ package com.helpinghands.rest_services;
 
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
-import com.helpinghands.rest_services.data.AddVoluntarRequestData;
-import com.helpinghands.rest_services.data.Credentials;
-import com.helpinghands.rest_services.data.EventParams;
-import com.helpinghands.rest_services.data.ParticipantDTO;
+import com.helpinghands.rest_services.data.*;
 import com.helpinghands.rest_services.dto.CerereDTO;
 import com.helpinghands.rest_services.dto.EvenimentDTO;
 import com.helpinghands.rest_services.dto.PostDTO;
@@ -53,12 +50,12 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/register",method = RequestMethod.POST)
-    public ResponseEntity<?> UtilizatorRegister (@RequestParam String username,@RequestParam String password,@RequestParam String email,@RequestParam String nume,@RequestParam String prenume){
+    public ResponseEntity<?> UtilizatorRegister (@RequestBody UserRegisterParams params){
         try{
-            Utilizator utilizator  =service.createAccount(username,password,email,nume,prenume);
-            return new ResponseEntity<Utilizator>(utilizator,HttpStatus.OK);
+            Utilizator utilizator  =service.createAccount(params.getUsername(),params.getPassword(),params.getEmail(),params.getNume(),params.getPrenume());
+            return new ResponseEntity<>(UserDTO.fromUtilizator(utilizator),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -255,9 +252,57 @@ public class HelpingHandsRestController {
     }
 
 
+    @RequestMapping(value = "/cererisponsoripending",method = RequestMethod.GET)
+    public CerereSponsor[] getCereriSponsorPending(){
+        return service.getPendingSponsorRequests();
+    }
+
+   @RequestMapping(value = "/cererisponsors",method= RequestMethod.POST)
+    public ResponseEntity<?> addCerereSponsorizare(@RequestBody CerereDTO cerereDTO){
+       try{
+           CerereSponsor cerereSponsor = new CerereSponsor(service.getVoluntarById(cerereDTO.getVolId()), cerereDTO.getCifFirma(), cerereDTO.getTelefon(), cerereDTO.getAdresa(), cerereDTO.getNumeFirma(),service.getSponsorTypeByName(cerereDTO.getSponsorType()), "pending");
+           CerereSponsor cerereSponsor1 = service.addCerereSponsor(cerereSponsor);
+           return new ResponseEntity<CerereDTO>(cerereDTO,HttpStatus.OK);
+       } catch (Exception e) {
+           return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+       }
+   }
+
+   //de testat aici
+   @RequestMapping(value = "/cererisponsors/{id}",method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCerereSponsorizare(@PathVariable Integer id, @RequestBody CerereDTO cerereDTO){
+
+         try{
+              CerereSponsor cerereSponsor = service.getCerereSponsorById(id);
+              cerereSponsor.setAdresaSediului(cerereDTO.getAdresa());
+              cerereSponsor.setCifFirma(cerereDTO.getCifFirma());
+              cerereSponsor.setNumeFirma(cerereDTO.getNumeFirma());
+              cerereSponsor.setTelefon(cerereDTO.getTelefon());
+              cerereSponsor.setSponsorType(service.getSponsorTypeByName(cerereDTO.getSponsorType()));
+              cerereSponsor.setStatus("pending");
+              CerereSponsor cerereSponsor1 = service.updateCerereSponsor(cerereSponsor);
+              return new ResponseEntity<CerereDTO>(cerereDTO,HttpStatus.OK);
+         } catch (Exception e) {
+              return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+         }
+   }
+
+   @RequestMapping(value="/cereresponsor/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getCerereSponsorById(@PathVariable Integer id) {
+       System.out.println("am ajuns aici nu e bad rewuest");
+       try {
+           CerereSponsor cerereSponsor = service.getCerereSponsorById(id);
+           return new ResponseEntity<CerereSponsor>(cerereSponsor, HttpStatus.OK);
+       } catch (Exception e) {
+           return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+       }
+   }
+
+
     @RequestMapping(value = "/actualevenimente", method = RequestMethod.GET)
     public Eveniment[] getActualEvenimente() {
         return service.getActualEvenimente();
     }
+
 
 }

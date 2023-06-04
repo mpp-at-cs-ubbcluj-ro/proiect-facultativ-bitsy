@@ -33,5 +33,7 @@
         <mapping resource="Post.hbm.xml"/>
         <mapping resource="Notification.hbm.xml"/>
         <mapping class="com.helpinghands.domain.Participant"/>
+        <mapping class="com.helpinghands.domain.CerereSponsor"/>
+        <mapping resource="CerereSponsor.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

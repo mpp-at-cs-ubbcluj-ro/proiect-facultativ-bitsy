@@ -7,5 +7,4 @@ import com.helpinghands.domain.Voluntar;
 public interface ICerereSponsorRepo extends IRepo<CerereSponsor>{
     CerereSponsor applyforSponsorship(CerereSponsor cerereSponsor);
 
-
 }
