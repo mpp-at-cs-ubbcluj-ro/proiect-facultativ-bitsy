@@ -389,6 +389,12 @@ public class HelpingHandsRestController {
         return "OK";
     }
 
+    @RequestMapping(value="/users/passwordreset",method = RequestMethod.PUT)
+    public String change(@RequestBody Credentials credentials) throws ServiceException {
+        service.resetPassword(credentials.getUsername(), credentials.getPassword());
+        return "OK";
+    }
+
 
 
 }

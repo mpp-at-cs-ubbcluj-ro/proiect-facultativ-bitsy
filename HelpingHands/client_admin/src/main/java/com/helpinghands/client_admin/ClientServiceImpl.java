@@ -12,10 +12,7 @@ import com.helpinghands.service.security.RSA;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -234,6 +231,18 @@ public class ClientServiceImpl implements IService{
     public void modifyExpPoints(Voluntar vol, Integer amount) {
 
     }
+
+    @Override
+    public UserInfo resetPassword(String username, String password) {
+
+        return null;
+    }
+
+    @Override
+    public Utilizator getUserByName(String username) throws ServiceException {
+        return null;
+    }
+
     private static final String PUBLIC_KEY =
             "-----BEGIN PUBLIC KEY-----\n" +
             "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGtQfpFSJFn38TfEOsakcydPCc85\n" +

@@ -63,4 +63,10 @@ public interface IService {
     void setProfilePic(int userId, byte[] bytes) throws ServiceException;
 
     void modifyExpPoints(Voluntar vol, Integer amount);
+
+    UserInfo resetPassword(String username, String password);
+
+    Utilizator getUserByName(String username) throws ServiceException;
+
+
 }
