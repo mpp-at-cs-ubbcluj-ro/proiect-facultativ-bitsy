@@ -33,7 +33,8 @@ namespace HelpingHands.API
             => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={orgId}&isOrganizer=1");
 
         public static async Task<Participant> AddVoluntarToEveniment(int eventId, int volId, string role)
-            => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants", new RequestDataAddVoluntar(volId, role));
+            => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants",
+                new { idVoluntar = volId, role, token = AppSession.UserData.Token });                
 
         public static async Task<Eveniment> RemoveParticipantFromEveniment(int eventId, int participantId)
             => await ClientBase.Delete<Eveniment>($"/evenimente/{eventId}/participants/{participantId}?token={AppSession.UserData.Token}");
