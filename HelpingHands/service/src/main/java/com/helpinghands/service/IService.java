@@ -60,4 +60,6 @@ public interface IService {
     byte[] getProfilePic(int userId) throws ServiceException;
 
     void setProfilePic(int userId, byte[] bytes) throws ServiceException;
+
+    void modifyExpPoints(Voluntar vol, Integer amount);
 }

@@ -537,4 +537,13 @@ public class AppService implements IService {
             throw new ServiceException(e.getMessage());
         }
     }
+
+    @Override
+    public void modifyExpPoints(Voluntar vol, Integer amount) {
+        logger.trace("");
+        logger.info("modifyExp Points of{} ", vol);
+        Integer pct = voluntarRepo.modifyPoints(vol, amount);
+        logger.info("Ok; New Points: {}", pct);
+        logger.traceExit();
+    }
 }

@@ -104,6 +104,7 @@ namespace HelpingHands
                 await MessageBox.Alert(this, "Evenimentul a fost adaugat cu succes");
 
                 var intent = new Intent(this, typeof(MainVoluntarActivity));
+                Toast.MakeText(Application.Context, "Ai castigat 150 de puncte Xp!", ToastLength.Short).Show();
                 intent.PutExtra("tab", 1);
                 StartActivity(intent);                
             }
