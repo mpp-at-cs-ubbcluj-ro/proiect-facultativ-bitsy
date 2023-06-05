@@ -3,6 +3,7 @@ package com.helpinghands.client_admin;
 import com.helpinghands.client_admin.data.UserCredentials;
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
+import com.helpinghands.rest_services.dto.CerereDTO;
 import com.helpinghands.rest_services.dto.PostDTO;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
@@ -11,7 +12,6 @@ import com.helpinghands.service.security.RSA;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
-
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import java.security.NoSuchAlgorithmException;
@@ -193,7 +193,8 @@ public class ClientServiceImpl implements IService{
 
     @Override
     public CerereSponsor[] getPendingSponsorRequests() {
-        return new CerereSponsor[0];
+        return execute(()->restTemplate.getForObject(URL+"/cererisponsoripending",
+                CerereSponsor[].class));
     }
 
     @Override
@@ -203,16 +204,19 @@ public class ClientServiceImpl implements IService{
 
     @Override
     public CerereSponsor updateCerereSponsor(CerereSponsor cerereSponsor) {
-        return null;
-    }
+        CerereDTO cerereDTO = new CerereDTO(cerereSponsor);
+        execute(()->{restTemplate.put(URL+"/cererisponsors/"+cerereDTO.getId(),cerereDTO);return 0;});
+        return getCerereSponsorById(cerereSponsor.getId());
 
+    }
     @Override
     public CerereSponsor getCerereSponsorById(Integer id) {
-        return null;
+        return execute(()->restTemplate.getForObject(URL+"/cereresponsor/"+id,
+                CerereSponsor.class));
     }
 
-
     @Override
+
     public List<Post> getPostsOfVoluntar(Integer volId) {
         return null;
     }
@@ -231,10 +235,8 @@ public class ClientServiceImpl implements IService{
     public void setProfilePic(int userId, byte[] bytes) throws ServiceException {
 
     }
-
     @Override
     public void modifyExpPoints(Voluntar vol, Integer amount) {
-
     }
 
     @Override
@@ -249,5 +251,4 @@ public class ClientServiceImpl implements IService{
             "LhBxteIFja1+vdtGfMbvZTcm4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f\n" +
             "2IYlK+JcgkACOn9JAgMBAAE=\n" +
             "-----END PUBLIC KEY-----";
-
 }

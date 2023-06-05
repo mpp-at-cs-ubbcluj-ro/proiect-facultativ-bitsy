@@ -325,22 +325,26 @@ public class HelpingHandsRestController {
        }
    }
 
-   //de testat aici
    @RequestMapping(value = "/cererisponsors/{id}",method = RequestMethod.PUT)
     public ResponseEntity<?> updateCerereSponsorizare(@PathVariable Integer id, @RequestBody CerereDTO cerereDTO){
 
-         try{
-              CerereSponsor cerereSponsor = service.getCerereSponsorById(id);
-              cerereSponsor.setAdresaSediului(cerereDTO.getAdresa());
-              cerereSponsor.setCifFirma(cerereDTO.getCifFirma());
-              cerereSponsor.setNumeFirma(cerereDTO.getNumeFirma());
-              cerereSponsor.setTelefon(cerereDTO.getTelefon());
-              cerereSponsor.setSponsorType(service.getSponsorTypeByName(cerereDTO.getSponsorType()));
-              cerereSponsor.setStatus("pending");
-              CerereSponsor cerereSponsor1 = service.updateCerereSponsor(cerereSponsor);
-              return new ResponseEntity<CerereDTO>(cerereDTO,HttpStatus.OK);
-         } catch (Exception e) {
-              return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+         try {
+             CerereSponsor cerereSponsor = service.getCerereSponsorById(id);
+             cerereSponsor.setAdresaSediului(cerereDTO.getAdresa());
+             cerereSponsor.setNumeFirma(cerereDTO.getNumeFirma());
+             cerereSponsor.setCifFirma(cerereDTO.getCifFirma());
+             cerereSponsor.setTelefon(cerereDTO.getTelefon());
+             cerereSponsor.setStatus(cerereDTO.getStatus());
+             System.out.println(service.getSponsorTypeByName(cerereDTO.getSponsorType()));
+             cerereSponsor.setSponsorType(service.getSponsorTypeByName(cerereDTO.getSponsorType()));
+             System.out.println(cerereDTO.getVolId());
+             cerereSponsor.setVolunteer(service.getVoluntarById(cerereDTO.getVolId()));
+
+             CerereSponsor cerereSponsor1 = service.updateCerereSponsor(cerereSponsor);
+             CerereDTO cerereDTO1 = new CerereDTO(cerereSponsor1.getId(),cerereSponsor1.getVolunteer().getId(),cerereSponsor1.getCifFirma(),cerereSponsor1.getSponsorType().getName(),cerereSponsor1.getTelefon(),cerereSponsor1.getAdresaSediului(),cerereSponsor1.getNumeFirma(),cerereSponsor1.getStatus());
+             return new ResponseEntity<CerereDTO>(cerereDTO1, HttpStatus.OK);
+         }catch (Exception e){
+             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
          }
    }
 
