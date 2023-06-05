@@ -204,6 +204,7 @@ public class ClientServiceImpl implements IService{
         return null;
     }
 
+
     @Override
     public List<Post> getPostsOfVoluntar(Integer volId) {
         return null;
@@ -217,4 +218,5 @@ public class ClientServiceImpl implements IService{
             "LhBxteIFja1+vdtGfMbvZTcm4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f\n" +
             "2IYlK+JcgkACOn9JAgMBAAE=\n" +
             "-----END PUBLIC KEY-----";
+
 }
