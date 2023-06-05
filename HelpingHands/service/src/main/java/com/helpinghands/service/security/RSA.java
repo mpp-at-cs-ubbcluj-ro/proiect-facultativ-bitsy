@@ -15,12 +15,6 @@ import java.util.Base64;
 
 public class RSA {
     public static PublicKey getPublicKey(String key){
-        for (Provider provider: Security.getProviders()) {
-            System.out.println(provider.getName());
-            for (String keyq: provider.stringPropertyNames())
-                System.out.println("\t" + keyq + "\t" + provider.getProperty(keyq));
-        }
-
         try{
             byte[] byteKey = Base64.getDecoder().decode(key
                     .replace("\n","")

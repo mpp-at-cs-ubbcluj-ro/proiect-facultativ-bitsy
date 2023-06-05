@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
+using FFImageLoading;
+using FFImageLoading.Work;
 using HelpingHands.API;
 using HelpingHands.UI;
 using HelpingHands.Utils;
@@ -21,6 +23,7 @@ namespace HelpingHands
         [Control] EditText UsernameBox;
         [Control] Button LoginButton;
         [Control] TextView RegisterLink;
+        [Control] ImageView logo;        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -29,7 +32,8 @@ namespace HelpingHands
             RegisterLink.PaintFlags |= PaintFlags.UnderlineText;
 
             LoginButton.Click += LoginButton_Clicked;
-            RegisterLink.Click += RegisterLink_Click;
+            RegisterLink.Click += RegisterLink_Click;        
+            //ShapeableImageView
         }
 
         private void RegisterLink_Click(object sender, EventArgs e)

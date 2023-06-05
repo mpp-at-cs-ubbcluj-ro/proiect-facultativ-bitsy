@@ -8,11 +8,16 @@ import com.helpinghands.service.data.UserInfo;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
 import com.helpinghands.service.security.RSA;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -90,6 +95,15 @@ public class HelpingHandsRestController {
     public ResponseEntity<?> logout(@RequestParam String token){
         service.logout(token);
         return new ResponseEntity<String>("Ok",HttpStatus.OK);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String serviceException(Exception e) {
+        System.out.println("Exception");
+        e.printStackTrace();
+        System.out.println(e.getMessage());
+        return e.getMessage();
     }
 
     @ExceptionHandler(ServiceException.class)
@@ -341,6 +355,21 @@ public class HelpingHandsRestController {
         }
         return  postVolDTOSList;
     }
+
+    @RequestMapping(value="/users/{id}/pp",method = RequestMethod.GET,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getProfilePic(@PathVariable int id) throws IOException, ServiceException {
+        return service.getProfilePic(id);
+    }
+
+    @RequestMapping(value="/users/{id}/pp",method = RequestMethod.PUT,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public String setProfilePic(@PathVariable int id, @RequestBody PPDTO pp) throws IOException, ServiceException {
+        //System.out.println(pp.getBytes().length);
+        service.setProfilePic(id, pp.getBytes());
+        return "OK";
+    }
+
 
 
 }

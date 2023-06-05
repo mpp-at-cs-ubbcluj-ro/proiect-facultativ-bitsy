@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -52,6 +53,13 @@ namespace HelpingHands.API
             if (!response.IsSuccessStatusCode)                            
                 throw new RestException(await response.Content.ReadAsStringAsync());
             return await response.Content.ReadAsAsync<T>();
+        }
+
+        public async void PutNoContent(string uri, object obj)
+        {
+            HttpResponseMessage response = await HttpClient.PutAsJsonAsync(URL_Base + uri, obj);
+            if (!response.IsSuccessStatusCode)
+                throw new RestException(await response.Content.ReadAsStringAsync());            
         }
 
         public async Task<T> Delete<T>(string uri)

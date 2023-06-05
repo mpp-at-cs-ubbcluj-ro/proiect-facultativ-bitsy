@@ -9,6 +9,7 @@ import com.helpinghands.service.security.SHA256;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.*;
 
 public class AppService implements IService {
@@ -25,8 +26,9 @@ public class AppService implements IService {
     private final IVoluntarRepo voluntarRepo;
     private final IUserSessionRepo userSessionRepo;
     private final ISponsorTypeRepo sponsorTypeRepo;
+    private final IProfilePicRepo profilePicRepo;
 
-    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo, ISponsorTypeRepo sponsorTypeRepo) {
+    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo, ISponsorTypeRepo sponsorTypeRepo, IProfilePicRepo profilePicRepo) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
         this.chatRoomRepo = chatRoomRepo;
@@ -39,6 +41,7 @@ public class AppService implements IService {
         this.voluntarRepo = voluntarRepo;
         this.userSessionRepo = userSessionRepo;
         this.sponsorTypeRepo = sponsorTypeRepo;
+        this.profilePicRepo = profilePicRepo;
     }
 
     @Override
@@ -515,5 +518,23 @@ public class AppService implements IService {
         logger.info("Ok:{}", volPosts.size());
         logger.traceExit();
         return volPosts;
+    }
+
+    @Override
+    public byte[] getProfilePic(int userId) throws ServiceException {
+        try {
+            return profilePicRepo.getImage(userId);
+        } catch (IOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void setProfilePic(int userId, byte[] bytes) throws ServiceException {
+        try {
+            profilePicRepo.add(userId, bytes);
+        } catch (IOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 }
