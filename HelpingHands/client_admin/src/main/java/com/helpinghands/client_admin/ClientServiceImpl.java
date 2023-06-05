@@ -209,6 +209,15 @@ public class ClientServiceImpl implements IService{
         return null;
     }
 
+    @Override
+    public byte[] getProfilePic(int userId) throws ServiceException {
+        return new byte[0];
+    }
+
+    @Override
+    public void setProfilePic(int userId, byte[] bytes) throws ServiceException {
+
+    }
 
     private static final String PUBLIC_KEY =
             "-----BEGIN PUBLIC KEY-----\n" +
