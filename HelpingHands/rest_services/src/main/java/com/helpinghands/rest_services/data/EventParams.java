@@ -6,6 +6,7 @@ import com.helpinghands.rest_services.dto.EvenimentDTO;
 public class EventParams extends UserActionParams {
     private EvenimentDTO eveniment;
 
+
     public EvenimentDTO getEveniment() {
         return eveniment;
     }

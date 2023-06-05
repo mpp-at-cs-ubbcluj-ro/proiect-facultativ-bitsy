@@ -195,8 +195,17 @@ public class HelpingHandsRestController {
 
     @RequestMapping(value = "/evenimente/{id_eveniment}/participants", method = RequestMethod.PUT)
     public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @RequestBody AddVoluntarRequestData reqData){
-        // JSON Body :  {"idVoluntar":"42", "role":"organizer"}
+        // JSON Body :  {"idVoluntar":"42", "role":"organizer", "token":"..."}
         try{
+            var userSession = service.getUserSession(reqData.getToken());
+
+            if(Objects.equals(reqData.getRole(), "organizer") && !Objects.equals(userSession.getType(), "Admin")){
+                throw new HHServerException("Invalid permission to add organizer");
+            }
+            if(Objects.equals(reqData.getRole(), "volunteer") && reqData.getIdVoluntar()!=userSession.getUtilizator().getId()){
+                throw new HHServerException("Volunteers can only self-add to eveniment");
+            }
+
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
             Voluntar voluntar = service.getVoluntarById(reqData.getIdVoluntar());
             Participant participant;
