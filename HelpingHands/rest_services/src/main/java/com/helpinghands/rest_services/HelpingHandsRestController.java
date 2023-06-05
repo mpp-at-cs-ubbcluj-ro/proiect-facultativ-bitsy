@@ -364,8 +364,10 @@ public class HelpingHandsRestController {
 
     @RequestMapping(value="/users/{id}/pp",method = RequestMethod.PUT,
             produces = MediaType.IMAGE_JPEG_VALUE)
-    public String setProfilePic(@PathVariable int id, @RequestBody PPDTO pp) throws IOException, ServiceException {
-        //System.out.println(pp.getBytes().length);
+    public String setProfilePic(@PathVariable int id, @RequestBody PPDTO pp) throws IOException, ServiceException, HHServerException {
+        var userSession = service.getUserSession(pp.getToken());
+        if(userSession.getUtilizator().getId()!=id)
+            throw new HHServerException("Invalid permissions");
         service.setProfilePic(id, pp.getBytes());
         return "OK";
     }

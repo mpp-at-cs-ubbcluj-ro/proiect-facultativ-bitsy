@@ -24,11 +24,12 @@ namespace HelpingHands.API
         
         private HttpClient HttpClient = new HttpClient(new LoggingHandler(new HttpClientHandler()));
 
-        public async void GetNoContent(string uri)
+        public async Task<int> GetNoContent(string uri)
         {
             HttpResponseMessage response = await HttpClient.GetAsync(URL_Base + uri);
             if (!response.IsSuccessStatusCode)
-                throw new RestException(await response.Content.ReadAsStringAsync());            
+                throw new RestException(await response.Content.ReadAsStringAsync());
+            return 0;
         }
 
         public async Task<T> Get<T>(string uri)
@@ -55,11 +56,12 @@ namespace HelpingHands.API
             return await response.Content.ReadAsAsync<T>();
         }
 
-        public async void PutNoContent(string uri, object obj)
+        public async Task<int> PutNoContent(string uri, object obj)
         {
             HttpResponseMessage response = await HttpClient.PutAsJsonAsync(URL_Base + uri, obj);
             if (!response.IsSuccessStatusCode)
-                throw new RestException(await response.Content.ReadAsStringAsync());            
+                throw new RestException(await response.Content.ReadAsStringAsync());
+            return 0;
         }
 
         public async Task<T> Delete<T>(string uri)
