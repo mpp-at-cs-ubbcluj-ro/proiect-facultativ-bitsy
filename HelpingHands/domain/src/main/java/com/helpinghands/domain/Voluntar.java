@@ -109,6 +109,7 @@ public class Voluntar extends Utilizator {
                 ", activeSponsor=" + activeSponsor +
                 ", sponsorTypes=" + sponsorTypes +
                 ", sponsoredEvents=" + sponsoredEvents +
+                ", id=" + getId() +
                 '}';
     }
 }

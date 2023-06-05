@@ -1,34 +1,45 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
+using FFImageLoading;
+using FFImageLoading.Work;
 using HelpingHands.API;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using System;
 
 namespace HelpingHands
 {
-    [Activity(Label = "HelpingHands", Theme = "@style/AppTheme", MainLauncher = true)]    
-    public class LoginActivity : Activity
+    [Activity(Label = "HelpingHands", Theme = "@style/AppTheme", MainLauncher = true)]
+    [UI.Layout("activity_login")]
+    public class LoginActivity : AutoLoadActivity
     {
-        EditText PasswordBox;
-        EditText UsernameBox;
-        Button LoginButton;
+        [Control] EditText PasswordBox;
+        [Control] EditText UsernameBox;
+        [Control] Button LoginButton;
+        [Control] TextView RegisterLink;
+        [Control] ImageView logo;        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_login);
-
-            PasswordBox = FindViewById<EditText>(Resource.Id.PasswordBox);
-            UsernameBox = FindViewById<EditText>(Resource.Id.UsernameBox);
-            LoginButton = FindViewById<Button>(Resource.Id.LoginButton);
+            base.OnCreate(savedInstanceState);            
             
+            RegisterLink.PaintFlags |= PaintFlags.UnderlineText;
+
             LoginButton.Click += LoginButton_Clicked;
+            RegisterLink.Click += RegisterLink_Click;        
+            //ShapeableImageView
+        }
+
+        private void RegisterLink_Click(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(this, typeof(RegisterVoluntarActivity));
+            StartActivity(intent);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

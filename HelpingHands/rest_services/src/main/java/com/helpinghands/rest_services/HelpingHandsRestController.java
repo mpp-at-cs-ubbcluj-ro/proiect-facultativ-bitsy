@@ -2,26 +2,24 @@ package com.helpinghands.rest_services;
 
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
-import com.helpinghands.rest_services.data.AddVoluntarRequestData;
-import com.helpinghands.rest_services.data.Credentials;
-import com.helpinghands.rest_services.data.EventParams;
-import com.helpinghands.rest_services.data.ParticipantDTO;
-import com.helpinghands.rest_services.dto.CerereDTO;
-import com.helpinghands.rest_services.dto.EvenimentDTO;
-import com.helpinghands.rest_services.dto.PostDTO;
+import com.helpinghands.rest_services.data.*;
+import com.helpinghands.rest_services.dto.*;
 import com.helpinghands.service.data.UserInfo;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
+import com.helpinghands.service.security.RSA;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -34,6 +32,37 @@ public class HelpingHandsRestController {
 
     public HelpingHandsRestController(IService service) {
         this.service = service;
+
+        final String RSA_PUBLIC_KEY =
+                "-----BEGIN PUBLIC KEY-----\n" +
+                        "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGtQfpFSJFn38TfEOsakcydPCc85\n" +
+                        "Rr+gjTbj6Wu36BtLxjXhDFwy0BCvDkydcWBM9DE5p4KUMeDkNh2/UNYbNWaYZXOK\n" +
+                        "LhBxteIFja1+vdtGfMbvZTcm4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f\n" +
+                        "2IYlK+JcgkACOn9JAgMBAAE=\n" +
+                        "-----END PUBLIC KEY-----";
+
+        final String RSA_PRIVATE_KEY =
+                "-----BEGIN PRIVATE KEY-----\n" +
+                        "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGAa1B+kVIkWffxN8Q6\n" +
+                        "xqRzJ08JzzlGv6CNNuPpa7foG0vGNeEMXDLQEK8OTJ1xYEz0MTmngpQx4OQ2Hb9Q\n" +
+                        "1hs1Zphlc4ouEHG14gWNrX6920Z8xu9lNybiCtGkhAwUxSCjNrxz1Qr+26QbihcS\n" +
+                        "McXgC7e3/5/YhiUr4lyCQAI6f0kCAwEAAQKBgBjlyweiPCbXfJKIp25Q1xqmnssC\n" +
+                        "KeTptfmnNQ+10lcK5Ii5lumJLHbCdpnV6WkDUaBeFPwZr9zSda+/JF0YYPIHG9hV\n" +
+                        "8U884k2UaDZbOy8RKu0/dOOkLSkAUYhh55Ss0EXULBnvxq41EuTpEyWYu+3hmJRK\n" +
+                        "nJCH1CUWXpwlObGBAkEAy6ETtmmrEWxECroTMAuyx/8PG0gal+4CKP0F4jRAWe9c\n" +
+                        "0p6nQAaZ3A1btPjV7/E3oYBBh9m8OyG8kOkMN07PEQJBAIbqEFy4xpZS5zCoFY95\n" +
+                        "VGovsMAxmZo8soxtXHdcCe4RO5vHkraanLya1YmDMuzBI/erIBzuSVf0R0H7P/OR\n" +
+                        "HLkCQQCSC6kzv33uNRRoDSUN5JYJUynmi0Rni1EJTNAXeRpeZorQlPGnvhRD+2C2\n" +
+                        "33GxcfRQZMibQtL6Jiw0UrFsSZ3BAkA0rW2oFomLpmEYsXiBpbkdIPPdh0BXZb29\n" +
+                        "cPH6tNg3uUjSAXG6lNIAHmCkKbMXmC4oBQwr36qJihrMm4KT4qQZAkAzm4md7f3O\n" +
+                        "Nn+oAAdd7iaOXmFTBimpvETK8q2MvVIFGIZlHhVAsT5XLdL/e8hdKD7nhUZgJ237\n" +
+                        "aZzLq0w6Thnc\n" +
+                        "-----END PRIVATE KEY-----";
+
+        var cr = RSA.encode("Ana are mere", RSA_PUBLIC_KEY);
+        System.out.println(cr);
+        var dc = RSA.decode(cr, RSA_PRIVATE_KEY);
+        System.out.println(dc);
     }
 
     @RequestMapping(value="/interests",method= RequestMethod.GET)
@@ -53,12 +82,12 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/register",method = RequestMethod.POST)
-    public ResponseEntity<?> UtilizatorRegister (@RequestParam String username,@RequestParam String password,@RequestParam String email,@RequestParam String nume,@RequestParam String prenume){
+    public ResponseEntity<?> UtilizatorRegister (@RequestBody UserRegisterParams params){
         try{
-            Utilizator utilizator  =service.createAccount(username,password,email,nume,prenume);
-            return new ResponseEntity<Utilizator>(utilizator,HttpStatus.OK);
+            Utilizator utilizator  =service.createAccount(params.getUsername(),params.getPassword(),params.getEmail(),params.getNume(),params.getPrenume());
+            return new ResponseEntity<>(UserDTO.fromUtilizator(utilizator),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -66,6 +95,15 @@ public class HelpingHandsRestController {
     public ResponseEntity<?> logout(@RequestParam String token){
         service.logout(token);
         return new ResponseEntity<String>("Ok",HttpStatus.OK);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String serviceException(Exception e) {
+        System.out.println("Exception");
+        e.printStackTrace();
+        System.out.println(e.getMessage());
+        return e.getMessage();
     }
 
     @ExceptionHandler(ServiceException.class)
@@ -157,8 +195,17 @@ public class HelpingHandsRestController {
 
     @RequestMapping(value = "/evenimente/{id_eveniment}/participants", method = RequestMethod.PUT)
     public ResponseEntity<?> addVoluntarToEveniment(@PathVariable Integer id_eveniment, @RequestBody AddVoluntarRequestData reqData){
-        // JSON Body :  {"idVoluntar":"42", "role":"organizer"}
+        // JSON Body :  {"idVoluntar":"42", "role":"organizer", "token":"..."}
         try{
+            var userSession = service.getUserSession(reqData.getToken());
+
+            if(Objects.equals(reqData.getRole(), "organizer") && !Objects.equals(userSession.getType(), "Admin")){
+                throw new HHServerException("Invalid permission to add organizer");
+            }
+            if(Objects.equals(reqData.getRole(), "volunteer") && reqData.getIdVoluntar()!=userSession.getUtilizator().getId()){
+                throw new HHServerException("Volunteers can only self-add to eveniment");
+            }
+
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
             Voluntar voluntar = service.getVoluntarById(reqData.getIdVoluntar());
             Participant participant;
@@ -271,22 +318,26 @@ public class HelpingHandsRestController {
        }
    }
 
-   //de testat aici
    @RequestMapping(value = "/cererisponsors/{id}",method = RequestMethod.PUT)
     public ResponseEntity<?> updateCerereSponsorizare(@PathVariable Integer id, @RequestBody CerereDTO cerereDTO){
 
-         try{
-              CerereSponsor cerereSponsor = service.getCerereSponsorById(id);
-              cerereSponsor.setAdresaSediului(cerereDTO.getAdresa());
-              cerereSponsor.setCifFirma(cerereDTO.getCifFirma());
-              cerereSponsor.setNumeFirma(cerereDTO.getNumeFirma());
-              cerereSponsor.setTelefon(cerereDTO.getTelefon());
-              cerereSponsor.setSponsorType(service.getSponsorTypeByName(cerereDTO.getSponsorType()));
-              cerereSponsor.setStatus("pending");
-              CerereSponsor cerereSponsor1 = service.updateCerereSponsor(cerereSponsor);
-              return new ResponseEntity<CerereDTO>(cerereDTO,HttpStatus.OK);
-         } catch (Exception e) {
-              return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+         try {
+             CerereSponsor cerereSponsor = service.getCerereSponsorById(id);
+             cerereSponsor.setAdresaSediului(cerereDTO.getAdresa());
+             cerereSponsor.setNumeFirma(cerereDTO.getNumeFirma());
+             cerereSponsor.setCifFirma(cerereDTO.getCifFirma());
+             cerereSponsor.setTelefon(cerereDTO.getTelefon());
+             cerereSponsor.setStatus(cerereDTO.getStatus());
+             System.out.println(service.getSponsorTypeByName(cerereDTO.getSponsorType()));
+             cerereSponsor.setSponsorType(service.getSponsorTypeByName(cerereDTO.getSponsorType()));
+             System.out.println(cerereDTO.getVolId());
+             cerereSponsor.setVolunteer(service.getVoluntarById(cerereDTO.getVolId()));
+
+             CerereSponsor cerereSponsor1 = service.updateCerereSponsor(cerereSponsor);
+             CerereDTO cerereDTO1 = new CerereDTO(cerereSponsor1.getId(),cerereSponsor1.getVolunteer().getId(),cerereSponsor1.getCifFirma(),cerereSponsor1.getSponsorType().getName(),cerereSponsor1.getTelefon(),cerereSponsor1.getAdresaSediului(),cerereSponsor1.getNumeFirma(),cerereSponsor1.getStatus());
+             return new ResponseEntity<CerereDTO>(cerereDTO1, HttpStatus.OK);
+         }catch (Exception e){
+             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
          }
    }
 
@@ -306,6 +357,34 @@ public class HelpingHandsRestController {
     public Eveniment[] getActualEvenimente() {
         return service.getActualEvenimente();
     }
+
+    @RequestMapping(value="/posts/{id}",method = RequestMethod.GET)
+    public List<PostVolDTO> getPostOfVol(@PathVariable Integer id){
+        List<PostVolDTO> postVolDTOSList = new ArrayList<PostVolDTO>();
+        for(Post p: service.getPostsOfVoluntar(id))
+        {
+            PostVolDTO postVolDTO = new PostVolDTO(p.getId(), p.getAuthor().getId(), EvenimentNoParticipantsDTO.fromEveniment(p.getEveniment()), p.getDescriere(), p.getData());
+            postVolDTOSList.add(postVolDTO);
+        }
+        return  postVolDTOSList;
+    }
+
+    @RequestMapping(value="/users/{id}/pp",method = RequestMethod.GET,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getProfilePic(@PathVariable int id) throws IOException, ServiceException {
+        return service.getProfilePic(id);
+    }
+
+    @RequestMapping(value="/users/{id}/pp",method = RequestMethod.PUT,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public String setProfilePic(@PathVariable int id, @RequestBody PPDTO pp) throws IOException, ServiceException, HHServerException {
+        var userSession = service.getUserSession(pp.getToken());
+        if(userSession.getUtilizator().getId()!=id)
+            throw new HHServerException("Invalid permissions");
+        service.setProfilePic(id, pp.getBytes());
+        return "OK";
+    }
+
 
 
 }

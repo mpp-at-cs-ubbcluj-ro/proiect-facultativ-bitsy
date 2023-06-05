@@ -11,8 +11,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="spring.jpa.hibernate.ddl-auto">update</property>
         <property name="maximumPoolSize">5</property>
-        <property name="c3p0.timeout">20000</property>
-        <property name="hibernate.c3p0.timeout">20000</property>
+        <property name="c3p0.timeout">30000</property>
+        <property name="hibernate.c3p0.timeout">30000</property>
 
         <property name="hibernate.current_session_context_class">thread</property>
         <!-- Echo all executed SQL to stdout -->
@@ -26,14 +26,10 @@
         <mapping class="com.helpinghands.domain.Voluntar"/>
         <mapping class="com.helpinghands.domain.Admin"/>
         <mapping class="com.helpinghands.domain.UserSession"/>
-        <mapping resource="CerereSponsor.hbm.xml"/>
         <mapping class="com.helpinghands.domain.Eveniment"/>
-        <mapping resource="ChatRoom.hbm.xml"/>
-        <mapping resource="Message.hbm.xml"/>
-        <mapping resource="Post.hbm.xml"/>
-        <mapping resource="Notification.hbm.xml"/>
+        <mapping class="com.helpinghands.domain.Post"/>
+        <mapping class="com.helpinghands.domain.ProfilePic"/>
         <mapping class="com.helpinghands.domain.Participant"/>
         <mapping class="com.helpinghands.domain.CerereSponsor"/>
-        <mapping resource="CerereSponsor.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

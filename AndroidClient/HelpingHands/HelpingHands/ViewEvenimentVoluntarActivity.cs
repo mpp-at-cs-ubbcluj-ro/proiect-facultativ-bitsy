@@ -7,6 +7,7 @@ using Android.Widget;
 using HelpingHands.Adapters;
 using HelpingHands.API;
 using HelpingHands.Data;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using Java.Interop;
 using Newtonsoft.Json;
@@ -19,16 +20,17 @@ using System.Threading.Tasks;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public class ViewEvenimentVoluntarActivity : Activity
+    [UI.Layout("activity_view_eveniment_voluntar")]
+    public class ViewEvenimentVoluntarActivity : AutoLoadActivity
     {
         Eveniment Eveniment;
 
-        TextView VolEvenimentName;
-        TextView VolEvenimentDescription;
-        TextView VolEvenimentDate;
-        TextView VolEvenimentInterese;
-        Button VolButtonAddParticipant;
-        ListView ParticipantListView;
+        [Control] TextView VolEvenimentName;
+        [Control] TextView VolEvenimentDescription;
+        [Control] TextView VolEvenimentDate;
+        [Control] TextView VolEvenimentInterese;
+        [Control] Button VolButtonAddParticipant;
+        [Control] ListView ParticipantListView;
 
         List<Participant> Participants = new List<Participant>();
 
@@ -36,18 +38,8 @@ namespace HelpingHands
         {
             Console.WriteLine("HERE IN VOLUNTAR");
             base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_view_eveniment_voluntar);
 
-            Eveniment = JsonConvert.DeserializeObject<Eveniment>(Intent.GetStringExtra("eveniment"));
-
-            ParticipantListView = FindViewById<ListView>(Resource.Id.ParticipantListView);
-
-            VolEvenimentName = FindViewById<TextView>(Resource.Id.VolEvenimentName);
-            VolEvenimentDescription = FindViewById<TextView>(Resource.Id.VolEvenimentDescription);
-            VolEvenimentDate = FindViewById<TextView>(Resource.Id.VolEvenimentDate);
-            VolEvenimentInterese = FindViewById<TextView>(Resource.Id.VolEvenimentInterese);
-            VolButtonAddParticipant = FindViewById<Button>(Resource.Id.VolButtonAddParticipant);
+            Eveniment = JsonConvert.DeserializeObject<Eveniment>(Intent.GetStringExtra("eveniment"));            
 
             VolEvenimentName.Text = Eveniment.Name;
             VolEvenimentDescription.Text = Eveniment.Description;

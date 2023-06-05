@@ -4,11 +4,12 @@ import com.helpinghands.domain.*;
 import com.helpinghands.repo.*;
 import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.service.data.UserInfo;
+import com.helpinghands.service.security.RSA;
+import com.helpinghands.service.security.SHA256;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDateTime;
-
+import java.io.IOException;
 import java.util.*;
 
 public class AppService implements IService {
@@ -25,8 +26,9 @@ public class AppService implements IService {
     private final IVoluntarRepo voluntarRepo;
     private final IUserSessionRepo userSessionRepo;
     private final ISponsorTypeRepo sponsorTypeRepo;
+    private final IProfilePicRepo profilePicRepo;
 
-    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo, ISponsorTypeRepo sponsorTypeRepo) {
+    public AppService(IAdminRepo adminRepo, ICerereSponsorRepo cerereSponsorRepo, IChatRoomRepo chatRoomRepo, IEvenimentRepo evenimentRepo, IInterestRepo interestRepo, IMessageRepo messageRepo, INotificareRepo notificareRepo, IParticipantRepo participantRepo, IPostRepo postRepo, IVoluntarRepo voluntarRepo, IUserSessionRepo userSessionRepo, ISponsorTypeRepo sponsorTypeRepo, IProfilePicRepo profilePicRepo) {
         this.adminRepo = adminRepo;
         this.cerereSponsorRepo = cerereSponsorRepo;
         this.chatRoomRepo = chatRoomRepo;
@@ -39,10 +41,13 @@ public class AppService implements IService {
         this.voluntarRepo = voluntarRepo;
         this.userSessionRepo = userSessionRepo;
         this.sponsorTypeRepo = sponsorTypeRepo;
+        this.profilePicRepo = profilePicRepo;
     }
 
     @Override
     public UserInfo login(String username, String password) throws ServiceException {
+        password = RSA.decode(password, PRIVATE_KEY);
+        password = saltAndHash(password);
         logger.trace("");
         logger.info("Login { "+username + " " + password+ " }");
 
@@ -92,15 +97,16 @@ public class AppService implements IService {
 
     @Override
     public Utilizator createAccount(String username, String password, String email, String nume, String prenume) throws ServiceException {
+        password = RSA.decode(password, PRIVATE_KEY);
         logger.traceEntry("");
         logger.info("Create Account{}", username + " " + password + " " + email + " " + nume + " " + prenume);
-        Voluntar voluntar = new Voluntar(username, password, email, nume, prenume,0,false,new HashSet<>());
         if(Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(email, "") || Objects.equals(nume, "") || Objects.equals(prenume, ""))
         {
             logger.info("Error{} ","Invalid inputs");
             logger.traceExit();
             throw new ServiceException("Invalid inputs for utilizator");
         }
+        Voluntar voluntar = new Voluntar(username, saltAndHash(password), email, nume, prenume,0,false,new HashSet<>());
         voluntarRepo.add(voluntar);
         logger.info("Ok{} ", voluntar);
         logger.traceExit();
@@ -460,4 +466,75 @@ public class AppService implements IService {
         return cerereSponsor;
     }
 
+    private static String salt(String p){ return p+"_salted"+p.length(); }
+    private static String saltAndHash(String p){
+        return SHA256.hash(salt(p));
+    }
+
+    private static final String PRIVATE_KEY =
+            "-----BEGIN PRIVATE KEY-----\n" +
+            "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGAa1B+kVIkWffxN8Q6\n" +
+            "xqRzJ08JzzlGv6CNNuPpa7foG0vGNeEMXDLQEK8OTJ1xYEz0MTmngpQx4OQ2Hb9Q\n" +
+            "1hs1Zphlc4ouEHG14gWNrX6920Z8xu9lNybiCtGkhAwUxSCjNrxz1Qr+26QbihcS\n" +
+            "McXgC7e3/5/YhiUr4lyCQAI6f0kCAwEAAQKBgBjlyweiPCbXfJKIp25Q1xqmnssC\n" +
+            "KeTptfmnNQ+10lcK5Ii5lumJLHbCdpnV6WkDUaBeFPwZr9zSda+/JF0YYPIHG9hV\n" +
+            "8U884k2UaDZbOy8RKu0/dOOkLSkAUYhh55Ss0EXULBnvxq41EuTpEyWYu+3hmJRK\n" +
+            "nJCH1CUWXpwlObGBAkEAy6ETtmmrEWxECroTMAuyx/8PG0gal+4CKP0F4jRAWe9c\n" +
+            "0p6nQAaZ3A1btPjV7/E3oYBBh9m8OyG8kOkMN07PEQJBAIbqEFy4xpZS5zCoFY95\n" +
+            "VGovsMAxmZo8soxtXHdcCe4RO5vHkraanLya1YmDMuzBI/erIBzuSVf0R0H7P/OR\n" +
+            "HLkCQQCSC6kzv33uNRRoDSUN5JYJUynmi0Rni1EJTNAXeRpeZorQlPGnvhRD+2C2\n" +
+            "33GxcfRQZMibQtL6Jiw0UrFsSZ3BAkA0rW2oFomLpmEYsXiBpbkdIPPdh0BXZb29\n" +
+            "cPH6tNg3uUjSAXG6lNIAHmCkKbMXmC4oBQwr36qJihrMm4KT4qQZAkAzm4md7f3O\n" +
+            "Nn+oAAdd7iaOXmFTBimpvETK8q2MvVIFGIZlHhVAsT5XLdL/e8hdKD7nhUZgJ237\n" +
+            "aZzLq0w6Thnc\n" +
+            "-----END PRIVATE KEY-----";
+
+    private static final String RSA_PRIVATE_KEY =
+            "-----BEGIN RSA PRIVATE KEY-----\n" +
+            "MIICWwIBAAKBgGtQfpFSJFn38TfEOsakcydPCc85Rr+gjTbj6Wu36BtLxjXhDFwy\n" +
+            "0BCvDkydcWBM9DE5p4KUMeDkNh2/UNYbNWaYZXOKLhBxteIFja1+vdtGfMbvZTcm\n" +
+            "4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f2IYlK+JcgkACOn9JAgMBAAEC\n" +
+            "gYAY5csHojwm13ySiKduUNcapp7LAink6bX5pzUPtdJXCuSIuZbpiSx2wnaZ1elp\n" +
+            "A1GgXhT8Ga/c0nWvvyRdGGDyBxvYVfFPPOJNlGg2WzsvESrtP3TjpC0pAFGIYeeU\n" +
+            "rNBF1CwZ78auNRLk6RMlmLvt4ZiUSpyQh9QlFl6cJTmxgQJBAMuhE7ZpqxFsRAq6\n" +
+            "EzALssf/DxtIGpfuAij9BeI0QFnvXNKep0AGmdwNW7T41e/xN6GAQYfZvDshvJDp\n" +
+            "DDdOzxECQQCG6hBcuMaWUucwqBWPeVRqL7DAMZmaPLKMbVx3XAnuETubx5K2mpy8\n" +
+            "mtWJgzLswSP3qyAc7klX9EdB+z/zkRy5AkEAkgupM7997jUUaA0lDeSWCVMp5otE\n" +
+            "Z4tRCUzQF3kaXmaK0JTxp74UQ/tgtt9xsXH0UGTIm0LS+iYsNFKxbEmdwQJANK1t\n" +
+            "qBaJi6ZhGLF4gaW5HSDz3YdAV2W9vXDx+rTYN7lI0gFxupTSAB5gpCmzF5guKAUM\n" +
+            "K9+qiYoazJuCk+KkGQJAM5uJne39zjZ/qAAHXe4mjl5hUwYpqbxEyvKtjL1SBRiG\n" +
+            "ZR4VQLE+Vy3S/3vIXSg+54VGYCdt+2mcy6tMOk4Z3A==\n" +
+            "-----END RSA PRIVATE KEY-----";
+    @Override
+    public List<Post> getPostsOfVoluntar(Integer volId) {
+        logger.trace("");
+        logger.info("getPostsOfVoluntar{} ", volId);
+        List<Post> volPosts = postRepo.getPostsOfVol(volId);
+//        for(Post p: postRepo.getAll()){
+//            for(Eveniment ev: getEvenimentByVoluntarId(volId))
+//                if(p.getEveniment().equals(ev.getId()))
+//                    volPosts.add(p);
+//        }
+        logger.info("Ok:{}", volPosts.size());
+        logger.traceExit();
+        return volPosts;
+    }
+
+    @Override
+    public byte[] getProfilePic(int userId) throws ServiceException {
+        try {
+            return profilePicRepo.getImage(userId);
+        } catch (IOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void setProfilePic(int userId, byte[] bytes) throws ServiceException {
+        try {
+            profilePicRepo.add(userId, bytes);
+        } catch (IOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
 }
