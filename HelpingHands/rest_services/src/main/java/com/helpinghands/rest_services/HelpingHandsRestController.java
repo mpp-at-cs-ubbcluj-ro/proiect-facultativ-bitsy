@@ -140,6 +140,7 @@ public class HelpingHandsRestController {
             var interest = service.getInterestByName(interestName);
             ev.getInterests().add(interest);
         }
+        service.modifyExpPoints(ev.getInitiator(), 150);
         return EvenimentDTO.fromEveniment(service.addEvent(ev));
     }
 
@@ -178,6 +179,7 @@ public class HelpingHandsRestController {
             Participant voluntar = service.getParticipantById(id_participant);
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
             Eveniment eveniment_final = service.deleteParticipantFromEveniment(voluntar,eveniment);
+            service.modifyExpPoints(service.getVoluntarById(id_participant), -100);
             return new ResponseEntity<EvenimentDTO>(EvenimentDTO.fromEveniment(eveniment_final),HttpStatus.OK);
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -218,6 +220,7 @@ public class HelpingHandsRestController {
             }
             else
                 return new ResponseEntity<>("Invalid role", HttpStatus.BAD_REQUEST);
+            service.modifyExpPoints(service.getVoluntarById(reqData.getIdVoluntar()), 100);
             return new ResponseEntity<>(ParticipantDTO.fromParticipant(participant)
                     ,HttpStatus.OK);
         }catch (Exception e){
@@ -268,10 +271,10 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/posts", method = RequestMethod.POST)
-    public ResponseEntity<?> addPostare (@RequestBody PostDTO postDTO){
+    public ResponseEntity<?> addPost (@RequestBody PostDTO postDTO){
         try{
-            Post post = new Post(postDTO.getDescriere(),LocalDateTime.now(),service.getEvenimentById(postDTO.getIdEv()), service.getVoluntarById(postDTO.getIdUser()));
-            Post p = service.adaugaPostare(post);
+            Post post = new Post(postDTO.getDescriere(),LocalDateTime.now(),service.getEvenimentById(postDTO.getIdEv()), service.getAdminById(postDTO.getIdUser()));
+            Post p = service.addPost(post);
             return new ResponseEntity<Post>(p,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
@@ -289,6 +292,7 @@ public class HelpingHandsRestController {
         try{
             CerereSponsor cerereSponsor = new CerereSponsor(service.getVoluntarById(cerereDTO.getVolId()), cerereDTO.getCifFirma(), cerereDTO.getTelefon(), cerereDTO.getAdresa(), cerereDTO.getNumeFirma(),service.getSponsorTypeByName(cerereDTO.getSponsorType()), "pending");
             CerereSponsor cerereSp = service.applyForSponsorship(cerereSponsor);
+            service.modifyExpPoints(cerereSp.getVolunteer(),50);
             return new ResponseEntity<CerereDTO>(cerereDTO, HttpStatus.OK);
         } catch (ServiceException e) {
             throw new RuntimeException(e);

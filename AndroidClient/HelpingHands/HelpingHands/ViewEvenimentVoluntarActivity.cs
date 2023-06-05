@@ -123,6 +123,7 @@ namespace HelpingHands
                     }
                     _ = await Client.RemoveParticipantFromEveniment(evId, participant.Id);
                     await MessageBox.Alert(this, "You are no logner part of this eveniment!");
+                    Toast.MakeText(Application.Context, "Ai pierdut 100 de puncte Xp!", ToastLength.Short).Show();
                     Load();
                 }
                 catch (Exception ex)
@@ -137,6 +138,7 @@ namespace HelpingHands
                 {
                     var inscriere = await Client.AddVoluntarToEveniment(evId, volId, "volunteer");
                     await MessageBox.Alert(this, "You were added to eveniment!");
+                    Toast.MakeText(Application.Context, "Ai castigat 100 de puncte Xp!", ToastLength.Short).Show();
                     Load();
                 }
                 catch (Exception ex)

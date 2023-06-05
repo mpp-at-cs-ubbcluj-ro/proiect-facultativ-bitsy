@@ -145,6 +145,21 @@ public class AppService implements IService {
     }
 
     @Override
+    public Admin getAdminById(Integer id) throws ServiceException {
+        logger.trace("");
+        logger.info("GetAdminById {} ", id);
+        var vol=adminRepo.getById(id);
+        if(vol==null){
+            logger.info("Error:{}", " Admin found by id");
+            logger.traceExit();
+            throw new ServiceException("Invalid Admin Id");
+        }
+        logger.info("Ok:{}", vol);
+        logger.traceExit();
+        return vol;
+    }
+
+    @Override
     public Eveniment getEvenimentById(Integer id) throws ServiceException {
         logger.trace("");
         logger.info("GetEvenimentId {} ", id);
@@ -365,7 +380,7 @@ public class AppService implements IService {
     }
 
     @Override
-    public Post adaugaPostare(Post post) {
+    public Post addPost(Post post) {
         logger.trace("");
         logger.info("addPostare {}", post);
         logger.traceExit();
@@ -536,5 +551,14 @@ public class AppService implements IService {
         } catch (IOException e) {
             throw new ServiceException(e.getMessage());
         }
+    }
+
+    @Override
+    public void modifyExpPoints(Voluntar vol, Integer amount) {
+        logger.trace("");
+        logger.info("modifyExp Points of{} ", vol);
+        Integer pct = voluntarRepo.modifyPoints(vol, amount);
+        logger.info("Ok; New Points: {}", pct);
+        logger.traceExit();
     }
 }
