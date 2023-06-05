@@ -79,11 +79,11 @@ namespace HelpingHands.API
         public static async Task<User> Register(string username, string password, string email, string nume, string prenume)
             => await ClientBase.Post<User>("/register", new { username, password = RSA.Encrypt(password), email, nume, prenume });
 
-        public static async Task Logout()
-            => await Task.Run(() => ClientBase.GetNoContent($"/logout?token={AppSession.UserData.Token}"));
+        public static async Task<int> Logout() 
+            => await ClientBase.GetNoContent($"/logout?token={AppSession.UserData.Token}");
 
-        public static async Task SetProfilePic(int userId, byte[] bytes)
-            => await Task.Run(() => ClientBase.PutNoContent($"/users/{userId}/pp", new { bytes }));
+        public static async Task<int> SetProfilePic(int userId, byte[] bytes)
+            => await ClientBase.PutNoContent($"/users/{userId}/pp", new { bytes, token = AppSession.UserData.Token });
             
     }
 }
