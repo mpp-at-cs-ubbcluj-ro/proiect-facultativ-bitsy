@@ -6,10 +6,16 @@ import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
 import com.helpinghands.service.data.UserInfo;
+import com.helpinghands.service.security.RSA;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class ClientServiceImpl implements IService{
@@ -25,10 +31,19 @@ public class ClientServiceImpl implements IService{
         }
     }
 
+    /*private String decrypt_password(String enc){
+        Cipher encryptCipher = null;
+        try {
+            encryptCipher = Cipher.getInstance("RSA");
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
     @Override
     public UserInfo login(String username, String password) throws ServiceException {
         return execute(()->restTemplate.postForObject(URL+"/login",
-                new UserCredentials(username, password)
+                new UserCredentials(username, RSA.encode(password, PUBLIC_KEY))
                 ,UserInfo.class));
     }
 
@@ -168,5 +183,40 @@ public class ClientServiceImpl implements IService{
     public Iterable<SponsorType> getSponsorTypes() {
         return null;
     }
+
+    @Override
+    public CerereSponsor[] getPendingSponsorRequests() {
+        return new CerereSponsor[0];
+    }
+
+    @Override
+    public CerereSponsor addCerereSponsor(CerereSponsor cerereSponsor) {
+        return null;
+    }
+
+    @Override
+    public CerereSponsor updateCerereSponsor(CerereSponsor cerereSponsor) {
+        return null;
+    }
+
+    @Override
+    public CerereSponsor getCerereSponsorById(Integer id) {
+        return null;
+    }
+
+
+    @Override
+    public List<Post> getPostsOfVoluntar(Integer volId) {
+        return null;
+    }
+
+
+    private static final String PUBLIC_KEY =
+            "-----BEGIN PUBLIC KEY-----\n" +
+            "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGtQfpFSJFn38TfEOsakcydPCc85\n" +
+            "Rr+gjTbj6Wu36BtLxjXhDFwy0BCvDkydcWBM9DE5p4KUMeDkNh2/UNYbNWaYZXOK\n" +
+            "LhBxteIFja1+vdtGfMbvZTcm4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f\n" +
+            "2IYlK+JcgkACOn9JAgMBAAE=\n" +
+            "-----END PUBLIC KEY-----";
 
 }

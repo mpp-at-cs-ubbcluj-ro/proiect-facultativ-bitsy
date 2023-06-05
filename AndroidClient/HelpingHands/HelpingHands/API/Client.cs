@@ -6,6 +6,7 @@ using Android.Service.Autofill;
 using Android.Views;
 using Android.Widget;
 using HelpingHands.Data;
+using HelpingHands.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace HelpingHands.API
         private static ClientBase ClientBase = new ClientBase();
 
         public static async Task<UserSession> Login(string username, string password)
-            => await ClientBase.Post<UserSession>("/login", new LoginInfo(username, password));
+            => await ClientBase.Post<UserSession>("/login", new LoginInfo(username, RSA.Encrypt(password)));
         
 
         public static async Task<Eveniment[]> GetEvenimente()
@@ -32,7 +33,8 @@ namespace HelpingHands.API
             => await ClientBase.Get<Eveniment[]>($"/evenimente?volId={orgId}&isOrganizer=1");
 
         public static async Task<Participant> AddVoluntarToEveniment(int eventId, int volId, string role)
-            => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants", new RequestDataAddVoluntar(volId, role));
+            => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants",
+                new { idVoluntar = volId, role, token = AppSession.UserData.Token });                
 
         public static async Task<Eveniment> RemoveParticipantFromEveniment(int eventId, int participantId)
             => await ClientBase.Delete<Eveniment>($"/evenimente/{eventId}/participants/{participantId}?token={AppSession.UserData.Token}");
@@ -73,12 +75,16 @@ namespace HelpingHands.API
             => await ClientBase.Get <PostDTO[]>($"/posts/{volId}");
 
         public static async Task<CerereSponsor> ApplySponsorship(CerereSponsor sponsor)
-            => await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);        
+            => await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);
 
-        public static async Task<User> Register(string username, string password, string email, string nume, string prenume)        
-            => await ClientBase.Post<User>("/register", new { username, password, email, nume, prenume });
+        public static async Task<User> Register(string username, string password, string email, string nume, string prenume)
+            => await ClientBase.Post<User>("/register", new { username, password = RSA.Encrypt(password), email, nume, prenume });
 
-        public static async Task Logout()
-            => await Task.Run(() => ClientBase.GetNoContent($"/logout?token={AppSession.UserData.Token}"));
+        public static async Task<int> Logout() 
+            => await ClientBase.GetNoContent($"/logout?token={AppSession.UserData.Token}");
+
+        public static async Task<int> SetProfilePic(int userId, byte[] bytes)
+            => await ClientBase.PutNoContent($"/users/{userId}/pp", new { bytes, token = AppSession.UserData.Token });
+            
     }
 }

@@ -56,4 +56,8 @@ public interface IService {
     CerereSponsor getCerereSponsorById(Integer id);
 
     List<Post> getPostsOfVoluntar(Integer volId);
+
+    byte[] getProfilePic(int userId) throws ServiceException;
+
+    void setProfilePic(int userId, byte[] bytes) throws ServiceException;
 }

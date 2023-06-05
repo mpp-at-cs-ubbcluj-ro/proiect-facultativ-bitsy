@@ -19,33 +19,7 @@
             android:orientation="vertical"
             android:scrollbars="vertical">
 
-            <!-- Taburile aici, sub forma de GridLayout .... -->
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/PostView"
-                android:columnCount="1"
-                android:padding="@dimen/activity_horizontal_margin"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"                    
-                    android:textSize="20dp"
-                    android:text="Posts About Your Events"
-                    />          
-
-                <ListView                    
-                    android:layout_width="match_parent"
-                    android:layout_height="450dp"
-                    android:id="@+id/PostariListView"
-                    android:fadeScrollbars="true"
-                    android:scrollbars="vertical"
-                    android:verticalScrollbarPosition="right" 
-                    />                
-              
-            </GridLayout>    
+            <!-- Taburile aici, sub forma de GridLayout .... -->               
 
 
             <GridLayout
@@ -53,7 +27,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_width="match_parent"
-                android:layout_height="376.5dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"                
                 android:id="@+id/ProfileView"                
                 >
@@ -62,10 +36,81 @@
                      android:layout_width="match_parent"
                      android:layout_height="match_parent" 
                     >
+                    <TableRow android:layout_width="match_parent" android:layout_height="wrap_content">                    
+                        <GridLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:layout_span="2" android:layout_marginBottom="15dp">
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="155dp"
+                                android:layout_height="155dp"
+                                app:cardCornerRadius="250dp"
+                                android:layout_span="2"                                
+                                app:cardBackgroundColor="#ff0000"
+                                android:layout_gravity="center">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="150dp"
+                                    android:layout_height="150dp"
+                                    app:cardCornerRadius="250dp"
+                                    android:layout_gravity="center">
+
+                                    <ImageView      
+                                        xmlns:tools="http://schemas.android.com/tools"
+                                        android:contentDescription="pp"
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:id="@+id/ProfilePicView"
+                                        android:src="@drawable/default_pp"                                        
+                                        android:scaleType="centerCrop"/>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_row="0"
+                                android:layout_column="0"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                app:cardCornerRadius="100dp"
+                                android:layout_gravity="center_horizontal|bottom"
+                                android:layout_marginLeft="80dp"
+                                android:outlineAmbientShadowColor="#000000"
+                                android:outlineSpotShadowColor="#000000"
+                                >
+                                <ImageButton
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/camera_icon"
+                                    android:backgroundTint="#ffffff"
+                                    android:tint="#911E45"                                    
+                                    android:scaleType="fitXY"
+                                    android:id="@+id/SelectPPButton"
+                                    
+                                />
+                            </androidx.cardview.widget.CardView>
+
+
+                            <!--GridLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                                <androidx.cardview.widget.CardView
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        app:cardCornerRadius="250dp"
+                                        android:layout_gravity="center">
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="Camera"/>
+                                </androidx.cardview.widget.CardView>
+                            </GridLayout-->
+                        </GridLayout>                                                    
+                    </TableRow>
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView                    
+                        <TextView                                 
                             android:textSize="22dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"            
@@ -192,6 +237,32 @@
                     </TableRow>            
                 </TableLayout>        
             </GridLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/PostView"
+                android:columnCount="1"
+                android:padding="@dimen/activity_horizontal_margin"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"                    
+                    android:textSize="20dp"
+                    android:text="Posts About Your Events"
+                    />          
+
+                <ListView                    
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    android:id="@+id/PostariListView"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"
+                    android:verticalScrollbarPosition="right" 
+                    />                
+              
+            </GridLayout> 
 
             <GridLayout
                 android:layout_width="match_parent"
