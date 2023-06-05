@@ -575,7 +575,38 @@ public class AppService implements IService {
     }
 
     @Override
+
+    public Utilizator getUserByName(String username) throws ServiceException {
+        for(Utilizator u: voluntarRepo.getAll()){
+            if(u.getUsername().equals(username))
+                return u;
+        }
+        for(Utilizator a: adminRepo.getAll()){
+            if(a.getUsername().equals(username))
+                return a;
+        }
+        throw new ServiceException("User not found");
+
+    }
+    @Override
+    public UserInfo resetPassword(String username, String password) {
+        String newpassword = saltAndHash(password);
+        System.out.println(newpassword);
+        System.out.println(password);
+        for(Utilizator u: voluntarRepo.getAll()){
+            if(u.getUsername().equals(username))
+                voluntarRepo.changePassword(u.getUsername(), newpassword);
+        }
+        for (Utilizator a: adminRepo.getAll()){
+            if(a.getUsername().equals(username))
+                adminRepo.changePassword(a.getUsername(), newpassword);
+        }
+        return null;
+    }
+
+    @Override
     public List<Post> getNewestPosts() {
         return postRepo.getNewestPosts();
     }
+
 }

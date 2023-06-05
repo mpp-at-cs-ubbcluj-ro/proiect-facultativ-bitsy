@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.AdminPageController">
+<ScrollPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.helpinghands.client_admin.AdminPageController">
    <content>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="876.0" prefWidth="1126.0">
          <children>
@@ -25,7 +25,7 @@
                   <TableColumn fx:id="voluntarColumn" prefWidth="173.60003662109375" text="Voluntar" />
               </columns>
             </TableView>
-            <ImageView fitHeight="170.0" fitWidth="192.0" layoutX="956.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="170.0" fitWidth="192.0" layoutX="956.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../logo.png" />
                </image>
@@ -79,7 +79,7 @@
                   <Font name="System Bold Italic" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="notifyButton" onAction="#notifyUsersButtonClicked" layoutX="852.0" layoutY="509.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="219.0" text="Notify users about event" textFill="#b60065">
+            <Button fx:id="notifyButton" layoutX="852.0" layoutY="509.0" mnemonicParsing="false" onAction="#notifyUsersButtonClicked" prefHeight="31.0" prefWidth="219.0" text="Notify users about event" textFill="#b60065">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font>
@@ -90,6 +90,11 @@
                   <Image url="@../../../../../../../clopotel.png" />
                </image>
             </ImageView>
+            <Button fx:id="resetButton" layoutX="170.0" layoutY="55.0" mnemonicParsing="false" onAction="#handlereserPassword" text="Reset password" textFill="#b60065">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </content>
