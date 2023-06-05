@@ -81,5 +81,9 @@ namespace HelpingHands.API
 
         public static async Task Logout()
             => await Task.Run(() => ClientBase.GetNoContent($"/logout?token={AppSession.UserData.Token}"));
+
+        public static async Task SetProfilePic(int userId, byte[] bytes)
+            => await Task.Run(() => ClientBase.PutNoContent($"/users/{userId}/pp", new { bytes }));
+            
     }
 }

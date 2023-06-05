@@ -1,25 +1,32 @@
 import com.helpinghands.domain.Admin;
 import com.helpinghands.domain.Eveniment;
+import com.helpinghands.domain.ProfilePic;
 import com.helpinghands.domain.Voluntar;
-import com.helpinghands.repo.AdminRepo;
-import com.helpinghands.repo.EvenimentRepo;
-import com.helpinghands.repo.InterestRepo;
-import com.helpinghands.repo.VoluntarRepo;
+import com.helpinghands.repo.*;
 import junit.framework.TestCase;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 public class TestRepoClass extends TestCase {
-    static InterestRepo interestRepo = new InterestRepo();
-    static VoluntarRepo voluntarRepo = new VoluntarRepo();
-    static AdminRepo adminRepo = new AdminRepo();
-    static EvenimentRepo eventRepo = new EvenimentRepo();
+    static ProfilePicRepo ppRepo;
 
-    public static void main(String[] args){
-        voluntarRepo.add(new Voluntar("user1","0001","user1@gmail.com","Leo","Paleo",1,false, Set.of(interestRepo.getByName("interest2"))));
-        voluntarRepo.add(new Voluntar("user2","0002","user2@gmail.com","Neo","Paneo",1,false, Set.of(interestRepo.getByName("interest3"))));
-        adminRepo.add(new Admin("housemaster","admin","housemaster@gmail.com","Sefu","Al Mare"));
+    static {
+        try {
+            ppRepo = new ProfilePicRepo("C:\\db\\pp");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        /*var pp=new ProfilePic("x.png");
+        pp.setId(4);
+        ppRepo.add(pp);*/
+        //ppRepo.add(3,new byte[2]);
+        ppRepo.getImage(3);
+
 
         /*var user = voluntarRepo.findByCredentials("user1","0000");
 
