@@ -98,33 +98,51 @@ public class AdminPageController {
 
     public void initModel(){
         Eveniment[] messages = server.getActualEvenimente();
-//        List<Eveniment> evt = StreamSupport.stream(messages, false)
-//                .collect(Collectors.toList());
         List<Eveniment> evt = List.of(messages);
         System.out.println(evt.toArray().length);
         System.out.println(evt);
-        //evt.forEach(System.out::println);
         evenimentsModel.setAll(evt);
+
+        CerereSponsor[] messages1 = server.getPendingSponsorRequests();
+        List<CerereSponsor> cerere = List.of(messages1);
+        System.out.println(cerere.toArray().length);
+        System.out.println(cerere);
+
+        cerereSponsorsModel.setAll(cerere);
     }
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         //pt evenimente
-        evenimentColumn.setCellValueFactory(new PropertyValueFactory<Eveniment,String>("name"));
-        locatieColumn.setCellValueFactory(new PropertyValueFactory<Eveniment,String>("location"));
+        evenimentColumn.setCellValueFactory(new PropertyValueFactory<Eveniment, String>("name"));
+        locatieColumn.setCellValueFactory(new PropertyValueFactory<Eveniment, String>("location"));
         inceputColumn.setCellValueFactory(data -> new SimpleStringProperty(
                 data.getValue().getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
         ));
         sfarsitColumn.setCellValueFactory(data -> new SimpleStringProperty(
                 data.getValue().getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
         ));
-        descriereColumn.setCellValueFactory(new PropertyValueFactory<Eveniment,String>("description"));
+        descriereColumn.setCellValueFactory(new PropertyValueFactory<Eveniment, String>("description"));
 
         descriereNotificare.setWrapText(true);
 
         //models
-        //cerereSponsorsList.setItems(cerereSponsorsModel);
+
         evenimentList.setItems(evenimentsModel);
+
+        //pt cereri
+        firmaColumn.setCellValueFactory(new PropertyValueFactory<CerereSponsor, String>("numeFirma"));
+        cifColumn.setCellValueFactory(new PropertyValueFactory<CerereSponsor, String>("cifFirma"));
+        telefonColumn.setCellValueFactory(new PropertyValueFactory<CerereSponsor, String>("telefon"));
+        adresaColumn.setCellValueFactory(new PropertyValueFactory<CerereSponsor, String>("adresaSediului"));
+
+        voluntarColumn.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getVolunteer().getNume()+" "+data.getValue().getVolunteer().getPrenume()
+        ));
+        sponsorizareColumn.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getSponsorType().getName()
+        ));
+        cerereSponsorsList.setItems(cerereSponsorsModel);
     }
 
     @FXML
@@ -158,6 +176,54 @@ public class AdminPageController {
         }
     }
 
+
+    @FXML
+    public void handleAcceptCerereSponsor()throws IOException{
+        CerereSponsor cerereSponsor = cerereSponsorsList.getSelectionModel().getSelectedItem();
+        System.out.println(cerereSponsor.getSponsorType());
+        System.out.println(cerereSponsor.getSponsorType().getName());
+        if(cerereSponsor == null){
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Selectati o cerere!");
+            return;
+        }
+        try {
+            cerereSponsor.setStatus("accepted");
+            server.updateCerereSponsor(cerereSponsor);
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Cerere acceptata!");
+            initModel();
+        } catch (IllegalArgumentException e) {
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void handleDeclineCerereSponsor()throws IOException{
+        CerereSponsor cerereSponsor = cerereSponsorsList.getSelectionModel().getSelectedItem();
+        if(cerereSponsor == null){
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Selectati o cerere!");
+            return;
+        }
+        try {
+            cerereSponsor.setStatus("declined");
+            server.updateCerereSponsor(cerereSponsor);
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Cerere respinsa!");
+            initModel();
+        } catch (IllegalArgumentException e) {
+
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
+            throw new RuntimeException(e);
+
+        } catch (Exception e) {
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+
     @FXML
     public void notifyUsersButtonClicked(){
         try{
@@ -178,4 +244,5 @@ public class AdminPageController {
             return;
         }
     }
+
 }

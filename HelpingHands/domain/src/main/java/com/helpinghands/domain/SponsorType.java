@@ -31,4 +31,12 @@ public class SponsorType implements IEntity {
     public Integer getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "SponsorType{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

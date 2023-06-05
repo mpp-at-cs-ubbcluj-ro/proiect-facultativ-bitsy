@@ -45,12 +45,12 @@
                   <Font name="System Bold Italic" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="acceptButton" layoutX="48.0" layoutY="438.0" mnemonicParsing="false" prefWidth="158.0" text="Accept application" textFill="#b60065">
+            <Button fx:id="acceptButton" layoutX="48.0" layoutY="438.0" mnemonicParsing="false" onAction="#handleAcceptCerereSponsor" prefWidth="158.0" text="Accept application" textFill="#b60065">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="declineButton" layoutX="364.0" layoutY="439.0" mnemonicParsing="false" text="Decline application" textFill="#b60065">
+            <Button fx:id="declineButton" layoutX="364.0" layoutY="439.0" mnemonicParsing="false" onAction="#handleDeclineCerereSponsor" text="Decline application" textFill="#b60065">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font>
