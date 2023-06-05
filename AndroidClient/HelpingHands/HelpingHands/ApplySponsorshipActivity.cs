@@ -66,6 +66,7 @@ namespace HelpingHands
                 await Client.ApplySponsorship(cerere);
                 await MessageBox.Alert(this, "Cererea a fost trimisa cu succes");
 
+                Toast.MakeText(Application.Context, "Ai castigat 50 de puncte Xp!", ToastLength.Short).Show();
                 var intent = new Intent(this, typeof(MainVoluntarActivity));
                 intent.PutExtra("tab", 1);
                 StartActivity(intent);
