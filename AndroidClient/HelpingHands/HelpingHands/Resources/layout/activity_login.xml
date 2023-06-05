@@ -62,7 +62,19 @@
             android:layout_column="1"
             android:inputType="textPassword"
             android:id="@+id/PasswordBox"
-            android:text="0001"/>
+            android:text="0000"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:text="Ma inregistrez"
+            android:layout_gravity="start"
+            android:textColor="#B30064" 
+            android:textSize="22dp"
+            android:id="@+id/RegisterLink"            
+            />
         <Button
             android:layout_width="wrap_content"
             android:layout_row="3"

@@ -9,22 +9,11 @@ using System.Text;
 
 namespace HelpingHands.Adapters
 {
-    internal class SponsorTypesAdapter : BaseAdapter<SponsorType>
-    {
-        List<SponsorType> Items;
-        Activity Context;
-
-        public SponsorTypesAdapter(Activity context, List<SponsorType> items) : base()
-        {
-            this.Context = context;
-            this.Items = items;
-        }
-
-        public override SponsorType this[int position] => Items[position];
-
-        public override int Count => Items.Count;
-
-        public override long GetItemId(int position) => position;
+    internal class SponsorTypesAdapter : ListAdapter<SponsorType>
+    {        
+        public SponsorTypesAdapter(Activity context, List<SponsorType> items) : base(context, items)
+        {            
+        }        
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {

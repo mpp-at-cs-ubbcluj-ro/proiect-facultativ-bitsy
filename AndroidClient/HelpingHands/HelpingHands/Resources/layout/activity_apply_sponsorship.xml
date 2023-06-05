@@ -46,13 +46,17 @@
             android:id="@+id/NumeBox" />
 
 
-        <TextView android:layout_width="150dp" android:layout_height="wrap_content"                
-        android:text="Type of sponsorship"
-         android:layout_gravity="start" 
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Type of sponsorship"
+            android:height="70dp"
+            android:paddingTop="26dp"
+            android:layout_gravity="center_vertical" 
             />        
-        <Spinner android:layout_width="300dp" android:layout_height="wrap_content" 
+        <Spinner android:layout_width="200dp" android:layout_height="70dp" 
             android:id="@+id/TypesBox" 
-               android:layout_gravity="end" />
+             />
 
 
 

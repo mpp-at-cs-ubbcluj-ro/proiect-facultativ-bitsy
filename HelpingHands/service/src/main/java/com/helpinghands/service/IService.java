@@ -4,6 +4,8 @@ import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
 import com.helpinghands.service.data.UserInfo;
 
+import java.util.List;
+
 
 public interface IService {
     UserInfo login(String username, String password) throws ServiceException;
@@ -52,4 +54,10 @@ public interface IService {
     CerereSponsor updateCerereSponsor(CerereSponsor cerereSponsor);
 
     CerereSponsor getCerereSponsorById(Integer id);
+
+    List<Post> getPostsOfVoluntar(Integer volId);
+
+    byte[] getProfilePic(int userId) throws ServiceException;
+
+    void setProfilePic(int userId, byte[] bytes) throws ServiceException;
 }

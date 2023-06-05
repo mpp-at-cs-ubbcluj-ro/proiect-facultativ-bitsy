@@ -10,6 +10,7 @@ using Google.Android.Material.BottomNavigation;
 using HelpingHands.Adapters;
 using HelpingHands.API;
 using HelpingHands.Data;
+using HelpingHands.UI;
 using HelpingHands.Utils;
 using Newtonsoft.Json;
 using System;
@@ -21,37 +22,28 @@ using Xamarin.Essentials;
 namespace HelpingHands
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
-    public partial class MainVoluntarActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
+    [UI.Layout("activity_main_voluntar")]
+    public partial class MainVoluntarActivity : AutoLoadAppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
-        GridLayout HomeView;
-        GridLayout DashboardView;                        
-        ListView EvenimenteListView;
-        ListView OrganizatorEvenimenteListView;
-        ListView VoluntarEvenimenteListView;
-        Button EvNextButton;
-        Button EvPrevButton;
-        TextView EvPageTextView;
-        Button CreateEvButton;        
+        [Control] GridLayout HomeView;
+        [Control] GridLayout DashboardView;
+        [Control] ListView EvenimenteListView;
+        [Control] ListView OrganizatorEvenimenteListView;
+        [Control] ListView VoluntarEvenimenteListView;
+        [Control] Button EvNextButton;
+        [Control] Button EvPrevButton;
+        [Control] TextView EvPageTextView;
+        [Control] Button CreateEvButton;
+        [Control] GridLayout PostView;
+        [Control] ListView PostariListView;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_main_voluntar);
-
-            HomeView = FindViewById<GridLayout>(Resource.Id.HomeView);            
-            EvenimenteListView = FindViewById<ListView>(Resource.Id.EvenimenteListView);
-            VoluntarEvenimenteListView = FindViewById<ListView>(Resource.Id.VoluntarEvenimenteListView);
-            EvNextButton = FindViewById<Button>(Resource.Id.EvNextButton);
-            EvPrevButton = FindViewById<Button>(Resource.Id.EvPrevButton);            
-            EvPageTextView = FindViewById<TextView>(Resource.Id.EvPageTextView);
+            base.OnCreate(savedInstanceState);                        
 
             EvPrevButton.Click += EvPrevButton_Click;
             EvNextButton.Click += EvNextButton_Click;
-
-            DashboardView = FindViewById<GridLayout>(Resource.Id.DashboardView);
-            OrganizatorEvenimenteListView = FindViewById<ListView>(Resource.Id.OrganizatorEvenimenteListView);
-            CreateEvButton = FindViewById<Button>(Resource.Id.CreateEvButton);
+            
             CreateEvButton.Click += CreateEvButton_Click;
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
             OrganizatorEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
@@ -63,13 +55,33 @@ namespace HelpingHands
 
             HomeView.Visibility = ViewStates.Visible;
             DashboardView.Visibility = ViewStates.Gone;
+            PostView.Visibility = ViewStates.Gone;
             Task.Run(LoadHome);
             Task.Run(LoadDashboard);
+            Task.Run(LoadPosts);
 
             int tab = Intent.GetIntExtra("tab", 0);
             navigation.SelectedItemId = tab;
 
-            OnCreateAccountPage();
+            OnCreate_AccountPage();
+        }
+
+
+        List<PostDTO> PostariEv = new List<PostDTO>();
+        private async void LoadPosts()
+        {
+            try
+            {
+                PostariEv = (await Client.GetPostOfVoluntar(AppSession.UserId)).ToList();
+                RunOnUiThread(() =>
+                {
+                    PostariListView.Adapter = new PostAdapter(this, PostariEv);
+                });
+            }
+            catch (Exception e)
+            {
+                await MessageBox.Alert(this, "GET request failed. Connection possibly failed", "Error");
+            }
         }
 
         bool EventSelected = false;
@@ -214,20 +226,28 @@ namespace HelpingHands
                     HomeView.Visibility = ViewStates.Visible;
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Gone;
+                    PostView.Visibility = ViewStates.Gone;
                     LoadHome();
                     return true;
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
-                    ProfileView.Visibility = ViewStates.Gone;                    
+                    ProfileView.Visibility = ViewStates.Gone;     
+                    PostView.Visibility= ViewStates.Gone;
                     LoadDashboard();
                     return true;
                 case Resource.Id.navigation_user:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Gone;
-                    ProfileView.Visibility = ViewStates.Visible;                    
+                    ProfileView.Visibility = ViewStates.Visible;
+                    PostView.Visibility = ViewStates.Gone;
                     return true;                                
-                case Resource.Id.navigation_notifications:                    
+                case Resource.Id.navigation_posts:
+                    HomeView.Visibility = ViewStates.Gone;
+                    DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;
+                    PostView.Visibility = ViewStates.Visible;
+                    LoadPosts();
                     return true;
             }
             return false;
