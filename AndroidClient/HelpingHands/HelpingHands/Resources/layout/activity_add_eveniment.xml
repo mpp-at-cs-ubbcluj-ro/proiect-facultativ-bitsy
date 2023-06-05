@@ -21,7 +21,7 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
         android:text="Nume"/>
         <EditText
-            android:layout_width="300dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:id="@+id/NumeBox"                                    
@@ -31,7 +31,7 @@
         android:text="Descriere"/>
         <EditText android:id="@+id/DescriereBox"
             android:inputType="textMultiLine" android:layout_height="130dp"
-            android:layout_width="300dp"/>
+            android:layout_width="200dp"/>
         
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"                
         android:text="Data inceput"/>        

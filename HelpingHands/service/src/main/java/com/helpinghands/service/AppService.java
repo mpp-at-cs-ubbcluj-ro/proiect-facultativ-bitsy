@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 public class AppService implements IService {
     private final static Logger logger = LogManager.getLogger();
@@ -536,6 +537,17 @@ public class AppService implements IService {
     }
 
     @Override
+    public List<Post> getAllPosts() {
+        logger.trace("");
+        logger.info("getAllPosts{} ");
+        List<Post> volPosts = StreamSupport.stream(postRepo.getAll().spliterator(), false
+                ).toList();
+        logger.info("Ok:{}", volPosts.size());
+        logger.traceExit();
+        return volPosts;
+    }
+
+    @Override
     public byte[] getProfilePic(int userId) throws ServiceException {
         try {
             return profilePicRepo.getImage(userId);
@@ -560,5 +572,10 @@ public class AppService implements IService {
         Integer pct = voluntarRepo.modifyPoints(vol, amount);
         logger.info("Ok; New Points: {}", pct);
         logger.traceExit();
+    }
+
+    @Override
+    public List<Post> getNewestPosts() {
+        return postRepo.getNewestPosts();
     }
 }

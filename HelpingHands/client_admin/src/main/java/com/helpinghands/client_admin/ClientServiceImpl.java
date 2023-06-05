@@ -222,6 +222,11 @@ public class ClientServiceImpl implements IService{
     }
 
     @Override
+    public List<Post> getAllPosts() {
+        return null;
+    }
+
+    @Override
     public byte[] getProfilePic(int userId) throws ServiceException {
         return new byte[0];
     }
@@ -232,8 +237,13 @@ public class ClientServiceImpl implements IService{
     }
     @Override
     public void modifyExpPoints(Voluntar vol, Integer amount) {
-
     }
+
+    @Override
+    public List<Post> getNewestPosts() {
+        return null;
+    }
+
     private static final String PUBLIC_KEY =
             "-----BEGIN PUBLIC KEY-----\n" +
             "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGtQfpFSJFn38TfEOsakcydPCc85\n" +
