@@ -19,6 +19,7 @@ public interface IService {
     Voluntar getVoluntarById(Integer id) throws ServiceException;
 
     Participant getParticipantById(Integer id) throws ServiceException;
+    Admin getAdminById(Integer id) throws ServiceException;
 
     Eveniment getEvenimentById(Integer id) throws ServiceException;
 
@@ -42,7 +43,7 @@ public interface IService {
 
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
     Eveniment[] getEvenimentByVoluntarId(Integer volId);
-    Post adaugaPostare(Post post);
+    Post addPost(Post post);
     Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException;
     CerereSponsor applyForSponsorship(CerereSponsor cerereSponsor);
     SponsorType getSponsorTypeByName(String name) throws ServiceException;

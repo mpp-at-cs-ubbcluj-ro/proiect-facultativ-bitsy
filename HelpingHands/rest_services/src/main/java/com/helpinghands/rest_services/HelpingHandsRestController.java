@@ -271,10 +271,10 @@ public class HelpingHandsRestController {
     }
 
     @RequestMapping(value="/posts", method = RequestMethod.POST)
-    public ResponseEntity<?> addPostare (@RequestBody PostDTO postDTO){
+    public ResponseEntity<?> addPost (@RequestBody PostDTO postDTO){
         try{
-            Post post = new Post(postDTO.getDescriere(),LocalDateTime.now(),service.getEvenimentById(postDTO.getIdEv()), service.getVoluntarById(postDTO.getIdUser()));
-            Post p = service.adaugaPostare(post);
+            Post post = new Post(postDTO.getDescriere(),LocalDateTime.now(),service.getEvenimentById(postDTO.getIdEv()), service.getAdminById(postDTO.getIdUser()));
+            Post p = service.addPost(post);
             return new ResponseEntity<Post>(p,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);

@@ -3,6 +3,7 @@ package com.helpinghands.client_admin;
 import com.helpinghands.client_admin.data.UserCredentials;
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
+import com.helpinghands.rest_services.dto.PostDTO;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
 import com.helpinghands.service.data.UserInfo;
@@ -84,6 +85,11 @@ public class ClientServiceImpl implements IService{
     }
 
     @Override
+    public Admin getAdminById(Integer id) throws ServiceException {
+        return null;
+    }
+
+    @Override
     public Eveniment getEvenimentById(Integer id) throws ServiceException {
         return null;
     }
@@ -158,10 +164,11 @@ public class ClientServiceImpl implements IService{
         return new Eveniment[0];
     }
 
-
     @Override
-    public Post adaugaPostare(Post post) {
-        return null;
+    public Post addPost(Post post) {
+        return execute(()->restTemplate.postForObject(URL+"/posts",
+                new PostDTO(0,post.getDescriere(),post.getEveniment().getId(),post.getAuthor().getId(),post.getData())
+                ,Post.class));
     }
 
     @Override
@@ -210,6 +217,20 @@ public class ClientServiceImpl implements IService{
         return null;
     }
 
+    @Override
+    public byte[] getProfilePic(int userId) throws ServiceException {
+        return new byte[0];
+    }
+
+    @Override
+    public void setProfilePic(int userId, byte[] bytes) throws ServiceException {
+
+    }
+
+    @Override
+    public void modifyExpPoints(Voluntar vol, Integer amount) {
+
+    }
 
     private static final String PUBLIC_KEY =
             "-----BEGIN PUBLIC KEY-----\n" +
