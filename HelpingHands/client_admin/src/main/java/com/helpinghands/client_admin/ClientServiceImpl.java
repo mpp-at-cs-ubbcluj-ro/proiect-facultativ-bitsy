@@ -169,4 +169,24 @@ public class ClientServiceImpl implements IService{
         return null;
     }
 
+    @Override
+    public CerereSponsor[] getPendingSponsorRequests() {
+        return new CerereSponsor[0];
+    }
+
+    @Override
+    public CerereSponsor addCerereSponsor(CerereSponsor cerereSponsor) {
+        return null;
+    }
+
+    @Override
+    public CerereSponsor updateCerereSponsor(CerereSponsor cerereSponsor) {
+        return null;
+    }
+
+    @Override
+    public CerereSponsor getCerereSponsorById(Integer id) {
+        return null;
+    }
+
 }
