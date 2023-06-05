@@ -15,6 +15,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class ClientServiceImpl implements IService{
@@ -200,6 +201,11 @@ public class ClientServiceImpl implements IService{
 
     @Override
     public CerereSponsor getCerereSponsorById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public List<Post> getPostsOfVoluntar(Integer volId) {
         return null;
     }
 

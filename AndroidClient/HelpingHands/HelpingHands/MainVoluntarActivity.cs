@@ -33,7 +33,9 @@ namespace HelpingHands
         [Control] Button EvNextButton;
         [Control] Button EvPrevButton;
         [Control] TextView EvPageTextView;
-        [Control] Button CreateEvButton;        
+        [Control] Button CreateEvButton;
+        [Control] GridLayout PostView;
+        [Control] ListView PostariListView;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,13 +55,33 @@ namespace HelpingHands
 
             HomeView.Visibility = ViewStates.Visible;
             DashboardView.Visibility = ViewStates.Gone;
+            PostView.Visibility = ViewStates.Gone;
             Task.Run(LoadHome);
             Task.Run(LoadDashboard);
+            Task.Run(LoadPosts);
 
             int tab = Intent.GetIntExtra("tab", 0);
             navigation.SelectedItemId = tab;
 
             OnCreate_AccountPage();
+        }
+
+
+        List<PostDTO> PostariEv = new List<PostDTO>();
+        private async void LoadPosts()
+        {
+            try
+            {
+                PostariEv = (await Client.GetPostOfVoluntar(AppSession.UserId)).ToList();
+                RunOnUiThread(() =>
+                {
+                    PostariListView.Adapter = new PostAdapter(this, PostariEv);
+                });
+            }
+            catch (Exception e)
+            {
+                await MessageBox.Alert(this, "GET request failed. Connection possibly failed", "Error");
+            }
         }
 
         bool EventSelected = false;
@@ -204,20 +226,28 @@ namespace HelpingHands
                     HomeView.Visibility = ViewStates.Visible;
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Gone;
+                    PostView.Visibility = ViewStates.Gone;
                     LoadHome();
                     return true;
                 case Resource.Id.navigation_dashboard:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Visible;
-                    ProfileView.Visibility = ViewStates.Gone;                    
+                    ProfileView.Visibility = ViewStates.Gone;     
+                    PostView.Visibility= ViewStates.Gone;
                     LoadDashboard();
                     return true;
                 case Resource.Id.navigation_user:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Gone;
-                    ProfileView.Visibility = ViewStates.Visible;                    
+                    ProfileView.Visibility = ViewStates.Visible;
+                    PostView.Visibility = ViewStates.Gone;
                     return true;                                
-                case Resource.Id.navigation_notifications:                    
+                case Resource.Id.navigation_posts:
+                    HomeView.Visibility = ViewStates.Gone;
+                    DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;
+                    PostView.Visibility = ViewStates.Visible;
+                    LoadPosts();
                     return true;
             }
             return false;

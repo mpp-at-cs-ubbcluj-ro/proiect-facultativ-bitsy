@@ -30,7 +30,7 @@
         <mapping class="com.helpinghands.domain.Eveniment"/>
         <mapping resource="ChatRoom.hbm.xml"/>
         <mapping resource="Message.hbm.xml"/>
-        <mapping resource="Post.hbm.xml"/>
+        <mapping class="com.helpinghands.domain.Post"/>
         <mapping resource="Notification.hbm.xml"/>
         <mapping class="com.helpinghands.domain.Participant"/>
         <mapping class="com.helpinghands.domain.CerereSponsor"/>

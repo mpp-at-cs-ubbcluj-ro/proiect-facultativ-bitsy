@@ -79,6 +79,7 @@
     <Compile Include="Adapters\ListAdapter.cs" />
     <Compile Include="Adapters\ParticipantAdapter.cs" />
     <Compile Include="Adapters\EvenimentAdapter.cs" />
+    <Compile Include="Adapters\PostAdapter.cs" />
     <Compile Include="Adapters\SponsorTypesAdapter.cs" />
     <Compile Include="AddEvenimentActivity.cs" />
     <Compile Include="API\Client.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Data\Interest.cs" />
     <Compile Include="Data\LoginInfo.cs" />
     <Compile Include="Data\Participant.cs" />
+    <Compile Include="Data\PostDTO.cs" />
     <Compile Include="Data\RequestDataAddVoluntar.cs" />
     <Compile Include="Data\SponsorType.cs" />
     <Compile Include="Data\User.cs" />
@@ -232,7 +234,9 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\post_icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\post_row.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.

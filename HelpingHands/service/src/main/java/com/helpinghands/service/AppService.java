@@ -502,4 +502,18 @@ public class AppService implements IService {
             "K9+qiYoazJuCk+KkGQJAM5uJne39zjZ/qAAHXe4mjl5hUwYpqbxEyvKtjL1SBRiG\n" +
             "ZR4VQLE+Vy3S/3vIXSg+54VGYCdt+2mcy6tMOk4Z3A==\n" +
             "-----END RSA PRIVATE KEY-----";
+    @Override
+    public List<Post> getPostsOfVoluntar(Integer volId) {
+        logger.trace("");
+        logger.info("getPostsOfVoluntar{} ", volId);
+        List<Post> volPosts = postRepo.getPostsOfVol(volId);
+//        for(Post p: postRepo.getAll()){
+//            for(Eveniment ev: getEvenimentByVoluntarId(volId))
+//                if(p.getEveniment().equals(ev.getId()))
+//                    volPosts.add(p);
+//        }
+        logger.info("Ok:{}", volPosts.size());
+        logger.traceExit();
+        return volPosts;
+    }
 }
