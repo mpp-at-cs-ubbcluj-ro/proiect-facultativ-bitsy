@@ -34,7 +34,10 @@ namespace HelpingHands.API
 
         public static async Task<Participant> AddVoluntarToEveniment(int eventId, int volId, string role)
             => await ClientBase.Put<Participant>($"/evenimente/{eventId}/participants",
-                new { idVoluntar = volId, role, token = AppSession.UserData.Token });                
+                new { idVoluntar = volId, role, token = AppSession.UserData.Token });
+
+        public static async Task<Voluntar> GetVoluntar(int volId)
+            => await ClientBase.Get<Voluntar>($"/volunteers/{volId}");
 
         public static async Task<Eveniment> RemoveParticipantFromEveniment(int eventId, int participantId)
             => await ClientBase.Delete<Eveniment>($"/evenimente/{eventId}/participants/{participantId}?token={AppSession.UserData.Token}");
@@ -71,8 +74,8 @@ namespace HelpingHands.API
         public static async Task<SponsorType[]> GetSponsorTypes()
             => await ClientBase.Get<SponsorType[]>($"/sponsorTypes");
 
-        public static async Task<PostDTO[]> GetPostOfVoluntar(int volId)
-            => await ClientBase.Get <PostDTO[]>($"/posts/{volId}");
+        public static async Task<PostDTO[]> GetPostOfVoluntar()
+            => await ClientBase.Get <PostDTO[]>($"/posts");
 
         public static async Task<CerereSponsor> ApplySponsorship(CerereSponsor sponsor)
             => await ClientBase.Post<CerereSponsor>("/sponsorship", sponsor);

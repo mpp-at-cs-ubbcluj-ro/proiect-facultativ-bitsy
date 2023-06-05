@@ -21,6 +21,8 @@ namespace HelpingHands.Data
 
         [JsonProperty("userId")]
         public int IdUser { get; set; }
+        [JsonProperty("username")]
+        public String Username{ get; set; }
 
         [JsonProperty("evenimentDTO")]
         public Eveniment Eveniment { get; set; }

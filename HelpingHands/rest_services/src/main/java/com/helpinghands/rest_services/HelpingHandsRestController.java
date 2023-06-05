@@ -175,11 +175,11 @@ public class HelpingHandsRestController {
     public ResponseEntity<?> removeVoluntarFromEveniment(@PathVariable Integer id_eveniment, @PathVariable Integer id_participant, @RequestParam String token){
         try{
             service.getUserSession(token); // check if valid token
-
+            System.out.println("here");
             Participant voluntar = service.getParticipantById(id_participant);
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
             Eveniment eveniment_final = service.deleteParticipantFromEveniment(voluntar,eveniment);
-            service.modifyExpPoints(service.getVoluntarById(id_participant), -100);
+            service.modifyExpPoints(service.getVoluntarById(voluntar.getVoluntar().getId()), -100);
             return new ResponseEntity<EvenimentDTO>(EvenimentDTO.fromEveniment(eveniment_final),HttpStatus.OK);
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -226,6 +226,12 @@ public class HelpingHandsRestController {
         }catch (Exception e){
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);}
+    }
+
+    @RequestMapping(value="/volunteers/{id}", method=RequestMethod.GET)
+    public VoluntarDTO getUserXP(@PathVariable int id) throws ServiceException {
+        var user = service.getVoluntarById(id);
+        return VoluntarDTO.fromVoluntar(user);
     }
 
     @RequestMapping(value = "/evenimente/{id}", method = RequestMethod.PUT)
@@ -280,13 +286,10 @@ public class HelpingHandsRestController {
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-
-
     @RequestMapping(value = "/interests/{id}", method = RequestMethod.GET)
     public Iterable<Interest> getInterests(@PathVariable Integer id) throws ServiceException {
         return service.getVoluntarInterest(id);
     }
-
     @RequestMapping(value = "/sponsorship", method = RequestMethod.POST)
     public ResponseEntity<?> applyForSponsorship(@RequestBody CerereDTO cerereDTO){
         try{
@@ -358,17 +361,28 @@ public class HelpingHandsRestController {
         return service.getActualEvenimente();
     }
 
-    @RequestMapping(value="/posts/{id}",method = RequestMethod.GET)
-    public List<PostVolDTO> getPostOfVol(@PathVariable Integer id){
+
+    @RequestMapping(value="/posts",method = RequestMethod.GET)
+    public List<PostVolDTO> getAllPosts(){
         List<PostVolDTO> postVolDTOSList = new ArrayList<PostVolDTO>();
-        for(Post p: service.getPostsOfVoluntar(id))
+        for(Post p: service.getNewestPosts())
         {
-            PostVolDTO postVolDTO = new PostVolDTO(p.getId(), p.getAuthor().getId(), EvenimentNoParticipantsDTO.fromEveniment(p.getEveniment()), p.getDescriere(), p.getData());
+            PostVolDTO postVolDTO = new PostVolDTO(p.getId(), p.getAuthor().getId(),p.getAuthor().getNume()+" "+p.getAuthor().getPrenume(), EvenimentNoParticipantsDTO.fromEveniment(p.getEveniment()), p.getDescriere(), p.getData());
             postVolDTOSList.add(postVolDTO);
         }
         return  postVolDTOSList;
     }
 
+    @RequestMapping(value="/posts/{id}",method = RequestMethod.GET)
+    public List<PostVolDTO> getPostOfVol(@PathVariable Integer id){
+        List<PostVolDTO> postVolDTOSList = new ArrayList<PostVolDTO>();
+        for(Post p: service.getPostsOfVoluntar(id))
+        {
+            PostVolDTO postVolDTO = new PostVolDTO(p.getId(), p.getAuthor().getId(),p.getAuthor().getNume()+" "+p.getAuthor().getPrenume(), EvenimentNoParticipantsDTO.fromEveniment(p.getEveniment()), p.getDescriere(), p.getData());
+            postVolDTOSList.add(postVolDTO);
+        }
+        return  postVolDTOSList;
+    }
     @RequestMapping(value="/users/{id}/pp",method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] getProfilePic(@PathVariable int id) throws IOException, ServiceException {
