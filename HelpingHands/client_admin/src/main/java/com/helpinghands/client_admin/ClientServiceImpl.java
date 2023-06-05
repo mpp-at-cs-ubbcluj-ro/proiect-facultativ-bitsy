@@ -219,6 +219,11 @@ public class ClientServiceImpl implements IService{
     }
 
     @Override
+    public List<Post> getAllPosts() {
+        return null;
+    }
+
+    @Override
     public byte[] getProfilePic(int userId) throws ServiceException {
         return new byte[0];
     }
@@ -229,10 +234,10 @@ public class ClientServiceImpl implements IService{
     }
     @Override
     public void modifyExpPoints(Voluntar vol, Integer amount) {
-
     }
 
     @Override
+
     public UserInfo resetPassword(String username, String password) {
 
         return null;
@@ -240,6 +245,9 @@ public class ClientServiceImpl implements IService{
 
     @Override
     public Utilizator getUserByName(String username) throws ServiceException {
+     return null;
+    }
+    public List<Post> getNewestPosts() {
         return null;
     }
 

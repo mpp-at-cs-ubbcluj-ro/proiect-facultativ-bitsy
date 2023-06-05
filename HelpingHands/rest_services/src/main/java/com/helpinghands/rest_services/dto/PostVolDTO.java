@@ -5,17 +5,20 @@ import java.time.LocalDateTime;
 public class PostVolDTO {
     private Integer id;
     private Integer userId;
+    private String username;
     private EvenimentNoParticipantsDTO evenimentDTO;
     private String descriere;
     private LocalDateTime data;
 
-    public PostVolDTO(Integer id, Integer userId, EvenimentNoParticipantsDTO evenimentDTO, String descriere, LocalDateTime data) {
+    public PostVolDTO(Integer id, Integer userId, String username, EvenimentNoParticipantsDTO evenimentDTO, String descriere, LocalDateTime data) {
         this.id = id;
         this.userId = userId;
+        this.username = username;
         this.evenimentDTO = evenimentDTO;
         this.descriere = descriere;
         this.data = data;
     }
+
 
     public void setEvenimentDTO(EvenimentNoParticipantsDTO evenimentDTO) {
         this.evenimentDTO = evenimentDTO;
@@ -39,6 +42,14 @@ public class PostVolDTO {
 
     public Integer getUserId() {
         return userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setUserId(Integer userId) {

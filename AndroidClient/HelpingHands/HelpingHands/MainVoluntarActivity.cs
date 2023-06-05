@@ -72,7 +72,7 @@ namespace HelpingHands
         {
             try
             {
-                PostariEv = (await Client.GetPostOfVoluntar(AppSession.UserId)).ToList();
+                PostariEv = (await Client.GetPostOfVoluntar()).ToList();
                 RunOnUiThread(() =>
                 {
                     PostariListView.Adapter = new PostAdapter(this, PostariEv);
@@ -158,10 +158,13 @@ namespace HelpingHands
             {
                 var pageN = int.Parse(EvPageTextView.Text);
                 pageN++;
-                Evenimente = (await API.Client.GetEvenimentePaged(pageN - 1)).ToList();
+                var ev = (await API.Client.GetEvenimentePaged(pageN - 1)).ToList();
+                if (ev.Count == 0) { pageN--; return; }
+                Evenimente = ev;
                 RunOnUiThread(() =>
                 {
                     EvPageTextView.Text = pageN.ToString();
+
                     EvenimenteListView.Adapter = new EvenimentAdapter(this, Evenimente);
                 });
             }
@@ -241,6 +244,7 @@ namespace HelpingHands
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Visible;
                     PostView.Visibility = ViewStates.Gone;
+                    LoadProfile();
                     return true;                                
                 case Resource.Id.navigation_posts:
                     HomeView.Visibility = ViewStates.Gone;

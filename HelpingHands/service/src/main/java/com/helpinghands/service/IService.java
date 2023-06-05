@@ -58,15 +58,21 @@ public interface IService {
 
     List<Post> getPostsOfVoluntar(Integer volId);
 
+    List<Post> getAllPosts();
+
     byte[] getProfilePic(int userId) throws ServiceException;
 
     void setProfilePic(int userId, byte[] bytes) throws ServiceException;
 
     void modifyExpPoints(Voluntar vol, Integer amount);
 
+<<<<<<< HEAD
     UserInfo resetPassword(String username, String password);
 
     Utilizator getUserByName(String username) throws ServiceException;
 
 
+=======
+    List<Post> getNewestPosts();
+>>>>>>> a35c2a092a0a5bcba91f75b8096e15e6111c3077
 }
