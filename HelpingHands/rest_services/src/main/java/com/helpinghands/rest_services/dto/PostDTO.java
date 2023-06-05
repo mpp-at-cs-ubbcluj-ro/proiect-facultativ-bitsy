@@ -14,6 +14,14 @@ public class PostDTO {
     private Integer idUser;
     private LocalDateTime data;
 
+    public PostDTO(Integer id, String descriere, Integer idEv, Integer idUser, LocalDateTime data) {
+        this.id = id;
+        this.descriere = descriere;
+        this.idEv = idEv;
+        this.idUser = idUser;
+        this.data = data;
+    }
+
     public Integer getId() {
         return id;
     }

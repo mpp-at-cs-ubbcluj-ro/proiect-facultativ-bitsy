@@ -79,12 +79,12 @@
                   <Font name="System Bold Italic" size="20.0" />
                </font>
             </Label>
-            <Button layoutX="852.0" layoutY="509.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="219.0" text="Notify users about event" textFill="#b60065">
+            <Button fx:id="notifyButton" onAction="#notifyUsersButtonClicked" layoutX="852.0" layoutY="509.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="219.0" text="Notify users about event" textFill="#b60065">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font>
             </Button>
-            <TextArea layoutX="852.0" layoutY="590.0" prefHeight="231.0" prefWidth="219.0" text="Hello Dear!&#10;Have you heard about this event? &#10;Don't miss the chance to participate!&#10;See you there!&#10;❤&#10;&#10;&#10;&#10;&#10;&#10;Best regards,&#10;Helping Hands Team" />
+            <TextArea fx:id="descriereNotificare" layoutX="852.0" layoutY="590.0" prefHeight="231.0" prefWidth="219.0" text="Hello Dear!&#10;Have you heard about this event? &#10;Don't miss the chance to participate!&#10;See you there!&#10;❤&#10;&#10;&#10;&#10;&#10;&#10;Best regards,&#10;Helping Hands Team" />
             <ImageView fitHeight="58.0" fitWidth="60.0" layoutX="933.0" layoutY="444.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../clopotel.png" />

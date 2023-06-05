@@ -4,6 +4,7 @@ import ch.qos.logback.core.encoder.EchoEncoder;
 import com.helpinghands.domain.Admin;
 import com.helpinghands.domain.CerereSponsor;
 import com.helpinghands.domain.Eveniment;
+import com.helpinghands.domain.Post;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.data.UserInfo;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,16 +13,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,12 +36,17 @@ public class AdminPageController {
 
     @FXML
     Button logoutButton;
+    @FXML
+    Button notifyButton;
 
     @FXML
     Button acceptButton;
 
     @FXML
     Button declineButton;
+
+    @FXML
+    TextArea descriereNotificare;
 
     @FXML
     TableColumn<Eveniment,String> evenimentColumn;
@@ -115,6 +120,8 @@ public class AdminPageController {
         ));
         descriereColumn.setCellValueFactory(new PropertyValueFactory<Eveniment,String>("description"));
 
+        descriereNotificare.setWrapText(true);
+
         //models
         //cerereSponsorsList.setItems(cerereSponsorsModel);
         evenimentList.setItems(evenimentsModel);
@@ -151,4 +158,24 @@ public class AdminPageController {
         }
     }
 
+    @FXML
+    public void notifyUsersButtonClicked(){
+        try{
+            Eveniment eveniment = (Eveniment) evenimentList.getSelectionModel().getSelectedItem();
+            if(eveniment == null)
+                MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Selecteaza un eveniment pentru a putea trimite notificarea asupra acestuia!");
+            else {
+                String descriere = descriereNotificare.getText();
+                Post newPost = new Post(descriere, LocalDateTime.now(),eveniment,this.admin.getUtilizator());
+                this.server.addPost(newPost);
+                MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Utilizatorii au fost notificati asupra evenimentului cu succes!");
+            }
+        }catch (IllegalArgumentException e) {
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
+            return;
+        } catch (Exception e) {
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
+            return;
+        }
+    }
 }
