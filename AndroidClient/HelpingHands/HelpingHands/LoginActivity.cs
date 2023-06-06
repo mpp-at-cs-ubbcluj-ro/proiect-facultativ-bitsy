@@ -56,12 +56,12 @@ namespace HelpingHands
 
             try
             {
-                var userInfo = await API.Client.Login(username, password);
-                await MessageBox.Alert(this, $"Bine ai venit, {userInfo.User.Nume} {userInfo.User.Prenume}", "Login cu succes");
+                var userInfo = await API.Client.Login(username, password);                
                 AppSession.UserData = userInfo;
 
                 if (userInfo.Type == "Voluntar")
                 {
+                    await MessageBox.Alert(this, $"Bine ai venit, {userInfo.User.Nume} {userInfo.User.Prenume}", "Login cu succes");
                     Intent intent = new Intent(this, typeof(MainVoluntarActivity));
                     StartActivity(intent);
                 }
