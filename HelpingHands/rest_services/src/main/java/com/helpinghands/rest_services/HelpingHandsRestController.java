@@ -178,6 +178,13 @@ public class HelpingHandsRestController {
             System.out.println("here");
             Participant voluntar = service.getParticipantById(id_participant);
             Eveniment eveniment = service.getEvenimentById(id_eveniment);
+
+            var organizers = service.getOrganizers(eveniment);
+
+            if(organizers.length==1 && Objects.equals(organizers[0].getId(), voluntar.getId())) {
+                throw new HHServerException("Can't remove the only organizer of the event");
+            }
+
             Eveniment eveniment_final = service.deleteParticipantFromEveniment(voluntar,eveniment);
             service.modifyExpPoints(service.getVoluntarById(voluntar.getVoluntar().getId()), -100);
             return new ResponseEntity<EvenimentDTO>(EvenimentDTO.fromEveniment(eveniment_final),HttpStatus.OK);
