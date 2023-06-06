@@ -207,9 +207,19 @@ public class AppService implements IService {
     }
 
     @Override
-    public void addVoluntarInterest(Voluntar voluntar, Interest interest) {
+    public void addVoluntarInterest(Voluntar voluntar, Interest interest) throws ServiceException{
         logger.trace("");
         logger.info("addVoluntarInterest {}", interest + " to " + voluntar);
+        if(voluntar == null){
+            logger.info("Error:{}", "Voluntar not found");
+            logger.traceExit();
+            throw new ServiceException("Voluntar not found");
+        }
+        if(interest == null){
+            logger.info("Error:{}", "Interest not found");
+            logger.traceExit();
+            throw new ServiceException("Interest not found");
+        }
         voluntar.getInterests().add(interest);
         voluntarRepo.update(voluntar);
         logger.info("Ok:{}", voluntar);
@@ -217,9 +227,19 @@ public class AppService implements IService {
     }
 
     @Override
-    public void removeVoluntarInterest(Voluntar voluntar, Interest interest) {
+    public void removeVoluntarInterest(Voluntar voluntar, Interest interest) throws ServiceException {
         logger.trace("");
         logger.info("removeVoluntarInterest {}", interest + " from " + voluntar);
+        if(voluntar == null){
+            logger.info("Error:{}", "Voluntar not found");
+            logger.traceExit();
+            throw new ServiceException("Voluntar not found");
+        }
+        if(interest == null){
+            logger.info("Error:{}", "Interest not found");
+            logger.traceExit();
+            throw new ServiceException("Interest not found");
+        }
         voluntar.getInterests().removeIf(i-> Objects.equals(i.getName(), interest.getName()));
         voluntarRepo.update(voluntar);
         logger.info("Ok:{}", voluntar);
@@ -248,14 +268,29 @@ public class AppService implements IService {
     private Participant addParticipant(Voluntar voluntar, Eveniment event, boolean isOrganizer) throws ServiceException {
         logger.trace("");
         logger.info("addParticipantt {}", voluntar + "to" + event.getId());
-
+        if(voluntar == null){
+            logger.info("Error:{}", "Voluntar not found");
+            logger.traceExit();
+            throw new ServiceException("Voluntar not found");
+        }
+        if(event == null){
+            logger.info("Error:{}", "Event not found");
+            logger.traceExit();
+            throw new ServiceException("Event not found");
+        }
         var p=participantRepo.add(new Participant(voluntar, isOrganizer));
         if(p==null){
             logger.info("Error:{}", "Could not add participant");
             logger.traceExit();
             throw new ServiceException("Could not add participant");
         }
-
+        for (Participant participant : event.getParticipants()) {
+            if (participant.getVoluntar().getId().equals(voluntar.getId())) {
+                logger.info("Error:{}", "Participant already exists");
+                logger.traceExit();
+                throw new ServiceException("Participant already exists");
+            }
+        }
         System.out.println(p);
         event.getParticipants().add(p);
         evenimentRepo.update(event);
@@ -268,6 +303,23 @@ public class AppService implements IService {
     public Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException {
         logger.trace("");
         logger.info("addVolunteer {}", voluntar + "to" + event.getId());
+        if(voluntar == null){
+            logger.info("Error:{}", "Voluntar not found");
+            logger.traceExit();
+            throw new ServiceException("Voluntar not found");
+        }
+        if (event == null) {
+            logger.info("Error:{}", "Event not found");
+            logger.traceExit();
+            throw new ServiceException("Event not found");
+        }
+        for(Participant p:event.getParticipants()){
+            if(p.getVoluntar().getId().equals(voluntar.getId())){
+                logger.info("Error:{}", "Voluntar already in event");
+                logger.traceExit();
+                throw new ServiceException("Voluntar already in event");
+            }
+        }
         logger.traceExit();
         return addParticipant(voluntar, event, false);
     }
@@ -276,14 +328,31 @@ public class AppService implements IService {
     public Participant addOrganizer(Voluntar voluntar, Eveniment event) throws ServiceException {
         logger.trace("");
         logger.info("addOrganizer {}", voluntar + "to" + event.getId());
+        if(voluntar == null){
+            logger.info("Error:{}", "Voluntar not found");
+            logger.traceExit();
+            throw new ServiceException("Voluntar not found");
+        }
+        for(Participant p:event.getParticipants()){
+            if(p.getVoluntar().getId().equals(voluntar.getId())){
+                logger.info("Error:{}", "Voluntar already in event");
+                logger.traceExit();
+                throw new ServiceException("Voluntar already in event");
+            }
+        }
         logger.traceExit();
         return addParticipant(voluntar, event, true);
     }
 
     @Override
-    public Participant[] getParticipants(Eveniment event) {
+    public Participant[] getParticipants(Eveniment event) throws ServiceException{
         logger.trace("");
         logger.info("getParticipants {}", event);
+        if(event == null){
+            logger.info("Error:{}", "Event not found");
+            logger.traceExit();
+            throw new ServiceException("Event not found");
+        }
         var voluntars = event.getParticipants().stream().toArray(Participant[]::new);
         logger.info("Ok{}", voluntars.length);
         logger.traceExit();
@@ -381,9 +450,14 @@ public class AppService implements IService {
     }
 
     @Override
-    public Post addPost(Post post) {
+    public Post addPost(Post post) throws ServiceException {
         logger.trace("");
         logger.info("addPostare {}", post);
+        if(post == null){
+            logger.info("Error:{}", "Post not found");
+            logger.traceExit();
+            throw new ServiceException("Post not found");
+        }
         logger.traceExit();
         return postRepo.add(post);
     }
@@ -618,5 +692,7 @@ public class AppService implements IService {
         logger.info("getNewestPosts{} ");
         return postRepo.getNewestPosts();
     }
+
+    //sa nu te mai poti inscrie la un eveniment daca te-ai inscris deja
 
 }

@@ -239,8 +239,8 @@ public class ClientServiceImpl implements IService{
     @Override
 
     public UserInfo resetPassword(String username, String password) {
+    return null;
 
-        return null;
     }
 
     @Override
