@@ -241,6 +241,17 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/MeniuHelpView" >
+                 <WebView
+                 android:id="@+id/PgWeb"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent" />
+            </GridLayout>
+
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/PostView"
                 android:columnCount="1"
                 android:padding="@dimen/activity_horizontal_margin"

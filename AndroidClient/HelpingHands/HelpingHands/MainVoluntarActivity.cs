@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.SE.Omapi;
 using Android.Views;
+using Android.Webkit;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.BottomNavigation;
@@ -15,7 +16,9 @@ using HelpingHands.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -36,6 +39,8 @@ namespace HelpingHands
         [Control] Button CreateEvButton;
         [Control] GridLayout PostView;
         [Control] ListView PostariListView;
+        [Control] GridLayout MeniuHelpView;
+        [Control] WebView PgWeb;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -56,6 +61,7 @@ namespace HelpingHands
             HomeView.Visibility = ViewStates.Visible;
             DashboardView.Visibility = ViewStates.Gone;
             PostView.Visibility = ViewStates.Gone;
+            MeniuHelpView.Visibility = ViewStates.Gone;
             Task.Run(LoadHome);
             Task.Run(LoadDashboard);
             Task.Run(LoadPosts);
@@ -227,6 +233,7 @@ namespace HelpingHands
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Gone;
                     PostView.Visibility = ViewStates.Gone;
+                    MeniuHelpView.Visibility = ViewStates.Gone;
                     LoadHome();
                     return true;
                 case Resource.Id.navigation_dashboard:
@@ -234,6 +241,7 @@ namespace HelpingHands
                     DashboardView.Visibility = ViewStates.Visible;
                     ProfileView.Visibility = ViewStates.Gone;     
                     PostView.Visibility= ViewStates.Gone;
+                    MeniuHelpView.Visibility = ViewStates.Gone;
                     LoadDashboard();
                     return true;
                 case Resource.Id.navigation_user:
@@ -241,17 +249,42 @@ namespace HelpingHands
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Visible;
                     PostView.Visibility = ViewStates.Gone;
+                    MeniuHelpView.Visibility = ViewStates.Gone;
                     return true;                                
                 case Resource.Id.navigation_posts:
                     HomeView.Visibility = ViewStates.Gone;
                     DashboardView.Visibility = ViewStates.Gone;
                     ProfileView.Visibility = ViewStates.Gone;
                     PostView.Visibility = ViewStates.Visible;
+                    MeniuHelpView.Visibility = ViewStates.Gone;
                     LoadPosts();
+                    return true;
+                case Resource.Id.help_FAQ:
+                    HomeView.Visibility = ViewStates.Gone;
+                    DashboardView.Visibility = ViewStates.Gone;
+                    ProfileView.Visibility = ViewStates.Gone;
+                    PostView.Visibility = ViewStates.Gone;
+                    MeniuHelpView.Visibility = ViewStates.Visible;
+                    LoadHelp();
                     return true;
             }
             return false;
         }
+
+        private void LoadHelp()
+        {
+           /* string htmlFilePath = "calea_catre_fisier/NumeFisier.html";
+
+            var htmlSource = new Xamarin.Forms.HtmlWebViewSource
+            {
+                BaseUrl = Path.GetDirectoryName(htmlFilePath),
+                Html = File.ReadAllText(htmlFilePath)
+            };
+           */
+            // MeniuHelpView.Source = htmlSource;
+            PgWeb.LoadUrl("file:///android_asset/meniuHelp.html");
+        }
+
     }
 }
 
