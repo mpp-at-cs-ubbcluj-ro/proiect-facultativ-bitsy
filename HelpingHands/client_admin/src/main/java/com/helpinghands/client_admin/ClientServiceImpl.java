@@ -239,7 +239,9 @@ public class ClientServiceImpl implements IService{
     @Override
 
     public UserInfo resetPassword(String username, String password) {
-
+        System.out.println(username);
+        System.out.println(password);
+        restTemplate.put(URL+"/users/passwordreset",new UserCredentials(username, password));
         return null;
     }
 
