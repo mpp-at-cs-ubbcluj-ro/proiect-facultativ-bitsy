@@ -575,21 +575,27 @@ public class AppService implements IService {
     }
 
     @Override
-
     public Utilizator getUserByName(String username) throws ServiceException {
+        logger.trace("");
+        logger.info("getUserByName{} ", username);
         for(Utilizator u: voluntarRepo.getAll()){
             if(u.getUsername().equals(username))
                 return u;
+
         }
         for(Utilizator a: adminRepo.getAll()){
             if(a.getUsername().equals(username))
                 return a;
         }
+        logger.info("Ok");
+        logger.traceExit();
         throw new ServiceException("User not found");
 
     }
     @Override
     public UserInfo resetPassword(String username, String password) {
+        logger.trace("");
+        logger.info("resetPassword{} ", username);
         String newpassword = saltAndHash(password);
         System.out.println(newpassword);
         System.out.println(password);
@@ -601,11 +607,15 @@ public class AppService implements IService {
             if(a.getUsername().equals(username))
                 adminRepo.changePassword(a.getUsername(), newpassword);
         }
+        logger.info("Ok");
+        logger.traceExit();
         return null;
     }
 
     @Override
     public List<Post> getNewestPosts() {
+        logger.trace("");
+        logger.info("getNewestPosts{} ");
         return postRepo.getNewestPosts();
     }
 
