@@ -65,7 +65,7 @@ public class LoginPageController {
                 thisStage.close();
             }
         }
-        catch (IllegalArgumentException | ServiceException e){
+        catch (Exception e){
             MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
             return;
         }

@@ -42,7 +42,7 @@ public class ResetPasswordController {
                 service.resetPassword(username, password);
                 MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Parola a fost resetata cu succes!");
             } catch (Exception e) {
-                MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", "Nu exista un utilizator cu acest username!");
+                MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info", e.getMessage());
             }
         }
     }
