@@ -19,7 +19,7 @@ namespace HelpingHands.API
     internal class ClientBase
     {
         public static string BaseAddress =
-            DeviceInfo.Platform == DevicePlatform.Android ? "http://192.168.1.6:8080" : "http://localhost:8080";        
+            DeviceInfo.Platform == DevicePlatform.Android ? "http://192.168.43.243:8080" : "http://localhost:8080";        
         private static string URL_Base = BaseAddress + "/helpinghands";
         
         private HttpClient HttpClient = new HttpClient(new LoggingHandler(new HttpClientHandler()));
