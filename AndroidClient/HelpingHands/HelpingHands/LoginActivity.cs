@@ -57,7 +57,7 @@ namespace HelpingHands
             try
             {
                 var userInfo = await API.Client.Login(username, password);
-                await MessageBox.Alert(this, $"User = {userInfo.Type}:{userInfo.User.Nume} {userInfo.User.Prenume}");
+                await MessageBox.Alert(this, $"Bine ai venit, {userInfo.User.Nume} {userInfo.User.Prenume}", "Login cu succes");
                 AppSession.UserData = userInfo;
 
                 if (userInfo.Type == "Voluntar")

@@ -276,16 +276,8 @@ namespace HelpingHands
         }
 
         private void LoadHelp()
-        {
-           /* string htmlFilePath = "calea_catre_fisier/NumeFisier.html";
-
-            var htmlSource = new Xamarin.Forms.HtmlWebViewSource
-            {
-                BaseUrl = Path.GetDirectoryName(htmlFilePath),
-                Html = File.ReadAllText(htmlFilePath)
-            };
-           */
-            // MeniuHelpView.Source = htmlSource;
+        {                 
+            PgWeb.Settings.JavaScriptEnabled = true;
             PgWeb.LoadUrl("file:///android_asset/meniuHelp.html");
         }
 
