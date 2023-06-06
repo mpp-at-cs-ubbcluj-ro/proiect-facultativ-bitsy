@@ -417,5 +417,43 @@ public class HelpingHandsRestController {
     }
 
 
+    @RequestMapping(value="/evenimentefilter", method = RequestMethod.GET)
+    public EvenimentDTO[] getEvenimenteInterese(@RequestParam Optional<Integer> volId,
+                                                @RequestParam Optional<Integer> isOrganizer,
+                                                @RequestParam Optional<String> filter,
+                                                @RequestParam Optional<Integer> page,
+                                                @RequestParam Optional<Integer> perPage,
+                                                @RequestParam Optional<String> interest) throws ServiceException, HHServerException {
+        if(volId.isEmpty()) {
+            var _filter = EventOrderOption.valueOf(filter.orElse("NONE").toUpperCase());
+            var _page = page.orElse(0);
+            var _perPage = perPage.orElse(10);
+            return Arrays
+                    .stream(service.getOrderedEveniments(_filter, _page, _perPage+1))
+                    .map(EvenimentDTO::fromEveniment)
+                    .filter(evenimentDTO -> Arrays.stream(evenimentDTO.getInterests()).anyMatch(
+                            p -> Objects.equals(p,interest.get())
+                    ))
+                    .toArray(EvenimentDTO[]::new);
+        }
+        if(isOrganizer.isEmpty() || isOrganizer.get()==0) {
+            return Arrays
+                    .stream(service.getEvenimentByVoluntarId(volId.get()))
+                    .map(EvenimentDTO::fromEveniment)
+                    .filter(evenimentDTO -> Arrays.stream(evenimentDTO.getInterests()).anyMatch(
+                            p -> Objects.equals(p,interest.get())
+                    ))
+                    .toArray(EvenimentDTO[]::new);
+        }
+        else{
+            return Arrays
+                    .stream(service.getEvenimentByOrganizerId(volId.get()))
+                    .map(EvenimentDTO::fromEveniment)
+                    .filter(evenimentDTO -> Arrays.stream(evenimentDTO.getInterests()).anyMatch(
+                            p -> Objects.equals(p,interest.get())
+                    ))
+                    .toArray(EvenimentDTO[]::new);
+        }
+    }
 
 }
