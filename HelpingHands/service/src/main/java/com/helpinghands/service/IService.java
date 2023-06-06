@@ -24,8 +24,8 @@ public interface IService {
 
     Eveniment getEvenimentById(Integer id) throws ServiceException;
 
-    void addVoluntarInterest(Voluntar voluntar, Interest interest);
-    void removeVoluntarInterest(Voluntar voluntar, Interest interest);
+    void addVoluntarInterest(Voluntar voluntar, Interest interest) throws ServiceException;
+    void removeVoluntarInterest(Voluntar voluntar, Interest interest) throws ServiceException;
     Eveniment addEvent(Eveniment e) throws ServiceException;
 
     Participant addVolunteer(Voluntar voluntar, Eveniment event) throws ServiceException;
@@ -36,7 +36,7 @@ public interface IService {
     UserSession getUserSession(String token) throws ServiceException;
 
     Eveniment[] getOrderedEveniments(EventOrderOption orderOption, int page, int itemsPerPage);
-    Participant[] getParticipants(Eveniment event);
+    Participant[] getParticipants(Eveniment event) throws ServiceException;
     Participant[] getOrganizers(Eveniment event);
     Participant[] getVolunteers(Eveniment event);
 
@@ -44,7 +44,7 @@ public interface IService {
 
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
     Eveniment[] getEvenimentByVoluntarId(Integer volId);
-    Post addPost(Post post);
+    Post addPost(Post post) throws ServiceException;
     Iterable<Interest> getVoluntarInterest(Integer volId) throws ServiceException;
     CerereSponsor applyForSponsorship(CerereSponsor cerereSponsor);
     SponsorType getSponsorTypeByName(String name) throws ServiceException;
