@@ -1,6 +1,8 @@
 package com.helpinghands.repo;
 
 import com.helpinghands.domain.Eveniment;
+import com.helpinghands.domain.Participant;
+import com.helpinghands.domain.Post;
 import com.helpinghands.domain.SponsorType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,9 +12,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SponsorTypesRepo extends AbstractRepo<SponsorType> implements ISponsorTypeRepo{
 
     private final static Logger logger = LogManager.getLogger(EvenimentRepo.class);
-    public SponsorTypesRepo(Class<SponsorType> entityType) {
-        super(entityType);
+    public SponsorTypesRepo() {
+        super(SponsorType.class);
     }
+
 
     @Override
     public SponsorType getByName(String name) {

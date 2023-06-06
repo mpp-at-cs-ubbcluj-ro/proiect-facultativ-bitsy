@@ -8,10 +8,7 @@ import com.helpinghands.service.data.UserInfo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -50,17 +47,17 @@ public class LoginPageController {
                 MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Info","Accesul este restrictionat! Trebuie introduse credentialele unui administrator!");
             }else {
                 Utilizator utilizator = userInfo.getUtilizator();
-
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/com/helpinghands/client_admin/adminPage.fxml"));
-                AnchorPane root = loader.load();
+                //AnchorPane root = loader.load();
+                ScrollPane root = loader.load();
 
                 AdminPageController adminPageController = loader.getController();
-                //adminPageController.setService(service);
-                //homePageController.setAdmin(utilizator);
+                adminPageController.setServer(service);
+                adminPageController.setAdmin(userInfo);
 
                 Stage stage = new Stage();
-                stage.setScene(new Scene(root, 1103, 644));
+                stage.setScene(new Scene(root, 1145, 780));
                 stage.setTitle("Hello, " + utilizator.getPrenume()+" "+ utilizator.getNume() +"!");
                 stage.show();
 

@@ -1,8 +1,8 @@
 package com.helpinghands.domain;
 
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -109,6 +109,7 @@ public class Voluntar extends Utilizator {
                 ", activeSponsor=" + activeSponsor +
                 ", sponsorTypes=" + sponsorTypes +
                 ", sponsoredEvents=" + sponsoredEvents +
+                ", id=" + getId() +
                 '}';
     }
 }

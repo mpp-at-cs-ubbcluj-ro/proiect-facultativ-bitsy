@@ -1,21 +1,53 @@
 package com.helpinghands.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="CereriSponsor")
 public class CerereSponsor implements IEntity {
+    @ManyToOne(targetEntity = Voluntar.class,
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinColumn(name="idVoluntar")
     private Voluntar volunteer;
+    @Column(name="cifFirma")
     private String cifFirma;
+    @Column(name="telefon")
     private String telefon;
+    @Column(name="adresaSediului")
     private String adresaSediului;
+    @Column(name="numeFirma")
     private String numeFirma;
+    @ManyToOne(targetEntity = SponsorType.class,
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinColumn(name="idSponsorType")
     private SponsorType sponsorType;
 
-    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType, Integer id) {
+    @Column(name="status")
+    private String status;
+
+    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType) {
         this.volunteer = volunteer;
         this.cifFirma = cifFirma;
         this.telefon = telefon;
         this.adresaSediului = adresaSediului;
         this.numeFirma = numeFirma;
         this.sponsorType = sponsorType;
-        this.id = id;
+        this.status = "pending";
+        //o sa avem pending, accepted si declined
+    }
+
+    public CerereSponsor(Voluntar volunteer, String cifFirma, String telefon, String adresaSediului, String numeFirma, SponsorType sponsorType, String status) {
+        this.volunteer = volunteer;
+        this.cifFirma = cifFirma;
+        this.telefon = telefon;
+        this.adresaSediului = adresaSediului;
+        this.numeFirma = numeFirma;
+        this.sponsorType = sponsorType;
+        this.status = status;
+        //o sa avem pending, accepted si declined
+    }
+
+    public CerereSponsor() {
     }
 
     public Voluntar getVolunteer() {
@@ -66,7 +98,31 @@ public class CerereSponsor implements IEntity {
         this.sponsorType = sponsorType;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id=id;}
+
+    @Override
+    public String toString() {
+        return "CerereSponsor{" +
+                "volunteer=" + volunteer +
+                ", cifFirma='" + cifFirma + '\'' +
+                ", telefon='" + telefon + '\'' +
+                ", adresaSediului='" + adresaSediului + '\'' +
+                ", numeFirma='" + numeFirma + '\'' +
+                ", sponsorType=" + sponsorType +
+                ", status='" + status + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

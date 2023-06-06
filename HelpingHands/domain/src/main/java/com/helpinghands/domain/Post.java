@@ -1,12 +1,30 @@
 package com.helpinghands.domain;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name="Posts")
 public class Post implements IEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name="descriere")
     private String descriere;
+    @Column(name="data")
     private LocalDateTime data;
+
+    @ManyToOne(targetEntity = Eveniment.class,
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinColumn(name="idEveniment")
     Eveniment eveniment;
+
+    @ManyToOne(targetEntity = Utilizator.class,
+            cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinColumn(name="idUser")
     Utilizator author;
+
+    public Post() {}
 
     public Post(String descriere, LocalDateTime data, Eveniment eveniment, Utilizator author) {
         this.descriere = descriere;
@@ -47,7 +65,7 @@ public class Post implements IEntity {
         this.author = author;
     }
 
-    private Integer id;
+
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id=id;}
 }

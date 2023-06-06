@@ -1,9 +1,12 @@
 package com.helpinghands.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name="Users")
 @DiscriminatorValue("0")
 @DiscriminatorColumn(name="userType")

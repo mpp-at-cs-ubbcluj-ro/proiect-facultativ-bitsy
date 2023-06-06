@@ -27,17 +27,14 @@ public class Session {
         }
     }
 
-    public static org.hibernate.Session getInstance(){
+    public static void doTransaction(TransactionProcessor op) {
         if(sessionFactory==null)
             buildSession();
-        session = sessionFactory.getCurrentSession();
-        return session;
-    }
-
-    public static void doTransaction(TransactionProcessor op) {
-        var sess = getInstance();
-        var tran = sess.beginTransaction();
-        op.execute(sess, tran);
+        var sess = sessionFactory.openSession();
+        try (sess) {
+            var tran = sess.beginTransaction();
+            op.execute(sess, tran);
+        }
     }
 
     public interface TransactionProcessor {

@@ -29,6 +29,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.1'
 
+    // https://mvnrepository.com/artifact/org.apache.directory.studio/org.apache.commons.io
+    implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+
     testImplementation('com.jayway.jsonpath:json-path')
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'

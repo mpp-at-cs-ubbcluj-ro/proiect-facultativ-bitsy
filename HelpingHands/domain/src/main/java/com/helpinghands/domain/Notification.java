@@ -13,6 +13,7 @@ public class Notification implements IEntity {
         this.viewed = viewed;
     }
 
+    public Notification() {}
     public Notification(String text, Post post) {
         this.text = text;
         this.post = post;
