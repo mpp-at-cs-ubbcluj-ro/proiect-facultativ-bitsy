@@ -19,7 +19,7 @@ public class CerereSponsor implements IEntity {
     private String numeFirma;
     @ManyToOne(targetEntity = SponsorType.class,
             cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
-    @JoinColumn(name="isSponsorType") // vezi in tabel
+    @JoinColumn(name="idSponsorType")
     private SponsorType sponsorType;
 
     @Column(name="status")
@@ -111,4 +111,18 @@ public class CerereSponsor implements IEntity {
     private Integer id;
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id=id;}
+
+    @Override
+    public String toString() {
+        return "CerereSponsor{" +
+                "volunteer=" + volunteer +
+                ", cifFirma='" + cifFirma + '\'' +
+                ", telefon='" + telefon + '\'' +
+                ", adresaSediului='" + adresaSediului + '\'' +
+                ", numeFirma='" + numeFirma + '\'' +
+                ", sponsorType=" + sponsorType +
+                ", status='" + status + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

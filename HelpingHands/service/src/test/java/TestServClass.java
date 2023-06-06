@@ -11,7 +11,7 @@ public class TestServClass extends TestCase {
     static EvenimentRepo eventRepo = new EvenimentRepo();
     static IParticipantRepo partRepo = new ParticipantRepo();
     static SponsorTypesRepo sponsorTypesRepo = new SponsorTypesRepo();
-    static IService service = new AppService(null, null, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo, null, sponsorTypesRepo);
+    static IService service = new AppService(null, null, null, eventRepo, interestRepo, null, null, partRepo, null, voluntarRepo, null, sponsorTypesRepo,null);
 
     public static void main(String[] args) throws ServiceException {
         var u=service.login("user1","0000");

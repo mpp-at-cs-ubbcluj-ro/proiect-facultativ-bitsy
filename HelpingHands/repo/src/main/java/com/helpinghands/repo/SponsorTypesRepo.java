@@ -12,9 +12,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SponsorTypesRepo extends AbstractRepo<SponsorType> implements ISponsorTypeRepo{
 
     private final static Logger logger = LogManager.getLogger(EvenimentRepo.class);
-    public SponsorTypesRepo(Class<SponsorType> entityType) {
-        super(entityType);
-    }
     public SponsorTypesRepo() {
         super(SponsorType.class);
     }

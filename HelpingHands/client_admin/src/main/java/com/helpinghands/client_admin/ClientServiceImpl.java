@@ -3,6 +3,8 @@ package com.helpinghands.client_admin;
 import com.helpinghands.client_admin.data.UserCredentials;
 import com.helpinghands.domain.*;
 import com.helpinghands.repo.data.EventOrderOption;
+import com.helpinghands.rest_services.dto.CerereDTO;
+import com.helpinghands.rest_services.dto.PostDTO;
 import com.helpinghands.service.IService;
 import com.helpinghands.service.ServiceException;
 import com.helpinghands.service.data.UserInfo;
@@ -11,10 +13,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -80,6 +78,11 @@ public class ClientServiceImpl implements IService{
 
     @Override
     public Participant getParticipantById(Integer id) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public Admin getAdminById(Integer id) throws ServiceException {
         return null;
     }
 
@@ -158,10 +161,11 @@ public class ClientServiceImpl implements IService{
         return new Eveniment[0];
     }
 
-
     @Override
-    public Post adaugaPostare(Post post) {
-        return null;
+    public Post addPost(Post post) {
+        return execute(()->restTemplate.postForObject(URL+"/posts",
+                new PostDTO(0,post.getDescriere(),post.getEveniment().getId(),post.getAuthor().getId(),post.getData())
+                ,Post.class));
     }
 
     @Override
@@ -186,7 +190,8 @@ public class ClientServiceImpl implements IService{
 
     @Override
     public CerereSponsor[] getPendingSponsorRequests() {
-        return new CerereSponsor[0];
+        return execute(()->restTemplate.getForObject(URL+"/cererisponsoripending",
+                CerereSponsor[].class));
     }
 
     @Override
@@ -196,20 +201,55 @@ public class ClientServiceImpl implements IService{
 
     @Override
     public CerereSponsor updateCerereSponsor(CerereSponsor cerereSponsor) {
-        return null;
-    }
+        CerereDTO cerereDTO = new CerereDTO(cerereSponsor);
+        execute(()->{restTemplate.put(URL+"/cererisponsors/"+cerereDTO.getId(),cerereDTO);return 0;});
+        return getCerereSponsorById(cerereSponsor.getId());
 
+    }
     @Override
     public CerereSponsor getCerereSponsorById(Integer id) {
-        return null;
+        return execute(()->restTemplate.getForObject(URL+"/cereresponsor/"+id,
+                CerereSponsor.class));
     }
 
-
     @Override
+
     public List<Post> getPostsOfVoluntar(Integer volId) {
         return null;
     }
 
+    @Override
+    public List<Post> getAllPosts() {
+        return null;
+    }
+
+    @Override
+    public byte[] getProfilePic(int userId) throws ServiceException {
+        return new byte[0];
+    }
+
+    @Override
+    public void setProfilePic(int userId, byte[] bytes) throws ServiceException {
+
+    }
+    @Override
+    public void modifyExpPoints(Voluntar vol, Integer amount) {
+    }
+
+    @Override
+
+    public UserInfo resetPassword(String username, String password) {
+
+        return null;
+    }
+
+    @Override
+    public Utilizator getUserByName(String username) throws ServiceException {
+     return null;
+    }
+    public List<Post> getNewestPosts() {
+        return null;
+    }
 
     private static final String PUBLIC_KEY =
             "-----BEGIN PUBLIC KEY-----\n" +
@@ -218,5 +258,4 @@ public class ClientServiceImpl implements IService{
             "LhBxteIFja1+vdtGfMbvZTcm4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f\n" +
             "2IYlK+JcgkACOn9JAgMBAAE=\n" +
             "-----END PUBLIC KEY-----";
-
 }

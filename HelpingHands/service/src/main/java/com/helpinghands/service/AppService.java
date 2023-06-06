@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 public class AppService implements IService {
     private final static Logger logger = LogManager.getLogger();
@@ -142,6 +143,21 @@ public class AppService implements IService {
         logger.info("Ok{} ","Participant found " + part);
         logger.traceExit();
         return part;
+    }
+
+    @Override
+    public Admin getAdminById(Integer id) throws ServiceException {
+        logger.trace("");
+        logger.info("GetAdminById {} ", id);
+        var vol=adminRepo.getById(id);
+        if(vol==null){
+            logger.info("Error:{}", " Admin found by id");
+            logger.traceExit();
+            throw new ServiceException("Invalid Admin Id");
+        }
+        logger.info("Ok:{}", vol);
+        logger.traceExit();
+        return vol;
     }
 
     @Override
@@ -365,7 +381,7 @@ public class AppService implements IService {
     }
 
     @Override
-    public Post adaugaPostare(Post post) {
+    public Post addPost(Post post) {
         logger.trace("");
         logger.info("addPostare {}", post);
         logger.traceExit();
@@ -473,38 +489,38 @@ public class AppService implements IService {
 
     private static final String PRIVATE_KEY =
             "-----BEGIN PRIVATE KEY-----\n" +
-            "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGAa1B+kVIkWffxN8Q6\n" +
-            "xqRzJ08JzzlGv6CNNuPpa7foG0vGNeEMXDLQEK8OTJ1xYEz0MTmngpQx4OQ2Hb9Q\n" +
-            "1hs1Zphlc4ouEHG14gWNrX6920Z8xu9lNybiCtGkhAwUxSCjNrxz1Qr+26QbihcS\n" +
-            "McXgC7e3/5/YhiUr4lyCQAI6f0kCAwEAAQKBgBjlyweiPCbXfJKIp25Q1xqmnssC\n" +
-            "KeTptfmnNQ+10lcK5Ii5lumJLHbCdpnV6WkDUaBeFPwZr9zSda+/JF0YYPIHG9hV\n" +
-            "8U884k2UaDZbOy8RKu0/dOOkLSkAUYhh55Ss0EXULBnvxq41EuTpEyWYu+3hmJRK\n" +
-            "nJCH1CUWXpwlObGBAkEAy6ETtmmrEWxECroTMAuyx/8PG0gal+4CKP0F4jRAWe9c\n" +
-            "0p6nQAaZ3A1btPjV7/E3oYBBh9m8OyG8kOkMN07PEQJBAIbqEFy4xpZS5zCoFY95\n" +
-            "VGovsMAxmZo8soxtXHdcCe4RO5vHkraanLya1YmDMuzBI/erIBzuSVf0R0H7P/OR\n" +
-            "HLkCQQCSC6kzv33uNRRoDSUN5JYJUynmi0Rni1EJTNAXeRpeZorQlPGnvhRD+2C2\n" +
-            "33GxcfRQZMibQtL6Jiw0UrFsSZ3BAkA0rW2oFomLpmEYsXiBpbkdIPPdh0BXZb29\n" +
-            "cPH6tNg3uUjSAXG6lNIAHmCkKbMXmC4oBQwr36qJihrMm4KT4qQZAkAzm4md7f3O\n" +
-            "Nn+oAAdd7iaOXmFTBimpvETK8q2MvVIFGIZlHhVAsT5XLdL/e8hdKD7nhUZgJ237\n" +
-            "aZzLq0w6Thnc\n" +
-            "-----END PRIVATE KEY-----";
+                    "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGAa1B+kVIkWffxN8Q6\n" +
+                    "xqRzJ08JzzlGv6CNNuPpa7foG0vGNeEMXDLQEK8OTJ1xYEz0MTmngpQx4OQ2Hb9Q\n" +
+                    "1hs1Zphlc4ouEHG14gWNrX6920Z8xu9lNybiCtGkhAwUxSCjNrxz1Qr+26QbihcS\n" +
+                    "McXgC7e3/5/YhiUr4lyCQAI6f0kCAwEAAQKBgBjlyweiPCbXfJKIp25Q1xqmnssC\n" +
+                    "KeTptfmnNQ+10lcK5Ii5lumJLHbCdpnV6WkDUaBeFPwZr9zSda+/JF0YYPIHG9hV\n" +
+                    "8U884k2UaDZbOy8RKu0/dOOkLSkAUYhh55Ss0EXULBnvxq41EuTpEyWYu+3hmJRK\n" +
+                    "nJCH1CUWXpwlObGBAkEAy6ETtmmrEWxECroTMAuyx/8PG0gal+4CKP0F4jRAWe9c\n" +
+                    "0p6nQAaZ3A1btPjV7/E3oYBBh9m8OyG8kOkMN07PEQJBAIbqEFy4xpZS5zCoFY95\n" +
+                    "VGovsMAxmZo8soxtXHdcCe4RO5vHkraanLya1YmDMuzBI/erIBzuSVf0R0H7P/OR\n" +
+                    "HLkCQQCSC6kzv33uNRRoDSUN5JYJUynmi0Rni1EJTNAXeRpeZorQlPGnvhRD+2C2\n" +
+                    "33GxcfRQZMibQtL6Jiw0UrFsSZ3BAkA0rW2oFomLpmEYsXiBpbkdIPPdh0BXZb29\n" +
+                    "cPH6tNg3uUjSAXG6lNIAHmCkKbMXmC4oBQwr36qJihrMm4KT4qQZAkAzm4md7f3O\n" +
+                    "Nn+oAAdd7iaOXmFTBimpvETK8q2MvVIFGIZlHhVAsT5XLdL/e8hdKD7nhUZgJ237\n" +
+                    "aZzLq0w6Thnc\n" +
+                    "-----END PRIVATE KEY-----";
 
     private static final String RSA_PRIVATE_KEY =
             "-----BEGIN RSA PRIVATE KEY-----\n" +
-            "MIICWwIBAAKBgGtQfpFSJFn38TfEOsakcydPCc85Rr+gjTbj6Wu36BtLxjXhDFwy\n" +
-            "0BCvDkydcWBM9DE5p4KUMeDkNh2/UNYbNWaYZXOKLhBxteIFja1+vdtGfMbvZTcm\n" +
-            "4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f2IYlK+JcgkACOn9JAgMBAAEC\n" +
-            "gYAY5csHojwm13ySiKduUNcapp7LAink6bX5pzUPtdJXCuSIuZbpiSx2wnaZ1elp\n" +
-            "A1GgXhT8Ga/c0nWvvyRdGGDyBxvYVfFPPOJNlGg2WzsvESrtP3TjpC0pAFGIYeeU\n" +
-            "rNBF1CwZ78auNRLk6RMlmLvt4ZiUSpyQh9QlFl6cJTmxgQJBAMuhE7ZpqxFsRAq6\n" +
-            "EzALssf/DxtIGpfuAij9BeI0QFnvXNKep0AGmdwNW7T41e/xN6GAQYfZvDshvJDp\n" +
-            "DDdOzxECQQCG6hBcuMaWUucwqBWPeVRqL7DAMZmaPLKMbVx3XAnuETubx5K2mpy8\n" +
-            "mtWJgzLswSP3qyAc7klX9EdB+z/zkRy5AkEAkgupM7997jUUaA0lDeSWCVMp5otE\n" +
-            "Z4tRCUzQF3kaXmaK0JTxp74UQ/tgtt9xsXH0UGTIm0LS+iYsNFKxbEmdwQJANK1t\n" +
-            "qBaJi6ZhGLF4gaW5HSDz3YdAV2W9vXDx+rTYN7lI0gFxupTSAB5gpCmzF5guKAUM\n" +
-            "K9+qiYoazJuCk+KkGQJAM5uJne39zjZ/qAAHXe4mjl5hUwYpqbxEyvKtjL1SBRiG\n" +
-            "ZR4VQLE+Vy3S/3vIXSg+54VGYCdt+2mcy6tMOk4Z3A==\n" +
-            "-----END RSA PRIVATE KEY-----";
+                    "MIICWwIBAAKBgGtQfpFSJFn38TfEOsakcydPCc85Rr+gjTbj6Wu36BtLxjXhDFwy\n" +
+                    "0BCvDkydcWBM9DE5p4KUMeDkNh2/UNYbNWaYZXOKLhBxteIFja1+vdtGfMbvZTcm\n" +
+                    "4grRpIQMFMUgoza8c9UK/tukG4oXEjHF4Au3t/+f2IYlK+JcgkACOn9JAgMBAAEC\n" +
+                    "gYAY5csHojwm13ySiKduUNcapp7LAink6bX5pzUPtdJXCuSIuZbpiSx2wnaZ1elp\n" +
+                    "A1GgXhT8Ga/c0nWvvyRdGGDyBxvYVfFPPOJNlGg2WzsvESrtP3TjpC0pAFGIYeeU\n" +
+                    "rNBF1CwZ78auNRLk6RMlmLvt4ZiUSpyQh9QlFl6cJTmxgQJBAMuhE7ZpqxFsRAq6\n" +
+                    "EzALssf/DxtIGpfuAij9BeI0QFnvXNKep0AGmdwNW7T41e/xN6GAQYfZvDshvJDp\n" +
+                    "DDdOzxECQQCG6hBcuMaWUucwqBWPeVRqL7DAMZmaPLKMbVx3XAnuETubx5K2mpy8\n" +
+                    "mtWJgzLswSP3qyAc7klX9EdB+z/zkRy5AkEAkgupM7997jUUaA0lDeSWCVMp5otE\n" +
+                    "Z4tRCUzQF3kaXmaK0JTxp74UQ/tgtt9xsXH0UGTIm0LS+iYsNFKxbEmdwQJANK1t\n" +
+                    "qBaJi6ZhGLF4gaW5HSDz3YdAV2W9vXDx+rTYN7lI0gFxupTSAB5gpCmzF5guKAUM\n" +
+                    "K9+qiYoazJuCk+KkGQJAM5uJne39zjZ/qAAHXe4mjl5hUwYpqbxEyvKtjL1SBRiG\n" +
+                    "ZR4VQLE+Vy3S/3vIXSg+54VGYCdt+2mcy6tMOk4Z3A==\n" +
+                    "-----END RSA PRIVATE KEY-----";
     @Override
     public List<Post> getPostsOfVoluntar(Integer volId) {
         logger.trace("");
@@ -515,6 +531,17 @@ public class AppService implements IService {
 //                if(p.getEveniment().equals(ev.getId()))
 //                    volPosts.add(p);
 //        }
+        logger.info("Ok:{}", volPosts.size());
+        logger.traceExit();
+        return volPosts;
+    }
+
+    @Override
+    public List<Post> getAllPosts() {
+        logger.trace("");
+        logger.info("getAllPosts{} ");
+        List<Post> volPosts = StreamSupport.stream(postRepo.getAll().spliterator(), false
+        ).toList();
         logger.info("Ok:{}", volPosts.size());
         logger.traceExit();
         return volPosts;
@@ -546,4 +573,40 @@ public class AppService implements IService {
         logger.info("Ok; New Points: {}", pct);
         logger.traceExit();
     }
+
+    @Override
+
+    public Utilizator getUserByName(String username) throws ServiceException {
+        for(Utilizator u: voluntarRepo.getAll()){
+            if(u.getUsername().equals(username))
+                return u;
+        }
+        for(Utilizator a: adminRepo.getAll()){
+            if(a.getUsername().equals(username))
+                return a;
+        }
+        throw new ServiceException("User not found");
+
+    }
+    @Override
+    public UserInfo resetPassword(String username, String password) {
+        String newpassword = saltAndHash(password);
+        System.out.println(newpassword);
+        System.out.println(password);
+        for(Utilizator u: voluntarRepo.getAll()){
+            if(u.getUsername().equals(username))
+                voluntarRepo.changePassword(u.getUsername(), newpassword);
+        }
+        for (Utilizator a: adminRepo.getAll()){
+            if(a.getUsername().equals(username))
+                adminRepo.changePassword(a.getUsername(), newpassword);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Post> getNewestPosts() {
+        return postRepo.getNewestPosts();
+    }
+
 }

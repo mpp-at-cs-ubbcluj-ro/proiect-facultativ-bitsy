@@ -43,7 +43,7 @@ namespace HelpingHands
             
             ProfileView.Visibility = ViewStates.Gone;            
 
-            Task.Run(Load);
+            Task.Run(LoadProfile);
         }
 
         private static readonly int RESULT_LOAD_IMAGE = 1;
@@ -81,7 +81,7 @@ namespace HelpingHands
                             await Client.SetProfilePic(AppSession.UserId, bytes);
 
                             await MessageBox.Alert(this, "Profile picture updated successfully", "Info");
-                            await Task.Run(Load);
+                            await Task.Run(LoadProfile);
                         }
                         
 
@@ -108,17 +108,20 @@ namespace HelpingHands
             }
         }
 
-        async void Load()
+        async void LoadProfile()
         {
             try
             {
                 RunOnUiThread(async () =>
                 {
+                    var vol = await Client.GetVoluntar(AppSession.UserId);
+
                     System.Console.WriteLine("Account Profile Details");
                     AccNume.Text =AppSession.UserData.User.Nume;
                     AccEmail.Text = AppSession.UserData.User.Email;
                     AccPrenume.Text = AppSession.UserData.User.Prenume;
-                    AccXpPct.Text = AppSession.UserData.User.XpPoints.ToString();
+                    AppSession.UserData.User.XpPoints = vol.XpPoints;
+                    AccXpPct.Text = vol.XpPoints.ToString();
                     var interestsList = await API.Client.GetVoluntarInterests(AppSession.UserId);
                     var interestsText = string.Join(", ", interestsList.Select(x => x.Name));
                     AccInterests.Text = interestsText;

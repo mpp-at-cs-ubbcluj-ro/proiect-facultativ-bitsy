@@ -1,5 +1,7 @@
 package com.helpinghands.rest_services.dto;
 
+import com.helpinghands.domain.CerereSponsor;
+
 public class CerereDTO {
     private Integer id;
     private Integer volId;
@@ -8,8 +10,9 @@ public class CerereDTO {
     private String adresa;
     private String numeFirma;
     private String sponsorType;
+    private String status;
 
-    public CerereDTO(Integer id, Integer volId, String cifFirma, String sponsorType, String telefon, String adresa, String numeFirma) {
+    public CerereDTO(Integer id, Integer volId, String cifFirma, String sponsorType, String telefon, String adresa, String numeFirma,String status) {
         this.id = id;
         this.volId = volId;
         this.cifFirma = cifFirma;
@@ -17,14 +20,10 @@ public class CerereDTO {
         this.adresa = adresa;
         this.numeFirma = numeFirma;
         this.sponsorType = sponsorType;
+        this.status = status;
     }
-
-    public String getSponsorType() {
-        return sponsorType;
-    }
-
-    public void setSponsorType(String sponsorType) {
-        this.sponsorType = sponsorType;
+    public CerereDTO(CerereSponsor cerereSponsor){
+        this(cerereSponsor.getId(),cerereSponsor.getVolunteer().getId(),cerereSponsor.getCifFirma(),cerereSponsor.getSponsorType().getName(),cerereSponsor.getTelefon(),cerereSponsor.getAdresaSediului(),cerereSponsor.getNumeFirma(),cerereSponsor.getStatus());
     }
 
     public Integer getId() {
@@ -73,5 +72,21 @@ public class CerereDTO {
 
     public void setNumeFirma(String numeFirma) {
         this.numeFirma = numeFirma;
+    }
+
+    public String getSponsorType() {
+        return sponsorType;
+    }
+
+    public void setSponsorType(String sponsorType) {
+        this.sponsorType = sponsorType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

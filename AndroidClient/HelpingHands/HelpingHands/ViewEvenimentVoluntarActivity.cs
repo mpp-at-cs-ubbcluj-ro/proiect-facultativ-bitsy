@@ -31,6 +31,7 @@ namespace HelpingHands
         [Control] TextView VolEvenimentInterese;
         [Control] Button VolButtonAddParticipant;
         [Control] ListView ParticipantListView;
+        [Control] TextView VolEvenimentLocatie;
 
         List<Participant> Participants = new List<Participant>();
 
@@ -45,6 +46,7 @@ namespace HelpingHands
             VolEvenimentDescription.Text = Eveniment.Description;
             VolEvenimentDate.Text = Eveniment.StartDate.ToString("dd.MM.yyyy") + " - " + Eveniment.EndDate.ToString("dd.MM.yyyy");
             VolEvenimentInterese.Text = string.Join(", ", Eveniment.Interests);
+            VolEvenimentLocatie.Text = Eveniment.Location; 
 
             VolButtonAddParticipant.Click += VolButtonAddParticipant_Click;
 

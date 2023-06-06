@@ -19,4 +19,18 @@ public class VoluntarRepo extends AbstractUtilizatorRepo<Voluntar> implements IV
         update(vol);
         return points;
     }
+
+    @Override
+    public Voluntar changePassword(String username, String password) {
+        AtomicReference<Voluntar> voluntar = new AtomicReference<>();
+        this.getAll().forEach(vol -> {
+            if (vol.getUsername().equals(username)) {
+                vol.setPassword(password);
+                voluntar.set(vol);
+                update(vol);
+            }
+        });
+        return voluntar.get();
+    }
+
 }

@@ -37,6 +37,7 @@ dependencies {
     implementation project(':service')
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.1'
+    implementation project(path: ':rest_services')
     testImplementation('com.jayway.jsonpath:json-path')
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'

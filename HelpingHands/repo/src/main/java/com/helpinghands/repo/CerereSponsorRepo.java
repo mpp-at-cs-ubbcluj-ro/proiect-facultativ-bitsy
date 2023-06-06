@@ -34,7 +34,7 @@ public class CerereSponsorRepo extends AbstractRepo<CerereSponsor> implements IC
                     .stream().peek(c->{
                         System.out.println(c.getVolunteer());
                         var x=c.getVolunteer();
-                        System.out.println();
+                        var y=c.getSponsorType();
                     }).toList());
             tx.commit();
         });

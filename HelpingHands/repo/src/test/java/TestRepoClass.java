@@ -10,22 +10,11 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public class TestRepoClass extends TestCase {
-    static ProfilePicRepo ppRepo;
-
-    static {
-        try {
-            ppRepo = new ProfilePicRepo("C:\\db\\pp");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+    static SponsorTypesRepo ppRepo=new SponsorTypesRepo();
+    static CerereSponsorRepo ccRepo=new CerereSponsorRepo();
     public static void main(String[] args) throws IOException {
-        /*var pp=new ProfilePic("x.png");
-        pp.setId(4);
-        ppRepo.add(pp);*/
-        //ppRepo.add(3,new byte[2]);
-        ppRepo.getImage(3);
+        System.out.println(ccRepo.getById(3));
+        System.out.println(ppRepo.getById(1));
 
 
         /*var user = voluntarRepo.findByCredentials("user1","0000");
