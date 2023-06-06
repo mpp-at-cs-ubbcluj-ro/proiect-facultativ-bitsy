@@ -41,4 +41,6 @@ public interface IService {
     Eveniment[] getEvenimentByOrganizerId(Integer initiatorId);
 
     Post adaugaPostare(Post post);
+
+    Integer findUsername(String username);
 }

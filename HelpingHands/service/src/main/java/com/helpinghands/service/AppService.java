@@ -83,6 +83,12 @@ public class AppService implements IService {
             logger.traceExit();
             throw new ServiceException("Invalid inputs for utilizator");
         }
+        if(findUsername(username) == 0)
+        {
+            logger.info("Error{} ","Existent username");
+            logger.traceExit();
+            throw new ServiceException("Username already used!");
+        }
         voluntarRepo.add(voluntar);
         logger.info("Ok{} ", voluntar);
         logger.traceExit();
@@ -336,5 +342,19 @@ public class AppService implements IService {
         logger.info("addPostare {}", post);
         logger.traceExit();
         return postRepo.add(post);
+    }
+
+    @Override
+    public Integer findUsername(String username) {
+        logger.trace("");
+        logger.info("Search username {}", username);
+        for(Voluntar v: voluntarRepo.getAll())
+            if(v.getUsername().equals(username))
+            {
+                logger.info("found Username {}");
+                return 0;
+            }
+        logger.info("not found Username{}");
+        return 1;
     }
 }
