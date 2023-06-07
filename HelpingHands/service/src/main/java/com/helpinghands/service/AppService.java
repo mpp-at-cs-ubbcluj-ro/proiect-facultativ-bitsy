@@ -430,6 +430,16 @@ public class AppService implements IService {
     }
 
     @Override
+    public Eveniment[] getByInterestOrderedPaged(EventOrderOption orderOption, int page, int itemsPerPage, String interest){
+        logger.traceEntry("");
+        logger.info("getOrderedEveniments{} ", orderOption + " page: " + page + " itmes/page: " + itemsPerPage);
+        Eveniment[] eveniments = evenimentRepo.getByInterestOrderedPaged(orderOption, page,itemsPerPage, interest);
+        logger.info("Ok{} ", eveniments.length);
+        logger.traceExit();
+        return eveniments;
+    }
+
+    @Override
     public Eveniment[] getEvenimentByOrganizerId(Integer initiatorId){
         logger.traceEntry();
         logger.info("getEvenimentByOrganizerId{} ", initiatorId);

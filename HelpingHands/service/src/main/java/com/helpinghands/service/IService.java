@@ -36,6 +36,7 @@ public interface IService {
     UserSession getUserSession(String token) throws ServiceException;
 
     Eveniment[] getOrderedEveniments(EventOrderOption orderOption, int page, int itemsPerPage);
+    Eveniment[] getByInterestOrderedPaged(EventOrderOption orderOption, int page, int itemsPerPage, String interest);
     Participant[] getParticipants(Eveniment event) throws ServiceException;
     Participant[] getOrganizers(Eveniment event);
     Participant[] getVolunteers(Eveniment event);
@@ -60,6 +61,7 @@ public interface IService {
     List<Post> getPostsOfVoluntar(Integer volId);
 
     List<Post> getAllPosts();
+
 
     byte[] getProfilePic(int userId) throws ServiceException;
 
