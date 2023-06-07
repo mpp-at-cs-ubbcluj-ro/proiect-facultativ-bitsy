@@ -132,6 +132,11 @@ public class ClientServiceImpl implements IService{
     }
 
     @Override
+    public Eveniment[] getByInterestOrderedPaged(EventOrderOption orderOption, int page, int itemsPerPage, String interest) {
+        return new Eveniment[0];
+    }
+
+    @Override
     public Participant[] getParticipants(Eveniment event) {
         return new Participant[0];
     }
