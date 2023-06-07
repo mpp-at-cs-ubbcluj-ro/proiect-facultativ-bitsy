@@ -41,6 +41,7 @@ namespace HelpingHands
         [Control] ListView PostariListView;
         [Control] GridLayout MeniuHelpView;
         [Control] WebView PgWeb;
+        [Control] Spinner InterestBox;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -52,7 +53,9 @@ namespace HelpingHands
             CreateEvButton.Click += CreateEvButton_Click;
             EvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
             OrganizatorEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
-            VoluntarEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;            
+            VoluntarEvenimenteListView.ItemClick += EvenimenteListView_ItemClick;
+            InterestBox.ItemSelected += InterestBox_ItemSelected;
+            EventLoader = async (p) => await Client.GetEvenimentePaged(p - 1);
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
@@ -72,6 +75,32 @@ namespace HelpingHands
             OnCreate_AccountPage();
         }
 
+        Func<int, Task<Eveniment[]>> EventLoader;
+
+        private async void InterestBox_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            var interest = (InterestBox.Adapter as InterestAdapter)[e.Position];
+            if(interest.Id=="0")
+            {
+                EventLoader = async (p) => await Client.GetEvenimentePaged(p - 1);
+                Evenimente = (await Client.GetEvenimentePaged(int.Parse(EvPageTextView.Text) - 1)).ToList();
+                RunOnUiThread(() =>
+                {
+                    EvenimenteListView.Adapter = new EvenimentAdapter(this, Evenimente);
+                });
+            }
+            else
+            {
+                EvPageTextView.Text = "1";
+                Console.WriteLine("INTEREST = "+interest.Id+" "+interest.Name);
+                EventLoader = async (p) => await Client.GetEvenimenteByInterestPaged(interest.Name, p - 1);
+                Evenimente = (await Client.GetEvenimenteByInterestPaged(interest.Name, int.Parse(EvPageTextView.Text) - 1)).ToList();
+                RunOnUiThread(() =>
+                {
+                    EvenimenteListView.Adapter = new EvenimentAdapter(this, Evenimente);
+                });
+            }
+        }
 
         List<PostDTO> PostariEv = new List<PostDTO>();
         private async void LoadPosts()
@@ -145,7 +174,8 @@ namespace HelpingHands
                 var pageN = int.Parse(EvPageTextView.Text);
                 if (pageN == 1) return;
                 pageN--;
-                Evenimente = (await API.Client.GetEvenimentePaged(pageN - 1)).ToList();
+                //Evenimente = (await API.Client.GetEvenimentePaged(pageN - 1)).ToList();
+                Evenimente = (await EventLoader(pageN)).ToList();                
                 RunOnUiThread(() =>
                 {
                     EvPageTextView.Text = pageN.ToString();
@@ -164,7 +194,8 @@ namespace HelpingHands
             {
                 var pageN = int.Parse(EvPageTextView.Text);
                 pageN++;
-                var ev = (await API.Client.GetEvenimentePaged(pageN - 1)).ToList();
+                //var ev = (await API.Client.GetEvenimentePaged(pageN - 1)).ToList();
+                var ev = (await EventLoader(pageN)).ToList();
                 if (ev.Count == 0) { pageN--; return; }
                 Evenimente = ev;
                 RunOnUiThread(() =>
@@ -194,11 +225,15 @@ namespace HelpingHands
         {
             try
             {
-                Evenimente = (await API.Client.GetEvenimentePaged(int.Parse(EvPageTextView.Text) - 1)).ToList();
+                Evenimente = (await EventLoader(int.Parse(EvPageTextView.Text))).ToList();
+                //Evenimente = (await API.Client.GetEvenimentePaged(int.Parse(EvPageTextView.Text) - 1)).ToList();
                 RunOnUiThread(() =>
                 {
                     EvenimenteListView.Adapter = new EvenimentAdapter(this, Evenimente);
                 });
+                var InterestAdapter = new InterestAdapter(this, (await API.Client.GetInterests()).Prepend(
+                    new Interest { Id = "0", Name = "(None)" }).ToList());
+                RunOnUiThread(() => InterestBox.Adapter = InterestAdapter);
             }
             catch(Exception e)
             {

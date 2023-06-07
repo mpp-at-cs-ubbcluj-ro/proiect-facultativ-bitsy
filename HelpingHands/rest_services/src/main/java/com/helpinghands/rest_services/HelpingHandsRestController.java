@@ -429,11 +429,8 @@ public class HelpingHandsRestController {
             var _page = page.orElse(0);
             var _perPage = perPage.orElse(10);
             return Arrays
-                    .stream(service.getOrderedEveniments(_filter, _page, _perPage+1))
+                    .stream(service.getByInterestOrderedPaged(_filter, _page, _perPage, interest.get()))
                     .map(EvenimentDTO::fromEveniment)
-                    .filter(evenimentDTO -> Arrays.stream(evenimentDTO.getInterests()).anyMatch(
-                            p -> Objects.equals(p,interest.get())
-                    ))
                     .toArray(EvenimentDTO[]::new);
         }
         if(isOrganizer.isEmpty() || isOrganizer.get()==0) {
