@@ -49,15 +49,14 @@ public class LoginPageController {
                 Utilizator utilizator = userInfo.getUtilizator();
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/com/helpinghands/client_admin/adminPage.fxml"));
-                //AnchorPane root = loader.load();
-                ScrollPane root = loader.load();
+                AnchorPane root = loader.load();
 
                 AdminPageController adminPageController = loader.getController();
                 adminPageController.setServer(service);
                 adminPageController.setAdmin(userInfo);
 
                 Stage stage = new Stage();
-                stage.setScene(new Scene(root, 1145, 780));
+                stage.setScene(new Scene(root, 900, 700));
                 stage.setTitle("Hello, " + utilizator.getPrenume()+" "+ utilizator.getNume() +"!");
                 stage.show();
 
