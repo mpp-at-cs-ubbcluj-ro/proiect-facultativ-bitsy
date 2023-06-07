@@ -101,7 +101,12 @@
             android:textStyle="bold"
             android:layout_marginTop="16dp"
             android:text="Participanți"            
-            />   
+            />
+        <TextView
+            android:minWidth="30px"
+            android:minHeight="30px"
+            xmlns="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textView1" />   
     </TableRow>
     <TableRow
         android:layout_width="match_parent"
@@ -126,6 +131,11 @@
             android:text="Actualizează"
             android:backgroundTint="#B30064"
             android:textColor="#ffffff"                        
-            />   
+            />
+        <TextView
+            android:minWidth="30px"
+            android:minHeight="30px"
+            xmlns="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textView2" />   
     </TableRow>         
 </TableLayout>
